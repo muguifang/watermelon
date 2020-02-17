@@ -1,4 +1,4 @@
-package com.muguifang.test;
+﻿package com.muguifang.test;
 
 import com.muguifang.mapper.TUserMapper;
 import com.muguifang.service.UserService;
@@ -32,6 +32,7 @@ public class MyTest {
 //        Cache tUserCache = singletonManager.getCache("tUserCache");
 //        singletonManager.clearAll();
 //        singletonManager.shutdown();
+
     }
 
 }
