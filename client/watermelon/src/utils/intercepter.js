@@ -1,5 +1,5 @@
 import axios from "axios";
-import router from "@/router";
+// import router from "@/router";
 import { Message } from "element-ui";
 const BASEURL = process.env.NODE_ENV === "production" ? "" : "/api";
 //创建axios 赋给变量intercept
