@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-4.3.xsd
+         http://www.springframework.org/schema/cache
+         http://www.springframework.org/schema/cache/spring-cache.xsd
+http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop-4.3.25.xsd">
+    <!-- ①：对com.qubaolai包中的所有类进行扫描，以完成Bean创建和自动依赖注入的功能 -->
+    <context:component-scan base-package="com.muguifang"/>
+    <!-- ②：启动Spring MVC的注解功能，完成请求和注解POJO的映射 -->
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <ref bean="mappingJacksonHttpMessageConverter"/>
+            </list>
+        </property>
+    </bean>
+
+    <!--避免IE执行AJAX时，返回JSON出现下载文件 -->
+    <bean id="mappingJacksonHttpMessageConverter"
+          class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+        <property name="supportedMediaTypes">
+            <list>
+                <value>application/json;charset=UTF-8</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 配置dbcp数据库连接池 -->
+    <!--数据库配置 -->
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:jdbc.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 数据库连接池 -->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${driver}"/>
+        <property name="url" value="${url}"/>
+        <property name="username" value="${username}"/>
+        <property name="password" value="${password}"/>
+        <property name="initialSize" value="10"/>
+        <property name="maxActive" value="8"/>
+        <property name="minIdle" value="8"/>
+        <property name="maxIdle" value="10"/>
+        <property name="maxWait" value="5000"/>
+        <!--借出连接时不要测试，否则很影响性能。一定要配置，
+        因为它的默认值是true。false表示每次从连接池中取出连
+        接时，不需要执行validationQuery = "SELECT 1" 中的SQL
+        进行测试。若配置为true,对性能有非常大的影响，性能会下降7-10倍。-->
+        <property name="testOnBorrow" value="false"/>
+        <!--每30秒运行一次空闲连接回收器，每30秒运行一次空闲连接回收器（独立线程）。
+        并每次检查3个连接，如果连接空闲时间超过30分钟就销毁。销毁连接后，连接数量就
+        少了，如果小于minIdle数量，就新建连接，维护数量不少于minIdle-->
+        <property name="timeBetweenEvictionRunsMillis" value="30000"/>
+        <property name="minEvictableIdleTimeMillis" value="30000"/>
+    </bean>
+
+    <!-- 配置事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!-- 配置会话工厂SqlSessionFactory -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- 数据源 -->
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mapperLocations" value="classpath:mapper/**/*Mapper.xml"/>
+        <property name="typeAliasesPackage" value="com.muguifang.po"/>
+        <property name="plugins">
+            <array>
+                <!--<bean class="com.github.pagehelper.PageInterceptor">-->
+                <!--<property name="properties">-->
+                <!--<props>-->
+                <!--<prop key="helperDialect">mysql</prop>-->
+                <!--<prop key="resonable">true</prop>-->
+                <!--</props>-->
+                <!--</property>-->
+                <!--</bean>-->
+            </array>
+        </property>
+        <!--显示开启缓存-->
+        <!--<property name="configurationProperties">-->
+        <!--<props>-->
+        <!--<prop key="cacheEnabled">true</prop>-->
+        <!--</props>-->
+        <!--</property>-->
+    </bean>
+    <!-- 在spring容器中配置mapper的扫描器产生的动态代理对象在spring的容器中自动注册，bean的id就是mapper类名（首字母小写）-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 指定扫描包的路径，就是mapper接口的路径，多个包中间以 半角逗号隔开   -->
+        <property name="basePackage" value="com.muguifang.mapper"/>
+        <!-- 配置sqlSessionFactoryBeanName -->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+    <!-- 配置支持文件上传 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
+          p:maxUploadSize="500000"/>
+
+    <!-- 开启spring缓存注解 -->
+    <cache:annotation-driven cache-manager="ehCacheCacheManager"/>
+
+    <!-- ehcahce -->
+    <bean id="myehcahce" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <!--找到ehcache.xml配置文件的位置-->
+        <property name="configLocation" value="classpath:ehcache.xml"/>
+    </bean>
+    <bean id="ehCacheCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+        <property name="cacheManager" ref="myehcahce"/>
+    </bean>
+</beans>
