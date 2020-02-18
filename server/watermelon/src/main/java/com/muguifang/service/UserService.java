@@ -25,4 +25,9 @@ public interface UserService extends BaseService {
      */
     public void updatePass(Map<String, Object> param);
 
+    /**
+     * 用户注册
+     * @param tUser
+     */
+    public void register(TUser tUser);
 }

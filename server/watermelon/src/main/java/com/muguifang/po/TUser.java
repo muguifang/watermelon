@@ -15,6 +15,8 @@ public class TUser {
 
     private String headpic;
 
+    private Integer role;
+
     public Integer getId() {
         return id;
     }
@@ -69,5 +71,13 @@ public class TUser {
 
     public void setHeadpic(String headpic) {
         this.headpic = headpic;
+    }
+
+    public Integer getRole() {
+        return role;
+    }
+
+    public void setRole(Integer role) {
+        this.role = role;
     }
 }

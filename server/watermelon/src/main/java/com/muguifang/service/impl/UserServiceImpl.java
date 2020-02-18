@@ -83,4 +83,9 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
         tUserMapper.updateByPrimaryKey(currentLoginEmployee);
     }
 
+    @Override
+    public void register(TUser tUser) {
+        tUserMapper.insert(tUser);
+    }
+
 }

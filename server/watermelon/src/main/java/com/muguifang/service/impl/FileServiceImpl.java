@@ -77,22 +77,9 @@ public class FileServiceImpl implements FileService {
         List<Map<Integer, String>> result = new ArrayList<>();
         Map<Integer, String> map = new HashMap<>();
         for(TLbt tLbt : tLbts){
-            String path = tLbt.getPic();
-            InputStream in = null;
-            byte[] data = null;
-            //读取图片字节数组
-            try {
-                in = new FileInputStream(path);
-                data = new byte[in.available()];
-                in.read(data);
-                in.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            //对字节数组Base64编码
-            BASE64Encoder encoder = new BASE64Encoder();
-            String encode = encoder.encode(data);//返回Base64编码过的字节数组字符串
-            map.put(tLbt.getId(),encode);
+            String picStr = tLbt.getPic();
+            String pic = picStr.substring(picStr.lastIndexOf("\\")+1,picStr.length());
+            map.put(tLbt.getId(),"@/assets/"+ pic);
         }
         result.add(map);
 
