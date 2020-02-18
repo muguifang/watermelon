@@ -55,6 +55,7 @@
 <script>
 import { stripscript, validatePass, validateName } from "@/utils/validate";
 import { login } from "@/api/user/login.js";
+import router from "@/router";
 export default {
   name: "login",
   data() {
@@ -90,8 +91,8 @@ export default {
       // ],
       // 表单返回值
       form: {
-        username: "",
-        password: ""
+        username: "xiaohong",
+        password: "123asd"
       },
       // 校验规则
       rules: {
@@ -112,13 +113,23 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          alert("submit!");
-          login().then(res => {
-            const data = res.data;
+          const param = {
+            username: this.form.username,
+            password: this.form.password
+          };
+          login(param).then(response => {
+            const data = response.data;
             if (data.code === 200) {
               this.$message({
                 message: "登录成功",
                 type: "success"
+              });
+              sessionStorage.setItem("user", JSON.stringify(data.data));
+              router.push("/console");
+            } else {
+              this.$message({
+                message: data.msg,
+                type: "warning"
               });
             }
           });
