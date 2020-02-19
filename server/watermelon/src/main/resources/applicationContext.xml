@@ -77,6 +77,7 @@ http://www.springframework.org/schema/aop
         <!-- 数据源 -->
         <property name="dataSource" ref="dataSource"/>
         <property name="mapperLocations" value="classpath:mapper/**/*Mapper.xml"/>
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
         <property name="typeAliasesPackage" value="com.muguifang.po"/>
         <property name="plugins">
             <array>
@@ -90,12 +91,12 @@ http://www.springframework.org/schema/aop
                 <!--</bean>-->
             </array>
         </property>
+        <property name="configurationProperties">
+        <props>
         <!--显示开启缓存-->
-        <!--<property name="configurationProperties">-->
-        <!--<props>-->
         <!--<prop key="cacheEnabled">true</prop>-->
-        <!--</props>-->
-        <!--</property>-->
+        </props>
+        </property>
     </bean>
     <!-- 在spring容器中配置mapper的扫描器产生的动态代理对象在spring的容器中自动注册，bean的id就是mapper类名（首字母小写）-->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
