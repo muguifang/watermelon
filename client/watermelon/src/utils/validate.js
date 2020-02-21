@@ -15,7 +15,6 @@ export function stripscript(str) {
  * 验证用户名
  */
 export function validateName(value) {
-  // eslint-disable-next-line no-useless-escape
   let reg = /^[a-z0-9]{6,8}$/;
   return !reg.test(value) ? true : false;
 }
@@ -23,7 +22,6 @@ export function validateName(value) {
  * 验证邮箱
  */
 export function validateEmail(value) {
-  // eslint-disable-next-line no-useless-escape
   let reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
   return !reg.test(value) ? true : false;
 }

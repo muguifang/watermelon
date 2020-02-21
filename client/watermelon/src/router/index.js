@@ -49,7 +49,8 @@ const routes = [
     name: "Update",
     hidden: false,
     meta: {
-      name: "个人中心"
+      name: "个人中心",
+      icon: "personal"
     },
     component: layout,
     children: [
@@ -69,7 +70,8 @@ const routes = [
     name: "Lbt",
     hidden: false,
     meta: {
-      name: "首页轮播管理"
+      name: "首页轮播管理",
+      icon: "lbt"
     },
     component: layout,
     children: [
@@ -89,7 +91,8 @@ const routes = [
     name: "Zx",
     hidden: false,
     meta: {
-      name: "音乐资讯管理"
+      name: "音乐资讯管理",
+      icon: "information"
     },
     component: layout,
     children: [
@@ -109,7 +112,8 @@ const routes = [
     name: "User",
     hidden: false,
     meta: {
-      name: "用户管理"
+      name: "用户管理",
+      icon: "user"
     },
     component: layout,
     children: [
@@ -129,7 +133,8 @@ const routes = [
     name: "Music",
     hidden: false,
     meta: {
-      name: "音乐管理"
+      name: "音乐管理",
+      icon: "music"
     },
     component: layout,
     children: [
@@ -158,13 +163,14 @@ const routes = [
     name: "Advice",
     hidden: false,
     meta: {
-      name: "网站建议管理"
+      name: "网站建议管理",
+      icon: "advice"
     },
     component: layout,
     children: [
       {
-        path: "/typeIndex",
-        name: "TypeIndex",
+        path: "/adviceIndex",
+        name: "AdviceIndex",
         hidden: false,
         meta: {
           name: "建议信息列表"
@@ -178,7 +184,8 @@ const routes = [
     name: "Count",
     hidden: false,
     meta: {
-      name: "统计中心"
+      name: "统计中心",
+      icon: "count"
     },
     component: layout,
     children: [

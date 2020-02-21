@@ -6,3 +6,10 @@ export function login(data) {
     data: data
   });
 }
+export function updatePassword(data) {
+  return intercept.request({
+    method: "get",
+    url: "/common/updatePassword",
+    data: data
+  });
+}

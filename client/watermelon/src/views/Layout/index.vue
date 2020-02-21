@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="layout" :class="navMenu ? 'close' : 'open'">
     <LayoutHeader />
     <LayoutMain />
     <LayoutNav />
@@ -15,7 +15,12 @@ export default {
   data() {
     return {};
   },
-  methods: {}
+  methods: {},
+  computed: {
+    navMenu: function() {
+      return this.$store.state.isCollapse;
+    }
+  }
 };
 </script>
 <style lang="scss" scoped></style>
