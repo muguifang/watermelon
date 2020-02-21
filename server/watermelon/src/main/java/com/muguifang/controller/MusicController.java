@@ -1,0 +1,140 @@
+package com.muguifang.controller;
+
+import com.muguifang.po.TMusic;
+import com.muguifang.po.TType;
+import com.muguifang.result.ResultVo;
+import com.muguifang.service.MusicService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * @Description muguifang
+ * @Date 2020/2/19 14:54
+ * @Description
+ */
+@RequestMapping("/music")
+@RestController
+public class MusicController {
+    @Autowired
+    private MusicService musicService;
+
+    /**
+     * 添加音乐类别
+     * @param tType
+     * @return
+     */
+    @PostMapping("/addType")
+    public ResultVo addMusicType(@RequestBody TType tType){
+        musicService.addType(tType);
+        return ResultVo.sendResult(200, "success");
+    }
+
+    /**
+     * 修改音乐类别
+     * @param tType
+     * @return
+     */
+    @PutMapping("/updateType")
+    public ResultVo updateType(@RequestBody TType tType){
+        musicService.updateType(tType);
+        return ResultVo.sendResult(200, "success");
+    }
+
+    /**
+     * 删除音乐类别
+     * @param id
+     * @return
+     */
+    @DeleteMapping("/deleteType")
+    public ResultVo deleteType(Integer id){
+        musicService.deleteType(id);
+        return ResultVo.sendResult(200, "success");
+    }
+
+    /**
+     * 根据条件获取音乐类别 条件为空查询全部
+     * @param param
+     * @return
+     */
+    @PostMapping("/getTypeByConditions")
+    public ResultVo getTypeByConditions(@RequestBody Map<String, Object> param){
+        List<TType> typeByConditions = musicService.getTypeByConditions(param);
+        return ResultVo.sendResult(200, "success", typeByConditions);
+    }
+
+    /**
+     * 添加音乐
+     * @param tMusic
+     * @return
+     */
+    @PostMapping("/addMusic")
+    public ResultVo addMusic(@RequestBody TMusic tMusic){
+        musicService.addMusic(tMusic);
+        return ResultVo.sendResult(200, "success");
+    }
+
+    /**
+     * 修改音乐信息
+     * @param tMusic
+     * @return
+     */
+    @PutMapping("/updateMusic")
+    public ResultVo updateMusic(@RequestBody TMusic tMusic){
+        musicService.updateMusic(tMusic);
+        return ResultVo.sendResult(200, "success");
+    }
+
+    /**
+     * 删除音乐
+     * @param id
+     * @return
+     */
+    @DeleteMapping("/deleteMusic")
+    public ResultVo deleteMusic(Integer id){
+        musicService.deleteMusic(id);
+        return ResultVo.sendResult(200, "success");
+    }
+
+    /**
+     * 通过条件获取音乐
+     * @param param
+     * @return
+     */
+    @PostMapping("/getMusicByConditions")
+    public ResultVo getMusicByConditions(@RequestBody Map<String, Object> param){
+        List<TMusic> musicByConditions = musicService.getMusicByConditions(param);
+        return  ResultVo.sendResult(200, "success", musicByConditions);
+    }
+    /**
+     * 按点击量获取所有音乐
+     * @return
+     */
+    @GetMapping("/getAllMusicByPlay")
+    public ResultVo getAllMusic(){
+        List<TMusic> allMusic = musicService.getAllMusic();
+        return ResultVo.sendResult(200, "success", allMusic);
+    }
+
+    /**
+     * 通过条件查询音乐 条件为空查询全部
+     * @return
+     */
+    @GetMapping("/getAllMusicByCollection")
+    public ResultVo getAllMusicByCollection(){
+        List<Map<String, Object>> allMusicInfo = musicService.getAllMusicInfo();
+        return ResultVo.sendResult(200, "success", allMusicInfo);
+    }
+
+    /**
+     * 通过音乐类别获取音乐
+     * @return
+     */
+    @PostMapping("/getAllMusicByType")
+    public ResultVo getAllMusicByType(Integer id){
+        List<TMusic> musicsByType = musicService.getMusicsByType(id);
+        return ResultVo.sendResult(200, "success", musicsByType);
+    }
+}

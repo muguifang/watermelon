@@ -88,4 +88,24 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
         tUserMapper.insert(tUser);
     }
 
+    @Override
+    public List<TUser> getAllUser(Map<String, Object> param) {
+        TUserExample example = new TUserExample();
+        if(null != param.get("username") && !"".equals(param.get("username"))){
+            TUserExample.Criteria criteria = example.createCriteria();
+            criteria.andUsernameLike("%" + (String)param.get("username") + "%");
+        }
+        List<TUser> tUsers = tUserMapper.selectByExample(example);
+        return tUsers;
+    }
+
+    @Override
+    public void updateUser(TUser tUser) {
+        tUserMapper.updateByPrimaryKeySelective(tUser);
+    }
+
+    @Override
+    public void deleteUser(Integer id) {
+        tUserMapper.deleteByPrimaryKey(id);
+    }
 }

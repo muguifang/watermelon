@@ -3,6 +3,7 @@ package com.muguifang.service;
 import com.muguifang.common.basic.BaseService;
 import com.muguifang.po.TUser;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -30,4 +31,21 @@ public interface UserService extends BaseService {
      * @param tUser
      */
     public void register(TUser tUser);
+    /**
+     * 获取所有用户
+     * @return
+     */
+    public List<TUser> getAllUser(Map<String, Object> param);
+
+    /**
+     * 修改用户
+     * @param tUser
+     */
+    public void updateUser(TUser tUser);
+
+    /**
+     * 删除用户
+     * @param id
+     */
+    public void deleteUser(Integer id);
 }
