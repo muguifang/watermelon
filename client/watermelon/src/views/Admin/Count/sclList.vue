@@ -22,6 +22,7 @@
               type="primary"
               style="width: 100%;margin: 17px auto;"
               icon="el-icon-search"
+              @click="query()"
               >查询</el-button
             >
           </el-col>
@@ -34,8 +35,7 @@
           </el-table-column>
           <el-table-column prop="musicphoto" label="音乐图片" width="500">
           </el-table-column>
-          <el-table-column prop="scl" label="收藏量">
-          </el-table-column>
+          <el-table-column prop="collectnum" label="收藏量"> </el-table-column>
         </el-table>
         <!-- 分页 -->
         <div class="block">
@@ -43,11 +43,11 @@
             background
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
-            :current-page="currentPage4"
-            :page-sizes="[2, 5, 10, 15]"
-            :page-size="10"
+            :current-page="currentPage"
+            :page-sizes="[4, 5, 6, 7]"
+            :page-size="pageSize"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="50"
+            :total="sumNum"
           >
           </el-pagination>
         </div>
@@ -58,49 +58,72 @@
 <script>
 import router from "@/router";
 import "../../../styles/config.scss";
+import { getAllMusicByCollect } from "@/api/music/sclList.js";
 export default {
   name: "typeIndex",
   inject: ["reload"],
   data() {
     return {
-      tableData: [
-        {
-          id: "1",
-          musicname: "阴天-莫文蔚",
-          musicphoto: "图片",
-          scl: "34"
-        },
-        {
-          id: "2",
-          musicname: "阴天-莫文蔚",
-          musicphoto: "图片",
-          scl: "34"
-        },
-        {
-          id: "3",
-          musicname: "阴天-莫文蔚",
-          musicphoto: "图片",
-          scl: "34"
-        },
-        {
-          id: "4",
-          musicname: "阴天-莫文蔚",
-          musicphoto: "图片",
-          scl: "34"
-        },
-        {
-          id: "5",
-          musicname: "阴天-莫文蔚",
-          musicphoto: "图片",
-          scl: "34"
-        }
-      ]
+      tableData: [],
+      input: "",
+      //数据总条数
+      sumNum: 0,
+      //当前页码
+      currentPage: 1,
+      //每页条数
+      pageSize: 5
     };
   },
   methods: {
+   //点击查询按钮
+    query() {
+      getAllMusicByCollect(this.input).then(response => {
+        const data = response.data;
+        this.tableData = [];
+        if (data.code === 200) {
+          const tableList = data.data;
+          this.sumNum = tableList.length;
+          for (let i = 0; i < tableList.length; i++) {
+            const table = {
+              id: "",
+              musicname: "",
+              musicphoto: "",
+              collectnum: ""
+            };
+            table.id = tableList[i].id;
+            table.musicname = tableList[i].musicname;
+            table.musicphoto = tableList[i].musicphoto;
+            table.collectnum = tableList[i].collectnum;
+            this.tableData.push(table);
+          }
+        }
+      });
+    },
+    //返回后刷新
     goBack() {
       router.push("/index");
       this.reload();
+    },
+    //改变每页条数
+    handleSizeChange(val) {
+      this.pageSize = val;
+    },
+    //改变当前页数
+    handleCurrentChange(val) {
+      this.currentPage = val;
+    }
+  },
+  //点击进来的时候查看那全部数据
+  created: function() {
+    this.query();
+  },
+  computed: {
+    //自动计算页面数据展示
+    pageData: function() {
+      return this.tableData.slice(
+        (this.currentPage - 1) * this.pageSize,
+        this.currentPage * this.pageSize
+      );
     }
   }
 };
@@ -130,4 +153,3 @@ export default {
   }
 }
 </style>
-

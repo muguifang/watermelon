@@ -16,6 +16,7 @@
               type="primary"
               style="width: 100%;float:right;margin: 17px auto;"
               icon="el-icon-delete"
+              @click="deleteLbts(sels)"
               >批量删除</el-button
             >
           </el-col>
@@ -24,22 +25,39 @@
               type="primary"
               style="width: 100%;float:right;margin: 17px auto;"
               icon="el-icon-plus"
+              @click="dialog_insertLbt = true"
               >新增</el-button
             >
           </el-col>
         </el-row>
         <!-- 表格展示数据 -->
-        <el-table :data="tableData" border style="width: 100%">
+        <el-table
+          :data="pageData"
+          border
+          style="width: 100%"
+          @selection-change="selsChange"
+        >
           <el-table-column type="selection" width="55"> </el-table-column>
           <el-table-column prop="id" label="编号" width="80"> </el-table-column>
           <el-table-column prop="pic" label="图片" width="1000">
+            <template slot-scope="scope">
+              <img :src="scope.row.pic" />
+            </template>
           </el-table-column>
           <el-table-column label="操作">
-            <template>
-              <el-button type="danger" size="mini" icon="el-icon-delete"
+            <template slot-scope="scope">
+              <el-button
+                type="danger"
+                size="mini"
+                icon="el-icon-delete"
+                @click="deleteLbt(scope.$index, scope.row)"
                 >删除</el-button
               >
-              <el-button type="success" size="mini" icon="el-icon-edit"
+              <el-button
+                type="success"
+                size="mini"
+                icon="el-icon-edit"
+                @click="update(scope.$index, scope.row)"
                 >编辑</el-button
               >
             </template>
@@ -51,14 +69,58 @@
             background
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
-            :current-page="currentPage4"
-            :page-sizes="[2, 5, 10, 15]"
-            :page-size="10"
+            :current-page="currentPage"
+            :page-sizes="[2, 3, 4]"
+            :page-size="pageSize"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="50"
+            :total="sumNum"
           >
           </el-pagination>
         </div>
+        <!-- 新增弹窗 -->
+        <el-dialog
+          title="添加首页轮播图"
+          :visible.sync="dialog_insertLbt"
+          :append-to-body="true"
+          width="30%"
+        >
+          <el-upload
+            class="avatar-uploader"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+          >
+            <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="dialog_insertLbt = false">取 消</el-button>
+            <el-button type="primary" @click="addLbt()">确 定</el-button>
+          </div>
+        </el-dialog>
+        <!-- 编辑弹窗 -->
+        <el-dialog
+          title="编辑首页轮播图"
+          :visible.sync="dialog_updateLbt"
+          :append-to-body="true"
+          width="30%"
+        >
+          <el-upload
+            class="avatar-uploader"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+          >
+            <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="dialog_updateLbt = false">取 消</el-button>
+            <el-button type="primary" @click="updateLbt()">确 定</el-button>
+          </div>
+        </el-dialog>
       </div>
     </div>
   </div>
@@ -66,44 +128,234 @@
 <script>
 import router from "@/router";
 import "../../../styles/config.scss";
+import { addLbt } from "@/api/admin/lbt/addLbt.js";
+import { getAllPhoto } from "@/api/admin/lbt/lbtList.js";
+import { deleteLbt } from "@/api/admin/lbt/deleteLbt.js";
 export default {
   name: "zxIndex",
   inject: ["reload"],
   data() {
     return {
-      tableData: [
-        {
-          id: "1",
-          pic: "a图"
-        },
-        {
-          id: "2",
-          pic: "ab图"
-        },
-        {
-          id: "3",
-          pic: "c图"
-        },
-        {
-          id: "4",
-          pic: "d图"
-        },
-        {
-          id: "5",
-          pic: "e图"
-        }
-      ]
+      //表格数据
+      tableData: [],
+      //新增弹窗标志
+      dialog_insertLbt: false,
+      //编辑弹窗标志
+      dialog_updateLbt: false,
+      //图片路径
+      imageUrl: "",
+      //数据总条数
+      sumNum: 0,
+      //当前页码
+      currentPage: 1,
+      //每页条数
+      pageSize: 3,
+      //多选框 选中的数据
+      sels: [],
+      //选中的id
+      deleteIds: [],
+      //表单中的数据
+      dialogForm: {
+        id: "",
+        pic: ""
+      }
     };
   },
   methods: {
+    //查询所有 【图片不显示】
+    query() {
+      getAllPhoto().then(response => {
+        const data = response.data;
+        this.tableData = [];
+        if (data.code === 200) {
+          const tableList = data.data;
+          this.sumNum = tableList.length;
+          for (let i = 0; i < tableList.length; i++) {
+            const table = {
+              id: "",
+              pic: ""
+            };
+            table.id = tableList[i].id;
+            table.pic = tableList[i].pic;
+            this.tableData.push(table);
+          }
+        }
+      });
+    },
+    //新增轮播图 【没有实现】
+    addLbt() {
+      this.dialog_insertLbt = false;
+      const param = {
+        path: this.imageUrl
+      };
+      addLbt(param).then(response => {
+        const data = response.data;
+        if (data.code == 200) {
+          this.$message({
+            type: "success",
+            message: "新增成功!"
+          });
+          this.query();
+        }
+      });
+    },
+    //修改之查询  【没有实现】
+    update(index, row) {
+      this.dialog_updateLbt = true;
+      this.dialogForm.id = row.id;
+      this.dialogForm.pic = row.pic;
+    },
+    //修改之真正修改  【没有实现】
+    updateLbt(index, row) {},
+    //删除轮播图
+    deleteLbt(index, row) {
+      this.$confirm("确认将该图片从列表中删除?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          deleteLbt(row.id).then(response => {
+            const data = response.data;
+            if (data.code == 200) {
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+              this.query();
+            }
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
+    //将选中的数据存入数组
+    selsChange(sels) {
+      this.sels = sels;
+    },
+    //批量删除
+    deleteLbts(sels) {
+      if (sels.length > 0) {
+        //将得到的数据中的id放到一个数组中
+        sels.forEach(sel => {
+          this.deleteIds.push(sel.id);
+        });
+        this.$confirm(
+          "确认将选中的 " + sels.length + " 个轮播图从列表中删除?",
+          "提示",
+          {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning"
+          }
+        )
+          .then(() => {
+            deleteLbt(this.deleteIds).then(response => {
+              const data = response.data;
+              if (data.code == 200) {
+                this.$message({
+                  type: "success",
+                  message: "删除成功!"
+                });
+                this.query();
+              }
+            });
+          })
+          .catch(() => {
+            this.$message({
+              type: "info",
+              message: "已取消删除"
+            });
+            this.query();
+          });
+      } else {
+        this.$message({
+          message: "请选择要删除的首页轮播图",
+          type: "warning"
+        });
+      }
+    },
+    //返回按钮的方法
     goBack() {
       router.push("/index");
       this.reload();
+    },
+    //改变每页条数
+    handleSizeChange(val) {
+      this.pageSize = val;
+    },
+    //改变当前页
+    handleCurrentChange(val) {
+      this.currentPage = val;
+    },
+    //图片上传后
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+    },
+    //图片上传前
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === "image/jpeg";
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error("上传头像图片只能是 JPG 格式!");
+      }
+      if (!isLt2M) {
+        this.$message.error("上传头像图片大小不能超过 2MB!");
+      }
+      return isJPG && isLt2M;
+    }
+  },
+  //点击进来的时候查看那全部数据
+  created: function() {
+    this.query();
+  },
+  computed: {
+    //自动计算页面数据展示
+    pageData: function() {
+      return this.tableData.slice(
+        (this.currentPage - 1) * this.pageSize,
+        this.currentPage * this.pageSize
+      );
     }
   }
 };
 </script>
 <style lang="scss" scoped>
+img {
+  width: 150px;
+  height: 80px;
+  margin: 0 auto;
+}
+.avatar-uploader {
+  width: 178px;
+  height: 178px;
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
 #main-wrap {
   height: 100vh;
 }

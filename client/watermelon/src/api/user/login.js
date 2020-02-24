@@ -2,14 +2,14 @@ import intercept from "@/utils/intercepter.js";
 export function login(data) {
   return intercept.request({
     method: "post",
-    url: "/common/login",
+    url: "/user/login",
     data: data
   });
 }
 export function updatePassword(data) {
   return intercept.request({
-    method: "get",
-    url: "/common/updatePassword",
+    method: "put",
+    url: "/user/updatePassword",
     data: data
   });
 }

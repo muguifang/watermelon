@@ -208,6 +208,27 @@ const routes = [
         component: () => import("../views/Admin/Count/sclList.vue")
       }
     ]
+  },
+  {
+    path: "/test",
+    name: "Test",
+    hidden: false,
+    meta: {
+      name: "图片测试",
+      icon: "count"
+    },
+    component: layout,
+    children: [
+      {
+        path: "/testPic",
+        name: "TestPic",
+        hidden: false,
+        meta: {
+          name: "图片显示"
+        },
+        component: () => import("../views/Test/index.vue")
+      }
+    ]
   }
 ];
 

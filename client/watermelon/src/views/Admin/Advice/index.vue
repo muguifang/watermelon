@@ -23,6 +23,7 @@
               type="primary"
               style="width: 100%;margin: 17px auto;"
               icon="el-icon-search"
+              @click="query()"
               >查询</el-button
             >
           </el-col>
@@ -36,12 +37,18 @@
               type="primary"
               style="width: 100%;float:right;margin: 17px auto;"
               icon="el-icon-delete"
+              @click="deleteAdvices(sels)"
               >批量删除</el-button
             >
           </el-col>
         </el-row>
         <!-- 表格展示数据 -->
-        <el-table :data="tableData" border style="width: 100%">
+        <el-table
+          :data="pageData"
+          border
+          style="width: 100%"
+          @selection-change="selsChange"
+        >
           <el-table-column type="selection" width="55"> </el-table-column>
           <el-table-column prop="id" label="编号" width="80"> </el-table-column>
           <el-table-column prop="username" label="用户名称" width="200">
@@ -53,8 +60,12 @@
           <el-table-column prop="insertdate" label="发表时间" width="200">
           </el-table-column>
           <el-table-column label="操作">
-            <template>
-              <el-button type="danger" size="mini" icon="el-icon-delete"
+            <template slot-scope="scope">
+              <el-button
+                type="danger"
+                size="mini"
+                icon="el-icon-delete"
+                @click="delete (scope.$index, scope.row)"
                 >删除</el-button
               >
             </template>
@@ -66,11 +77,11 @@
             background
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
-            :current-page="currentPage4"
-            :page-sizes="[2, 5, 10, 15]"
-            :page-size="10"
+            :current-page="currentPage"
+            :page-sizes="[4, 5, 6, 7]"
+            :page-size="pageSize"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="50"
+            :total="sumNum"
           >
           </el-pagination>
         </div>
@@ -81,54 +92,163 @@
 <script>
 import router from "@/router";
 import "../../../styles/config.scss";
+import { getAdvice } from "@/api/admin/advice/adviceList.js";
+import { deleteAdvice } from "@/api/admin/advice/deleteAdvice.js";
 export default {
   name: "typeIndex",
   inject: ["reload"],
   data() {
     return {
-      tableData: [
-        {
-          id: "1",
-          username: "xiaohong",
-          phone: "13120908879",
-          content: "网站写的真好",
-          insertdate: "2020-02-20"
-        },
-        {
-          id: "2",
-          username: "xiaohong",
-          phone: "13120908879",
-          content: "网站写的真好",
-          insertdate: "2020-02-20"
-        },
-        {
-          id: "3",
-          username: "xiaohong",
-          phone: "13120908879",
-          content: "网站写的真好",
-          insertdate: "2020-02-20"
-        },
-        {
-          id: "4",
-          username: "xiaohong",
-          phone: "13120908879",
-          content: "网站写的真好",
-          insertdate: "2020-02-20"
-        },
-        {
-          id: "5",
-          username: "xiaohong",
-          phone: "13120908879",
-          content: "网站写的真好",
-          insertdate: "2020-02-20"
-        }
-      ]
+      //表格数据
+      tableData: [],
+      //搜索框
+      input: "",
+      //数据总条数
+      sumNum: 0,
+      //当前页码
+      currentPage: 1,
+      //每页条数
+      pageSize: 5,
+      //选中的对象
+      sels: [],
+      //选中的id
+      deleteIds: [],
+      //选中的名字
+      deleteNames: []
     };
   },
   methods: {
+    //查询按钮
+    query() {
+      const param = {
+        phone: this.input
+      };
+      getAdvice(param).then(response => {
+        const data = response.data;
+        this.tableData = [];
+        if (data.code === 200) {
+          const tableList = data.data;
+          this.sumNum = tableList.length;
+          for (let i = 0; i < tableList.length; i++) {
+            const table = {
+              id: "",
+              username: "",
+              phone: "",
+              content: "",
+              insertdate: ""
+            };
+            table.id = tableList[i].id;
+            table.username = tableList[i].username;
+            table.phone = tableList[i].phone;
+            table.content = tableList[i].content;
+            table.insertdate = tableList[i].insertdate;
+            this.tableData.push(table);
+          }
+        }
+      });
+    },
+    //删除按钮
+    delete(index, row) {
+      this.$confirm(
+        "确认将【" + row.username + "】的建议从列表中删除?",
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }
+      )
+        .then(() => {
+          deleteAdvice(row.id).then(response => {
+            const data = response.data;
+            if (data.code == 200) {
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+              this.query();
+            }
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
+    //将选中的数据存入数组
+    selsChange(sels) {
+      this.sels = sels;
+    },
+    //批量删除
+    deleteAdvices(sels) {
+      if (sels.length > 0) {
+        //将得到的数据中的id放到一个数组中
+        sels.forEach(sel => {
+          this.deleteIds.push(sel.id);
+          this.deleteNames.push(sel.username);
+        });
+        this.$confirm(
+          "确认将【" + this.deleteNames + "】的建议从列表中删除?",
+          "提示",
+          {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning"
+          }
+        )
+          .then(() => {
+            deleteAdvice(this.deleteIds).then(response => {
+              const data = response.data;
+              if (data.code == 200) {
+                this.$message({
+                  type: "success",
+                  message: "删除成功!"
+                });
+                this.query();
+              }
+            });
+          })
+          .catch(() => {
+            this.$message({
+              type: "info",
+              message: "已取消删除"
+            });
+            this.query();
+          });
+      } else {
+        this.$message({
+          message: "请选择要删除的用户",
+          type: "warning"
+        });
+      }
+    },
+    //返回后刷新
     goBack() {
       router.push("/index");
       this.reload();
+    },
+    //改变每页条数
+    handleSizeChange(val) {
+      this.pageSize = val;
+    },
+    //改变当前页
+    handleCurrentChange(val) {
+      this.currentPage = val;
+    }
+  },
+  //点击进来的时候查看那全部数据
+  created: function() {
+    this.query();
+  },
+  computed: {
+    //自动计算页面数据展示
+    pageData: function() {
+      return this.tableData.slice(
+        (this.currentPage - 1) * this.pageSize,
+        this.currentPage * this.pageSize
+      );
     }
   }
 };

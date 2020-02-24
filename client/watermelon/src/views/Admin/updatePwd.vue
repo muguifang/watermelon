@@ -111,17 +111,19 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           const param = {
-            password: this.ruleForm.newPass
+            oldPassword: this.ruleForm.password,
+            newPassword: this.ruleForm.newPass,
+            confirmPassword: this.ruleForm.checkPass
           };
           updatePassword(param).then(response => {
-            console.log(response);
             const data = response.data;
+            console.log(data);
             if (data.code === 200) {
               this.$message({
                 message: "修改成功",
                 type: "success"
               });
-              // router.push("/login");
+              router.push("/login");
             } else {
               this.$message({
                 message: data.msg,
@@ -152,6 +154,7 @@ export default {
     }
   }
 }
+
 #main-wrap {
   height: 100vh;
 }

@@ -75,7 +75,6 @@
             background
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
-            :current-page="currentPage4"
             :page-sizes="[2, 5, 10, 15]"
             :page-size="10"
             layout="total, sizes, prev, pager, next, jumper"
@@ -126,13 +125,20 @@ export default {
           singWord: "上海市",
           pic: "e图"
         }
-      ]
+      ],
+      input: ""
     };
   },
   methods: {
     goBack() {
       router.push("/index");
       this.reload();
+    },
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
     }
   }
 };
