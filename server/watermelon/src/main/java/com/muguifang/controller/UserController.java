@@ -71,7 +71,7 @@ public class UserController {
      * @return
      */
     @DeleteMapping("/deleteUser")
-    public ResultVo seleteUser(List<Integer> ids){
+    public ResultVo seleteUser(@RequestBody List<Integer> ids){
         if(ids == null){
             throw new ParamException(501, "获取用户id异常");
         }

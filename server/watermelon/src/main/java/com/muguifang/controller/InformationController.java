@@ -54,7 +54,7 @@ public class InformationController {
      * @return
      */
     @DeleteMapping("/deleteInfo")
-    public ResultVo deleteInfo(List<Integer> ids){
+    public ResultVo deleteInfo(@RequestBody List<Integer> ids){
         if(ids == null){
             throw new ParamException(501, "获取资讯id异常");
         }
