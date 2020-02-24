@@ -45,15 +45,15 @@ public class InformationController {
 
     /**
      * 删除资讯
-     * @param id
+     * @param ids
      * @return
      */
     @DeleteMapping("/deleteInfo")
-    public ResultVo deleteInfo(Integer id){
-        if(id == null){
+    public ResultVo deleteInfo(List<Integer> ids){
+        if(ids == null){
             throw new ParamException(501, "获取资讯id异常");
         }
-        informationService.deleteInfo(id);
+        informationService.deleteInfo(ids);
         return ResultVo.sendResult(200, "success");
     }
 

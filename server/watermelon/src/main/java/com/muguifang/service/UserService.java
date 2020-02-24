@@ -45,7 +45,7 @@ public interface UserService extends BaseService {
 
     /**
      * 删除用户
-     * @param id
+     * @param ids
      */
-    public void deleteUser(Integer id);
+    public void deleteUser(List<Integer> ids);
 }

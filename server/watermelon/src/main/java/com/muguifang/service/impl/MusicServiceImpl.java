@@ -70,12 +70,15 @@ public class MusicServiceImpl implements MusicService {
     }
 
     @Override
-    public void deleteMusic(Integer id) {
-        tMusicMapper.deleteByPrimaryKey(id);
+    public void deleteMusic(List<Integer> ids) {
+        TMusicExample example1 = new TMusicExample();
+        TMusicExample.Criteria criteria1 = example1.createCriteria();
+        criteria1.andIdIn(ids);
+        tMusicMapper.deleteByExample(example1);
         //从收藏表中删除该音乐
         TCollectExample example = new TCollectExample();
         TCollectExample.Criteria criteria = example.createCriteria();
-        criteria.andMusicIdEqualTo(id);
+        criteria.andMusicIdIn(ids);
         tCollectMapper.deleteByExample(example);
     }
 
