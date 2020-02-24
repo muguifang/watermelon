@@ -93,12 +93,12 @@ public class MusicController {
 
     /**
      * 删除音乐
-     * @param id
+     * @param ids
      * @return
      */
     @DeleteMapping("/deleteMusic")
-    public ResultVo deleteMusic(Integer id){
-        musicService.deleteMusic(id);
+    public ResultVo deleteMusic(@RequestBody List<Integer> ids){
+        musicService.deleteMusic(ids);
         return ResultVo.sendResult(200, "success");
     }
 
@@ -144,5 +144,15 @@ public class MusicController {
     public ResultVo getAllMusicByType(Integer id){
         List<TMusic> musicsByType = musicService.getMusicsByType(id);
         return ResultVo.sendResult(200, "success", musicsByType);
+    }
+
+    /**
+     * 按收藏量查询音乐
+     * @return
+     */
+    @PostMapping("/getColletMusic")
+    public ResultVo getColletMusic(){
+        List<Map<String, Object>> allMusicInfo = musicService.getAllMusicInfo();
+        return ResultVo.sendResult(200, "success", allMusicInfo);
     }
 }

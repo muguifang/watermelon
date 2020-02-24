@@ -67,15 +67,15 @@ public class UserController {
 
     /**
      * 删除员工
-     * @param id
+     * @param ids
      * @return
      */
     @DeleteMapping("/deleteUser")
-    public ResultVo seleteUser(Integer id){
-        if(id == null){
+    public ResultVo seleteUser(List<Integer> ids){
+        if(ids == null){
             throw new ParamException(501, "获取用户id异常");
         }
-        userService.deleteUser(id);
+        userService.deleteUser(ids);
         return ResultVo.sendResult(200, "success");
     }
     /**

@@ -105,7 +105,10 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(Integer id) {
-        tUserMapper.deleteByPrimaryKey(id);
+    public void deleteUser(List<Integer> ids) {
+        TUserExample example = new TUserExample();
+        TUserExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIn(ids);
+        tUserMapper.deleteByExample(example);
     }
 }

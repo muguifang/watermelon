@@ -47,8 +47,11 @@ public class InformationServiceImpl implements InformationService {
     }
 
     @Override
-    public void deleteInfo(Integer id) {
-        tInformationMapper.deleteByPrimaryKey(id);
+    public void deleteInfo(List<Integer> ids) {
+        TInformationExample example = new TInformationExample();
+        TInformationExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIn(ids);
+        tInformationMapper.deleteByExample(example);
     }
 
     @Override

@@ -24,9 +24,9 @@ public interface InformationService {
 
     /**
      * 删除指定id的资讯
-     * @param id
+     * @param ids
      */
-    public void deleteInfo(Integer id);
+    public void deleteInfo(List<Integer> ids);
 
     /**
      * 添加资讯信息

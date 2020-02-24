@@ -45,9 +45,9 @@ public interface MusicService {
 
     /**
      * 删除音乐
-     * @param id
+     * @param ids
      */
-    public void deleteMusic(Integer id);
+    public void deleteMusic(List<Integer> ids);
 
     /**
      * 修改音乐
