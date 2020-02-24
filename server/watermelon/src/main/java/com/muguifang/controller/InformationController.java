@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description muguifang
@@ -21,11 +22,15 @@ public class InformationController {
     private InformationService informationService;
     /**
      * 获取所有资讯
-     * @param title
+     * @param param
      * @return
      */
-    @GetMapping("/getInfo")
-    public ResultVo getInfo(String title){
+    @PostMapping("/getInfo")
+    public ResultVo getInfo(@RequestBody Map<String, Object> param){
+        String title = null;
+        if(param != null){
+            title = param.get("title").toString();
+        }
         List<TInformation> infosByTitle = informationService.getInfosByTitle(title);
         return ResultVo.sendResult(200, "success", infosByTitle);
     }

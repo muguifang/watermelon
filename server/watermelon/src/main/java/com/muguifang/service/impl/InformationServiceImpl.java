@@ -32,8 +32,11 @@ public class InformationServiceImpl implements InformationService {
         }
         for(TInformation tInformation : tInformations){
             String picStr = tInformation.getPic();
-            String pic = picStr.substring(picStr.lastIndexOf("\\")+1,picStr.length());
-            tInformation.setPic("@/assets/"+ pic);
+            String pic = "";
+            if(picStr != null){
+                pic = picStr.substring(picStr.lastIndexOf("\\")+1,picStr.length());
+                tInformation.setPic("@/assets/"+ pic);
+            }
         }
         return tInformations;
     }
