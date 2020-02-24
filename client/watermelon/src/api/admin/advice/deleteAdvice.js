@@ -3,6 +3,6 @@ export function deleteAdvice(data) {
   return intercept.request({
     method: "delete",
     url: "/advice/deleteAdvice",
-    params: { id: data }
+    data: data
   });
 }

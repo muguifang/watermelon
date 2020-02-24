@@ -3,6 +3,6 @@ export function deleteType(data) {
   return intercept.request({
     method: "delete",
     url: "/music/deleteType",
-    params: { id: data }
+    data: data
   });
 }

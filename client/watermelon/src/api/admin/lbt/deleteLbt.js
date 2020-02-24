@@ -3,6 +3,6 @@ export function deleteLbt(data) {
   return intercept.request({
     method: "delete",
     url: "/file/deletePhoto",
-    params: { id: data }
+    data: data
   });
 }

@@ -50,14 +50,22 @@
           @selection-change="selsChange"
         >
           <el-table-column type="selection" width="55"> </el-table-column>
-          <el-table-column prop="id" label="编号" width="80"> </el-table-column>
-          <el-table-column prop="username" label="用户名称" width="200">
+          <el-table-column label="序号" width="80">
+            <template slot-scope="scope">
+              <span>{{ scope.$index + 1 }}</span>
+            </template>
+          </el-table-column>
+          <!-- <el-table-column prop="id" label="编号" width="80"> </el-table-column> -->
+          <el-table-column prop="userId" label="用户名称" width="200">
           </el-table-column>
           <el-table-column prop="phone" label="联系方式" width="200">
           </el-table-column>
           <el-table-column prop="content" label="建议信息" width="500">
           </el-table-column>
           <el-table-column prop="insertdate" label="发表时间" width="200">
+            <template slot-scope="scope">
+              <span>{{ scope.row.insertdate | dateFmt("YYYY-MM-DD") }}</span>
+            </template>
           </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
@@ -65,7 +73,7 @@
                 type="danger"
                 size="mini"
                 icon="el-icon-delete"
-                @click="delete (scope.$index, scope.row)"
+                @click="deleteAdvice(scope.$index, scope.row)"
                 >删除</el-button
               >
             </template>
@@ -91,6 +99,7 @@
 </template>
 <script>
 import router from "@/router";
+import { parseTime } from "@/utils/dateformat.js";
 import "../../../styles/config.scss";
 import { getAdvice } from "@/api/admin/advice/adviceList.js";
 import { deleteAdvice } from "@/api/admin/advice/deleteAdvice.js";
@@ -120,10 +129,10 @@ export default {
   methods: {
     //查询按钮
     query() {
-      const param = {
-        phone: this.input
-      };
-      getAdvice(param).then(response => {
+      // const param = {
+      //   phone: this.input
+      // };
+      getAdvice(this.input).then(response => {
         const data = response.data;
         this.tableData = [];
         if (data.code === 200) {
@@ -132,13 +141,14 @@ export default {
           for (let i = 0; i < tableList.length; i++) {
             const table = {
               id: "",
+              userId: "",
               username: "",
               phone: "",
               content: "",
               insertdate: ""
             };
             table.id = tableList[i].id;
-            table.username = tableList[i].username;
+            table.userId = tableList[i].userId;
             table.phone = tableList[i].phone;
             table.content = tableList[i].content;
             table.insertdate = tableList[i].insertdate;
@@ -148,18 +158,16 @@ export default {
       });
     },
     //删除按钮
-    delete(index, row) {
-      this.$confirm(
-        "确认将【" + row.username + "】的建议从列表中删除?",
-        "提示",
-        {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }
-      )
+    deleteAdvice(index, row) {
+      this.$confirm("确认将【" + row.userId + "】的建议从列表中删除?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
         .then(() => {
-          deleteAdvice(row.id).then(response => {
+          const ids = [];
+          ids.push(row.id);
+          deleteAdvice(ids).then(response => {
             const data = response.data;
             if (data.code == 200) {
               this.$message({
@@ -187,7 +195,7 @@ export default {
         //将得到的数据中的id放到一个数组中
         sels.forEach(sel => {
           this.deleteIds.push(sel.id);
-          this.deleteNames.push(sel.username);
+          this.deleteNames.push(sel.userId);
         });
         this.$confirm(
           "确认将【" + this.deleteNames + "】的建议从列表中删除?",

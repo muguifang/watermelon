@@ -59,7 +59,12 @@
           @selection-change="selsChange"
         >
           <el-table-column type="selection" width="55"> </el-table-column>
-          <el-table-column prop="id" label="编号" width="80"> </el-table-column>
+          <el-table-column label="序号" width="80">
+            <template slot-scope="scope">
+              <span>{{ scope.$index + 1 }}</span>
+            </template>
+          </el-table-column>
+          <!-- <el-table-column prop="id" label="编号" width="80"> </el-table-column> -->
           <el-table-column prop="typename" label="音乐类别名称" width="1000">
           </el-table-column>
           <el-table-column label="操作">
@@ -297,7 +302,9 @@ export default {
         type: "warning"
       })
         .then(() => {
-          deleteType(row.id).then(response => {
+          const ids = [];
+          ids.push(row.id);
+          deleteType(ids).then(response => {
             const data = response.data;
             if (data.code == 200) {
               this.$message({

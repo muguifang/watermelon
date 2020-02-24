@@ -30,7 +30,12 @@
         <!-- 表格展示数据 -->
         <el-table :data="tableData" border style="width: 100%">
           <el-table-column type="selection" width="55"> </el-table-column>
-          <el-table-column prop="id" label="排名" width="80"> </el-table-column>
+          <el-table-column label="排名" width="80">
+            <template slot-scope="scope">
+              <span>{{ scope.$index + 1 }}</span>
+            </template>
+          </el-table-column>
+          <!-- <el-table-column prop="id" label="编号" width="80"> </el-table-column> -->
           <el-table-column prop="musicname" label="音乐名称" width="500">
           </el-table-column>
           <el-table-column prop="musicphoto" label="音乐图片" width="500">
@@ -75,7 +80,7 @@ export default {
     };
   },
   methods: {
-   //点击查询按钮
+    //点击查询按钮
     query() {
       getAllMusicByCollect(this.input).then(response => {
         const data = response.data;
@@ -90,10 +95,10 @@ export default {
               musicphoto: "",
               collectnum: ""
             };
-            table.id = tableList[i].id;
-            table.musicname = tableList[i].musicname;
-            table.musicphoto = tableList[i].musicphoto;
-            table.collectnum = tableList[i].collectnum;
+            table.id = tableList[i].mId;
+            table.musicname = tableList[i].mName;
+            table.musicphoto = tableList[i].pic;
+            table.collectnum = tableList[i].num;
             this.tableData.push(table);
           }
         }

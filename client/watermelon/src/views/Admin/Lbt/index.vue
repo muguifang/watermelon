@@ -38,7 +38,12 @@
           @selection-change="selsChange"
         >
           <el-table-column type="selection" width="55"> </el-table-column>
-          <el-table-column prop="id" label="编号" width="80"> </el-table-column>
+          <el-table-column label="序号" width="80">
+            <template slot-scope="scope">
+              <span>{{ scope.$index + 1 }}</span>
+            </template>
+          </el-table-column>
+          <!-- <el-table-column prop="id" label="编号" width="80"> </el-table-column> -->
           <el-table-column prop="pic" label="图片" width="1000">
             <template slot-scope="scope">
               <img :src="scope.row.pic" />
@@ -206,7 +211,9 @@ export default {
       this.dialogForm.pic = row.pic;
     },
     //修改之真正修改  【没有实现】
-    updateLbt(index, row) {},
+    updateLbt(index, row) {
+      console.log(row);
+    },
     //删除轮播图
     deleteLbt(index, row) {
       this.$confirm("确认将该图片从列表中删除?", "提示", {
@@ -215,7 +222,9 @@ export default {
         type: "warning"
       })
         .then(() => {
-          deleteLbt(row.id).then(response => {
+          const ids = [];
+          ids.push(row.id);
+          deleteLbt(ids).then(response => {
             const data = response.data;
             if (data.code == 200) {
               this.$message({
