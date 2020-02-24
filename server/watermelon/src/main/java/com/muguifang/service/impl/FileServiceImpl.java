@@ -71,17 +71,19 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public List<Map<Integer, String>> getAllPhoto() {
+    public List<Map<String, String>> getAllPhoto() {
         TLbtExample example = new TLbtExample();
         List<TLbt> tLbts = tLbtMapper.selectByExample(example);
-        List<Map<Integer, String>> result = new ArrayList<>();
-        Map<Integer, String> map = new HashMap<>();
+        List<Map<String, String>> result = new ArrayList<>();
         for(TLbt tLbt : tLbts){
+            Map<String, String> map = new HashMap<>();
             String picStr = tLbt.getPic();
             String pic = picStr.substring(picStr.lastIndexOf("\\")+1,picStr.length());
-            map.put(tLbt.getId(),"@/assets/"+ pic);
+//            map.put(tLbt.getId(),"@/assets/"+ pic);
+            map.put("id",tLbt.getId().toString());
+            map.put("pic","@/assets/"+ pic);
+            result.add(map);
         }
-        result.add(map);
 
         return result;
     }

@@ -67,7 +67,7 @@ public class FileController {
      */
     @GetMapping("/getAllPhoto")
     public ResultVo getAllPhoto(){
-        List<Map<Integer, String>> allPhoto = fileService.getAllPhoto();
+        List<Map<String, String>> allPhoto = fileService.getAllPhoto();
         return ResultVo.sendResult(200, "success", allPhoto);
     }
 }

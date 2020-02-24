@@ -39,15 +39,15 @@ public class UserController {
     }
     /**
      * 获取所有用户
-     * @param param
+     * @param username
      * @return
      */
     @GetMapping("/getAllUser")
-    public ResultVo getAllUser(@RequestBody Map<String, Object> param){
-        if(param == null){
+    public ResultVo getAllUser(String username){
+        if(username == null){
             throw new ParamException(501, "获取参数异常");
         }
-        List<TUser> allUser = userService.getAllUser(param);
+        List<TUser> allUser = userService.getAllUser(username);
         return ResultVo.sendResult(200, "success", allUser);
     }
 

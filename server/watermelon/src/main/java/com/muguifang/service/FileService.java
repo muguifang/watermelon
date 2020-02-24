@@ -28,7 +28,7 @@ public interface FileService {
      * 获取图片
      * @return
      */
-    public List<Map<Integer, String>> getAllPhoto();
+    public List<Map<String, String>> getAllPhoto();
 
     /**
      * 删除文件

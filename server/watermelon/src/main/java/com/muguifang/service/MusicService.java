@@ -32,10 +32,10 @@ public interface MusicService {
 
     /**
      * 按条件获取音乐类别 条件为空时查询所有
-     * @param param
+     * @param typename
      * @return
      */
-    public List<TType> getTypeByConditions(Map<String, Object> param);
+    public List<TType> getTypeByConditions(String typename);
 
     /**
      * 添加音乐
@@ -57,10 +57,10 @@ public interface MusicService {
 
     /**
      * 通过条件获取音乐信息 条件为空查询所有
-     * @param param
+     * @param musicname
      * @return
      */
-    public List<TMusic> getMusicByConditions(Map<String, Object> param);
+    public List<TMusic> getMusicByConditions(String musicname);
 
     /**
      * 按点击量倒序查询音乐

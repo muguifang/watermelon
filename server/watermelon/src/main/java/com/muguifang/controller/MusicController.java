@@ -61,7 +61,11 @@ public class MusicController {
      */
     @PostMapping("/getTypeByConditions")
     public ResultVo getTypeByConditions(@RequestBody Map<String, Object> param){
-        List<TType> typeByConditions = musicService.getTypeByConditions(param);
+        String typename = null;
+        if(param != null){
+            typename = (String)param.get("typename");
+        }
+        List<TType> typeByConditions = musicService.getTypeByConditions(typename);
         return ResultVo.sendResult(200, "success", typeByConditions);
     }
 
@@ -105,7 +109,11 @@ public class MusicController {
      */
     @PostMapping("/getMusicByConditions")
     public ResultVo getMusicByConditions(@RequestBody Map<String, Object> param){
-        List<TMusic> musicByConditions = musicService.getMusicByConditions(param);
+        String musicname = null;
+        if(param != null){
+            musicname = (String)param.get("musicname");
+        }
+        List<TMusic> musicByConditions = musicService.getMusicByConditions(musicname);
         return  ResultVo.sendResult(200, "success", musicByConditions);
     }
     /**

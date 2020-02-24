@@ -89,11 +89,11 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
     }
 
     @Override
-    public List<TUser> getAllUser(Map<String, Object> param) {
+    public List<TUser> getAllUser(String username) {
         TUserExample example = new TUserExample();
-        if(null != param.get("username") && !"".equals(param.get("username"))){
+        if(null != username && !"".equals(username)){
             TUserExample.Criteria criteria = example.createCriteria();
-            criteria.andUsernameLike("%" + (String)param.get("username") + "%");
+            criteria.andUsernameLike("%" + username + "%");
         }
         List<TUser> tUsers = tUserMapper.selectByExample(example);
         return tUsers;

@@ -54,11 +54,11 @@ public class MusicServiceImpl implements MusicService {
     }
 
     @Override
-    public List<TType> getTypeByConditions(Map<String, Object> param) {
+    public List<TType> getTypeByConditions(String typename) {
         TTypeExample example = new TTypeExample();
-        if(null != param.get("name") && !"".equals(param.get("name"))){
+        if(null != typename && !"".equals(typename)){
             TTypeExample.Criteria criteria = example.createCriteria();
-            criteria.andTypenameNotLike("%" + (String)param.get("name") + "%");
+            criteria.andTypenameLike("%" + typename + "%");
         }
         List<TType> tTypes = tTypeMapper.selectByExample(example);
         return tTypes;
@@ -85,12 +85,12 @@ public class MusicServiceImpl implements MusicService {
     }
 
     @Override
-    public List<TMusic> getMusicByConditions(Map<String, Object> param) {
+    public List<TMusic> getMusicByConditions(String musicname) {
         TMusicExample example = new TMusicExample();
         //通过音乐名称模糊查询
-        if(null != param.get("name") && !"".equals(param.get("name"))){
+        if(null != musicname && !"".equals(musicname)){
             TMusicExample.Criteria criteria = example.createCriteria();
-            criteria.andMusicnameLike("%" + (String)param.get("name") + "%");
+            criteria.andMusicnameLike("%" + musicname + "%");
         }
         List<TMusic> tMusics = tMusicMapper.selectByExample(example);
         return tMusics;

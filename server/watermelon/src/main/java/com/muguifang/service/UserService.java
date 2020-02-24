@@ -35,7 +35,7 @@ public interface UserService extends BaseService {
      * 获取所有用户
      * @return
      */
-    public List<TUser> getAllUser(Map<String, Object> param);
+    public List<TUser> getAllUser(String username);
 
     /**
      * 修改用户
