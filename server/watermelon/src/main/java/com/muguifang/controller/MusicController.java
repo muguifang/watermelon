@@ -121,9 +121,13 @@ public class MusicController {
      * 按点击量获取所有音乐
      * @return
      */
-    @GetMapping("/getAllMusicByPlay")
-    public ResultVo getAllMusic(String name){
-        List<TMusic> allMusic = musicService.getAllMusic(name);
+    @PostMapping("/getAllMusicByPlay")
+    public ResultVo getAllMusic(@RequestBody Map<String, Object> param){
+        String musicname = null;
+        if(param != null){
+            musicname = (String)param.get("musicname");
+        }
+        List<TMusic> allMusic = musicService.getAllMusic(musicname);
         return ResultVo.sendResult(200, "success", allMusic);
     }
 
@@ -151,9 +155,13 @@ public class MusicController {
      * 按收藏量查询音乐
      * @return
      */
-    @GetMapping("/getColletMusic")
-    public ResultVo getColletMusic(String musicName){
-        List<Map<String, Object>> allMusicInfo = musicService.getAllMusicInfo(musicName);
+    @PostMapping("/getColletMusic")
+    public ResultVo getColletMusic(@RequestBody Map<String, Object> param){
+        String musicname = null;
+        if(param != null){
+            musicname = (String)param.get("musicname");
+        }
+        List<Map<String, Object>> allMusicInfo = musicService.getAllMusicInfo(musicname);
         return ResultVo.sendResult(200, "success", allMusicInfo);
     }
 }
