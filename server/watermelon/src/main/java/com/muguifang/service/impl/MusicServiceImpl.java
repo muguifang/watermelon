@@ -41,20 +41,23 @@ public class MusicServiceImpl implements MusicService {
         TMusicExample.Criteria criteria = tMusicExample.createCriteria();
         criteria.andTypeIdIn(ids);
         List<TMusic> tMusics = tMusicMapper.selectByExample(tMusicExample);
-        List<Integer> idList = new ArrayList<>();
-        for(TMusic tMusic : tMusics){
-            for(Integer integer : ids){
-                if(tMusic.getTypeId() == integer){
-                    idList.add(integer);
+        //如果根据编号能查出音乐 将类别挑选出来
+        if(tMusics != null && tMusics.size() > 0){
+            List<Integer> idList = new ArrayList<>();
+            for(TMusic tMusic : tMusics){
+                for(Integer integer : ids){
+                    if(tMusic.getTypeId() == integer){
+                        idList.add(integer);
+                    }
                 }
             }
-        }
-        TTypeExample typeExample = new TTypeExample();
-        TTypeExample.Criteria criteria2 = typeExample.createCriteria();
-        criteria2.andIdIn(idList);
-        List<TType> tTypes = tTypeMapper.selectByExample(typeExample);
-        if(tTypes != null || 0 > tTypes.size()){
-            return ResultVo.sendResult(401, "类别存在音乐", tTypes);
+            TTypeExample typeExample = new TTypeExample();
+            TTypeExample.Criteria criteria2 = typeExample.createCriteria();
+            criteria2.andIdIn(idList);
+            List<TType> tTypes = tTypeMapper.selectByExample(typeExample);
+            if(tTypes != null || tTypes.size() > 0){
+                return ResultVo.sendResult(401, "类别存在音乐", tTypes);
+            }
         }
         TTypeExample example = new TTypeExample();
         TTypeExample.Criteria criteria1 = example.createCriteria();
