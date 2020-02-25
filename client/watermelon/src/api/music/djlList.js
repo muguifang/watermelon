@@ -3,6 +3,6 @@ export function getAllMusicByPlay(data) {
   return intercept.request({
     method: "get",
     url: "/music/getAllMusicByPlay",
-    data: data
+    params: { name: data }
   });
 }

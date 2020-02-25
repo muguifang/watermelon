@@ -1,8 +1,8 @@
 import intercept from "@/utils/intercepter.js";
 export function getAllMusicByCollect(data) {
   return intercept.request({
-    method: "post",
+    method: "get",
     url: "/music/getColletMusic",
-    data: data
+    params: { musicName: data }
   });
 }
