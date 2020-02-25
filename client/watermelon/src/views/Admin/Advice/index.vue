@@ -99,7 +99,6 @@
 </template>
 <script>
 import router from "@/router";
-import { parseTime } from "@/utils/dateformat.js";
 import "../../../styles/config.scss";
 import { getAdvice } from "@/api/admin/advice/adviceList.js";
 import { deleteAdvice } from "@/api/admin/advice/deleteAdvice.js";
@@ -196,7 +195,7 @@ export default {
         //将得到的数据中的id放到一个数组中
         sels.forEach(sel => {
           this.deleteIds.push(sel.id);
-          this.deleteNames.push(sel.userId);
+          this.deleteNames.push(sel.username);
         });
         this.$confirm(
           "确认将【" + this.deleteNames + "】的建议从列表中删除?",
@@ -215,6 +214,8 @@ export default {
                   type: "success",
                   message: "删除成功!"
                 });
+                this.deleteIds = [];
+                this.deleteNames = [];
                 this.query();
               }
             });
@@ -224,6 +225,8 @@ export default {
               type: "info",
               message: "已取消删除"
             });
+            this.deleteIds = [];
+            this.deleteNames = [];
             this.query();
           });
       } else {

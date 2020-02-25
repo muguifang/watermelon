@@ -93,7 +93,7 @@
             class="avatar-uploader"
             action="api/file/upload"
             name="lbt"
-            :data="{ 'path': 'D:/imgs' }"
+            :data="{ path: 'D:/imgs' }"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
@@ -185,7 +185,7 @@ export default {
               pic: ""
             };
             table.id = tableList[i].id;
-            table.pic = require("@/assets/"+tableList[i].pic);;
+            table.pic = require("@/assets/" + tableList[i].pic);
             this.tableData.push(table);
           }
         }
@@ -274,6 +274,7 @@ export default {
                   type: "success",
                   message: "删除成功!"
                 });
+                this.deleteIds = [];
                 this.query();
               }
             });
@@ -283,6 +284,7 @@ export default {
               type: "info",
               message: "已取消删除"
             });
+            this.deleteIds = [];
             this.query();
           });
       } else {

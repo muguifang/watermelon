@@ -320,6 +320,8 @@ export default {
                   type: "success",
                   message: "删除成功!"
                 });
+                this.deleteIds = [];
+                this.deleteNames = [];
                 this.query();
               }
             });
@@ -329,6 +331,8 @@ export default {
               type: "info",
               message: "已取消删除"
             });
+            this.deleteIds = [];
+            this.deleteNames = [];
             this.query();
           });
       } else {

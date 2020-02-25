@@ -518,7 +518,6 @@ export default {
     },
     //修改之查询
     update(index, row) {
-      debugger;
       this.dialog_updateMusic = true;
       this.dialogForm.id = row.id;
       this.dialogForm.musicname = row.musicname;
@@ -542,6 +541,7 @@ export default {
                 type: "success",
                 message: "修改成功!"
               });
+              this.options = [];
               this.query();
             }
           });
@@ -608,6 +608,8 @@ export default {
                   type: "success",
                   message: "删除成功!"
                 });
+                this.deleteIds = [];
+                this.deleteNames = [];
                 this.query();
               }
             });
@@ -617,6 +619,8 @@ export default {
               type: "info",
               message: "已取消删除"
             });
+            this.deleteIds = [];
+            this.deleteNames = [];
             this.query();
           });
       } else {
@@ -633,6 +637,7 @@ export default {
         type: "info",
         message: "已取消编辑"
       });
+      this.options = [];
       this.query();
     },
     // 新增前清空内容

@@ -311,8 +311,20 @@ export default {
                 type: "success",
                 message: "删除成功!"
               });
-              this.query();
+            } else if (data.code == 401) {
+              const typeList = data.data;
+              const typenames = [];
+              for (let i = 0; i < typeList.length; i++) {
+                typenames.push(typeList[i].typename);
+              }
+              this.$message({
+                type: "warning",
+                message: "【" + typenames + "】中含有音乐，删除失败！"
+              });
             }
+            this.deleteIds = [];
+            this.deleteNames = [];
+            this.query();
           });
         })
         .catch(() => {
@@ -351,8 +363,20 @@ export default {
                   type: "success",
                   message: "删除成功!"
                 });
-                this.query();
+              } else if (data.code == 401) {
+                const typeList = data.data;
+                const typenames = [];
+                for (let i = 0; i < typeList.length; i++) {
+                  typenames.push(typeList[i].typename);
+                }
+                this.$message({
+                  type: "warning",
+                  message: "【" + typenames + "】中含有音乐，删除失败！"
+                });
               }
+              this.deleteIds = [];
+              this.deleteNames = [];
+              this.query();
             });
           })
           .catch(() => {
@@ -360,6 +384,8 @@ export default {
               type: "info",
               message: "已取消删除"
             });
+            this.deleteIds = [];
+            this.deleteNames = [];
             this.query();
           });
       } else {
