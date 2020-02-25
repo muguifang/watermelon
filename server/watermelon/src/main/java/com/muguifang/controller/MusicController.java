@@ -45,12 +45,12 @@ public class MusicController {
 
     /**
      * 删除音乐类别
-     * @param id
+     * @param ids
      * @return
      */
     @DeleteMapping("/deleteType")
-    public ResultVo deleteType(Integer id){
-        musicService.deleteType(id);
+    public ResultVo deleteType(@RequestBody List<Integer> ids){
+        musicService.deleteType(ids);
         return ResultVo.sendResult(200, "success");
     }
 
@@ -121,20 +121,20 @@ public class MusicController {
      * @return
      */
     @GetMapping("/getAllMusicByPlay")
-    public ResultVo getAllMusic(){
-        List<TMusic> allMusic = musicService.getAllMusic();
+    public ResultVo getAllMusic(String name){
+        List<TMusic> allMusic = musicService.getAllMusic(name);
         return ResultVo.sendResult(200, "success", allMusic);
     }
 
-    /**
-     * 通过条件查询音乐 条件为空查询全部
-     * @return
-     */
-    @GetMapping("/getAllMusicByCollection")
-    public ResultVo getAllMusicByCollection(){
-        List<Map<String, Object>> allMusicInfo = musicService.getAllMusicInfo();
-        return ResultVo.sendResult(200, "success", allMusicInfo);
-    }
+//    /**
+//     * 通过条件查询音乐 条件为空查询全部
+//     * @return
+//     */
+//    @GetMapping("/getAllMusicByCollection")
+//    public ResultVo getAllMusicByCollection(String name){
+//        List<TMusic> musicByConditions = musicService.getMusicByConditions(name);
+//        return ResultVo.sendResult(200, "success", musicByConditions);
+//    }
 
     /**
      * 通过音乐类别获取音乐
@@ -150,9 +150,9 @@ public class MusicController {
      * 按收藏量查询音乐
      * @return
      */
-    @PostMapping("/getColletMusic")
-    public ResultVo getColletMusic(){
-        List<Map<String, Object>> allMusicInfo = musicService.getAllMusicInfo();
+    @GetMapping("/getColletMusic")
+    public ResultVo getColletMusic(String musicName){
+        List<Map<String, Object>> allMusicInfo = musicService.getAllMusicInfo(musicName);
         return ResultVo.sendResult(200, "success", allMusicInfo);
     }
 }

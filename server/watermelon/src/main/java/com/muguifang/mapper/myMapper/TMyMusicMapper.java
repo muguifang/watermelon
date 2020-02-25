@@ -9,5 +9,7 @@ import java.util.Map;
  * @Description
  */
 public interface TMyMusicMapper {
-    public List<Map<String, Object>> getAllMusicInfo();
+    public List<Map<String, Object>> getAllMusicInfo(String name);
+
+    public void updateMusic(Map<String, Object> param);
 }

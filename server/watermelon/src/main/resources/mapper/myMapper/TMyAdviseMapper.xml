@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.muguifang.mapper.myMapper.TMyAdviseMapper">
+    <select id="getAllAdviseInfo" resultType="java.util.Map" parameterType="java.lang.String">
+        SELECT
+            ta.id,
+            tu.realname,
+            ta.phone,
+            ta.content,
+            ta.insertDate 
+        FROM
+	    t_advise ta
+	    LEFT JOIN t_user tu ON ta.user_id = tu.id
+        <where>
+            <if test="_parameter != null and _parameter != ''">
+                and ta.phone like concat('%',#{_parameter},'%')
+            </if>
+        </where>
+    </select>
+</mapper>

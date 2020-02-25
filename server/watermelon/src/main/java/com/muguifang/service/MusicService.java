@@ -20,9 +20,9 @@ public interface MusicService {
 
     /**
      * 删除音乐类别
-     * @param id
+     * @param ids
      */
-    public void deleteType(Integer id);
+    public void deleteType(List<Integer> ids);
 
     /**
      * 修改音乐类别
@@ -66,13 +66,13 @@ public interface MusicService {
      * 按点击量倒序查询音乐
      * @return
      */
-    public List<TMusic> getAllMusic();
+    public List<TMusic> getAllMusic(String name);
 
     /**
      * 获取音乐收藏信息
      * @return
      */
-    public List<Map<String, Object>> getAllMusicInfo();
+    public List<Map<String, Object>> getAllMusicInfo(String musicName);
 
     /**
      * 通过音乐类别id获取音乐

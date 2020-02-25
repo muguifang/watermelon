@@ -9,6 +9,7 @@ import com.muguifang.service.MusicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,18 +35,15 @@ public class MusicServiceImpl implements MusicService {
     }
 
     @Override
-    public void deleteType(Integer id) {
-        tTypeMapper.deleteByPrimaryKey(id);
-        TMusicExample example = new TMusicExample();
-        TMusicExample.Criteria criteria = example.createCriteria();
-        criteria.andTypeIdEqualTo(id);
-        List<TMusic> tMusics = tMusicMapper.selectByExample(example);
-        if(tMusics != null && 0 < tMusics.size()){
-            for(TMusic tMusic : tMusics){
-                tMusic.setTypeId(null);
-                tMusicMapper.updateByPrimaryKey(tMusic);
-            }
-        }
+    public void deleteType(List<Integer> ids) {
+        TTypeExample example = new TTypeExample();
+        TTypeExample.Criteria criteria1 = example.createCriteria();
+        criteria1.andIdIn(ids);
+        tTypeMapper.deleteByExample(example);
+        //修改音乐信息
+        Map<String, Object> param = new HashMap<>();
+        param.put("ids", ids);
+        tMyMusicMapper.updateMusic(param);
     }
 
     @Override
@@ -100,16 +98,20 @@ public class MusicServiceImpl implements MusicService {
     }
 
     @Override
-    public List<TMusic> getAllMusic() {
+    public List<TMusic> getAllMusic(String name) {
         TMusicExample example = new TMusicExample();
         example.setOrderByClause("playNum DESC");
+        if(name != null && !"".equals(name)){
+            TMusicExample.Criteria criteria = example.createCriteria();
+            criteria.andMusicnameLike("%" + name + "%");
+        }
         List<TMusic> tMusics = tMusicMapper.selectByExample(example);
         return tMusics;
     }
 
     @Override
-    public List<Map<String, Object>> getAllMusicInfo() {
-        List<Map<String, Object>> allMusicInfo = tMyMusicMapper.getAllMusicInfo();
+    public List<Map<String, Object>> getAllMusicInfo(String musicName) {
+        List<Map<String, Object>> allMusicInfo = tMyMusicMapper.getAllMusicInfo(musicName);
         return allMusicInfo;
     }
 

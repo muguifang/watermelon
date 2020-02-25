@@ -3,6 +3,7 @@ package com.muguifang.service;
 import com.muguifang.po.TAdvise;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description muguifang
@@ -22,5 +23,5 @@ public interface AdviceService {
      */
     public void deleteAdvice(List<Integer> ids);
 
-    public List<TAdvise> getAdviceByConditions(String conditions);
+    public List<Map<String, Object>> getAdviceByConditions(String conditions);
 }

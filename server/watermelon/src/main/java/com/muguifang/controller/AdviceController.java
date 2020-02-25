@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description muguifang
@@ -52,7 +53,7 @@ public class AdviceController {
      */
     @GetMapping("/getAdviceByConditions")
     public ResultVo getAdviceByConditions(String phone){
-        List<TAdvise> adviceByConditions = adviceService.getAdviceByConditions(phone);
+        List<Map<String, Object>> adviceByConditions = adviceService.getAdviceByConditions(phone);
         return ResultVo.sendResult(200, "success", adviceByConditions);
     }
 }

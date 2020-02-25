@@ -1,6 +1,7 @@
 package com.muguifang.service.impl;
 
 import com.muguifang.mapper.TAdviseMapper;
+import com.muguifang.mapper.myMapper.TMyAdviseMapper;
 import com.muguifang.po.TAdvise;
 import com.muguifang.po.TAdviseExample;
 import com.muguifang.service.AdviceService;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description muguifang
@@ -18,6 +20,8 @@ import java.util.List;
 public class AdviceServiceImpl implements AdviceService {
     @Autowired
     private TAdviseMapper tAdviseMapper;
+    @Autowired
+    private TMyAdviseMapper tMyAdviseMapper;
 
     @Override
     public void addAdvice(TAdvise tAdvise) {
@@ -33,13 +37,14 @@ public class AdviceServiceImpl implements AdviceService {
     }
 
     @Override
-    public List<TAdvise> getAdviceByConditions(String conditions) {
-        TAdviseExample example = new TAdviseExample();
-        if(conditions != null && !"".equals(conditions)){
-            TAdviseExample.Criteria criteria = example.createCriteria();
-            criteria.andPhoneLike("%" + conditions + "%");
-        }
-        List<TAdvise> tAdvises = tAdviseMapper.selectByExample(example);
-        return tAdvises;
+    public List<Map<String, Object>> getAdviceByConditions(String conditions) {
+//        TAdviseExample example = new TAdviseExample();
+//        if(conditions != null && !"".equals(conditions)){
+//            TAdviseExample.Criteria criteria = example.createCriteria();
+//            criteria.andPhoneLike("%" + conditions + "%");
+//        }
+//        List<TAdvise> tAdvises = tAdviseMapper.selectByExample(example);
+        List<Map<String, Object>> allAdviseInfo = tMyAdviseMapper.getAllAdviseInfo(conditions);
+        return allAdviseInfo;
     }
 }
