@@ -255,7 +255,8 @@ export default {
         id: "",
         title: "",
         content: "",
-        pic: ""
+        pic: "",
+        insertdate: ""
       },
       rules: {
         title: [
@@ -299,12 +300,14 @@ export default {
               id: "",
               title: "",
               content: "",
-              pic: ""
+              pic: "",
+              insertdate: ""
             };
             table.id = tableList[i].id;
             table.title = tableList[i].title;
             table.content = tableList[i].content;
             table.pic = tableList[i].pic;
+            table.insertdate = tableList[i].insertdate;
             this.tableData.push(table);
           }
         }
@@ -343,6 +346,7 @@ export default {
       this.dialogForm.title = row.title;
       this.dialogForm.content = row.content;
       this.dialogForm.pic = row.pic;
+      this.dialogForm.insertdate = row.insertdate;
     },
     //修改之真正修改
     updateZx() {

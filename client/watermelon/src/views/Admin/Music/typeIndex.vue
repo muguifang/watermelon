@@ -205,7 +205,8 @@ export default {
       //表单数据
       dialogForm: {
         id: "",
-        typename: ""
+        typename: "",
+        insertdate: ""
       },
       rules: {
         typename: [
@@ -233,10 +234,12 @@ export default {
           for (let i = 0; i < tableList.length; i++) {
             const table = {
               id: "",
-              typename: ""
+              typename: "",
+              insertdate: ""
             };
             table.id = tableList[i].id;
             table.typename = tableList[i].typename;
+            table.insertdate = tableList[i].insertdate;
             this.tableData.push(table);
           }
         }
@@ -272,6 +275,7 @@ export default {
       this.dialog_updateType = true;
       this.dialogForm.id = row.id;
       this.dialogForm.typename = row.typename;
+      this.dialogForm.insertdate = row.insertdate;
     },
     //修改之真正修改
     updateType() {

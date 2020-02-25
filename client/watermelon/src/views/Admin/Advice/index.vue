@@ -159,11 +159,15 @@ export default {
     },
     //删除按钮
     deleteAdvice(index, row) {
-      this.$confirm("确认将【" + row.userId + "】的建议从列表中删除?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
+      this.$confirm(
+        "确认将【" + row.username + "】的建议从列表中删除?",
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }
+      )
         .then(() => {
           const ids = [];
           ids.push(row.id);

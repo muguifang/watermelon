@@ -82,7 +82,10 @@ export default {
   methods: {
     //点击查询按钮
     query() {
-      getAllMusicByCollect(this.input).then(response => {
+      const param = {
+        musicname: this.input
+      };
+      getAllMusicByCollect(param).then(response => {
         const data = response.data;
         this.tableData = [];
         if (data.code === 200) {
