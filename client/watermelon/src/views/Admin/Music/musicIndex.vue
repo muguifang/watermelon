@@ -376,7 +376,9 @@ export default {
         mvplay: "",
         recommend: "",
         status: "",
-        typeId: ""
+        typeId: "",
+        insertdate: "",
+        playnum: ""
       },
       //新增弹窗的音乐类别
       options: [],
@@ -428,7 +430,9 @@ export default {
               status: "",
               statusStr: "",
               typeId: "",
-              typename: ""
+              typename: "",
+              insrtdate: "",
+              playnum: ""
             };
             table.id = tableList[i].id;
             table.musicname = tableList[i].musicName;
@@ -438,7 +442,6 @@ export default {
             table.recommend = tableList[i].recommend;
             table.status = "" + tableList[i].STATUS;
             //将数据库中的数据取出来转换成文字
-            debugger;
             if (table.status == 1) {
               table.statusStr = "上架";
             } else {
@@ -457,6 +460,8 @@ export default {
             }
             table.typeId = tableList[i].tId;
             table.typename = tableList[i].typeName;
+            table.insertdate = tableList[i].insertDate;
+            table.playnum = tableList[i].playNum;
             this.tableData.push(table);
           }
         }
@@ -490,6 +495,7 @@ export default {
                 type: "success",
                 message: "新增成功!"
               });
+              this.options = [];
               this.query();
             }
           });
@@ -527,6 +533,8 @@ export default {
       this.dialogForm.recommend = row.recommend;
       this.dialogForm.status = row.status;
       this.dialogForm.typeId = row.typeId;
+      this.dialogForm.playnum = row.playnum;
+      this.dialogForm.insertdate = row.insertdate;
       this.initPage();
     },
     //修改之真正修改
@@ -637,7 +645,9 @@ export default {
         type: "info",
         message: "已取消编辑"
       });
+      // this.reset();
       this.options = [];
+      console.log(this.options);
       this.query();
     },
     // 新增前清空内容
@@ -650,6 +660,7 @@ export default {
       this.dialogForm.recommend = "";
       this.dialogForm.status = "";
       this.dialogForm.typeId = "";
+      this.dialogForm.playnum = "";
     },
     // 重置按钮
     resetForm(formName) {

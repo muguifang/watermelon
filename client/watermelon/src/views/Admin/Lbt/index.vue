@@ -164,7 +164,8 @@ export default {
       //表单中的数据
       dialogForm: {
         id: "",
-        pic: ""
+        pic: "",
+        insertdate: ""
       },
       //图片路径
       url: ""
@@ -182,10 +183,12 @@ export default {
           for (let i = 0; i < tableList.length; i++) {
             const table = {
               id: "",
-              pic: ""
+              pic: "",
+              insertdate: ""
             };
             table.id = tableList[i].id;
             table.pic = require("@/assets/" + tableList[i].pic);
+            table.insertdate = tableList[i].insertdate;
             this.tableData.push(table);
           }
         }
@@ -213,6 +216,7 @@ export default {
       this.dialog_updateLbt = true;
       this.dialogForm.id = row.id;
       this.dialogForm.pic = row.pic;
+      this.dialogForm.insertdate = row.insertdate;
     },
     //修改之真正修改  【没有实现】
     updateLbt(index, row) {
