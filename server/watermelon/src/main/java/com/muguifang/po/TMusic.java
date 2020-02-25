@@ -21,7 +21,7 @@ public class TMusic {
 
     private Integer playnum;
 
-    private Date issuedate;
+    private Date insertdate;
 
     public Integer getId() {
         return id;
@@ -95,11 +95,11 @@ public class TMusic {
         this.playnum = playnum;
     }
 
-    public Date getIssuedate() {
-        return issuedate;
+    public Date getInsertdate() {
+        return insertdate;
     }
 
-    public void setIssuedate(Date issuedate) {
-        this.issuedate = issuedate;
+    public void setInsertdate(Date insertdate) {
+        this.insertdate = insertdate;
     }
 }

@@ -2,7 +2,6 @@ package com.muguifang.po;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 public class TMusicExample {
@@ -104,32 +103,6 @@ public class TMusicExample {
                 throw new RuntimeException("Between values for " + property + " cannot be null");
             }
             criteria.add(new Criterion(condition, value1, value2));
-        }
-
-        protected void addCriterionForJDBCDate(String condition, Date value, String property) {
-            if (value == null) {
-                throw new RuntimeException("Value for " + property + " cannot be null");
-            }
-            addCriterion(condition, new java.sql.Date(value.getTime()), property);
-        }
-
-        protected void addCriterionForJDBCDate(String condition, List<Date> values, String property) {
-            if (values == null || values.size() == 0) {
-                throw new RuntimeException("Value list for " + property + " cannot be null or empty");
-            }
-            List<java.sql.Date> dateList = new ArrayList<java.sql.Date>();
-            Iterator<Date> iter = values.iterator();
-            while (iter.hasNext()) {
-                dateList.add(new java.sql.Date(iter.next().getTime()));
-            }
-            addCriterion(condition, dateList, property);
-        }
-
-        protected void addCriterionForJDBCDate(String condition, Date value1, Date value2, String property) {
-            if (value1 == null || value2 == null) {
-                throw new RuntimeException("Between values for " + property + " cannot be null");
-            }
-            addCriterion(condition, new java.sql.Date(value1.getTime()), new java.sql.Date(value2.getTime()), property);
         }
 
         public Criteria andIdIsNull() {
@@ -722,63 +695,63 @@ public class TMusicExample {
             return (Criteria) this;
         }
 
-        public Criteria andIssuedateIsNull() {
-            addCriterion("issueDate is null");
+        public Criteria andInsertdateIsNull() {
+            addCriterion("insertDate is null");
             return (Criteria) this;
         }
 
-        public Criteria andIssuedateIsNotNull() {
-            addCriterion("issueDate is not null");
+        public Criteria andInsertdateIsNotNull() {
+            addCriterion("insertDate is not null");
             return (Criteria) this;
         }
 
-        public Criteria andIssuedateEqualTo(Date value) {
-            addCriterionForJDBCDate("issueDate =", value, "issuedate");
+        public Criteria andInsertdateEqualTo(Date value) {
+            addCriterion("insertDate =", value, "insertdate");
             return (Criteria) this;
         }
 
-        public Criteria andIssuedateNotEqualTo(Date value) {
-            addCriterionForJDBCDate("issueDate <>", value, "issuedate");
+        public Criteria andInsertdateNotEqualTo(Date value) {
+            addCriterion("insertDate <>", value, "insertdate");
             return (Criteria) this;
         }
 
-        public Criteria andIssuedateGreaterThan(Date value) {
-            addCriterionForJDBCDate("issueDate >", value, "issuedate");
+        public Criteria andInsertdateGreaterThan(Date value) {
+            addCriterion("insertDate >", value, "insertdate");
             return (Criteria) this;
         }
 
-        public Criteria andIssuedateGreaterThanOrEqualTo(Date value) {
-            addCriterionForJDBCDate("issueDate >=", value, "issuedate");
+        public Criteria andInsertdateGreaterThanOrEqualTo(Date value) {
+            addCriterion("insertDate >=", value, "insertdate");
             return (Criteria) this;
         }
 
-        public Criteria andIssuedateLessThan(Date value) {
-            addCriterionForJDBCDate("issueDate <", value, "issuedate");
+        public Criteria andInsertdateLessThan(Date value) {
+            addCriterion("insertDate <", value, "insertdate");
             return (Criteria) this;
         }
 
-        public Criteria andIssuedateLessThanOrEqualTo(Date value) {
-            addCriterionForJDBCDate("issueDate <=", value, "issuedate");
+        public Criteria andInsertdateLessThanOrEqualTo(Date value) {
+            addCriterion("insertDate <=", value, "insertdate");
             return (Criteria) this;
         }
 
-        public Criteria andIssuedateIn(List<Date> values) {
-            addCriterionForJDBCDate("issueDate in", values, "issuedate");
+        public Criteria andInsertdateIn(List<Date> values) {
+            addCriterion("insertDate in", values, "insertdate");
             return (Criteria) this;
         }
 
-        public Criteria andIssuedateNotIn(List<Date> values) {
-            addCriterionForJDBCDate("issueDate not in", values, "issuedate");
+        public Criteria andInsertdateNotIn(List<Date> values) {
+            addCriterion("insertDate not in", values, "insertdate");
             return (Criteria) this;
         }
 
-        public Criteria andIssuedateBetween(Date value1, Date value2) {
-            addCriterionForJDBCDate("issueDate between", value1, value2, "issuedate");
+        public Criteria andInsertdateBetween(Date value1, Date value2) {
+            addCriterion("insertDate between", value1, value2, "insertdate");
             return (Criteria) this;
         }
 
-        public Criteria andIssuedateNotBetween(Date value1, Date value2) {
-            addCriterionForJDBCDate("issueDate not between", value1, value2, "issuedate");
+        public Criteria andInsertdateNotBetween(Date value1, Date value2) {
+            addCriterion("insertDate not between", value1, value2, "insertdate");
             return (Criteria) this;
         }
     }

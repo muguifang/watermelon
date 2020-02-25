@@ -11,5 +11,5 @@ import java.util.Map;
 public interface TMyMusicMapper {
     public List<Map<String, Object>> getAllMusicInfo(String name);
 
-    public void updateMusic(Map<String, Object> param);
+    public List<Map<String, Object>> getAllMusic(String musicName);
 }

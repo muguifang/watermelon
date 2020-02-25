@@ -1,6 +1,7 @@
 package com.muguifang.po;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TInformationExample {
@@ -371,6 +372,66 @@ public class TInformationExample {
 
         public Criteria andPicNotBetween(String value1, String value2) {
             addCriterion("pic not between", value1, value2, "pic");
+            return (Criteria) this;
+        }
+
+        public Criteria andInsertdateIsNull() {
+            addCriterion("insertDate is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInsertdateIsNotNull() {
+            addCriterion("insertDate is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInsertdateEqualTo(Date value) {
+            addCriterion("insertDate =", value, "insertdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInsertdateNotEqualTo(Date value) {
+            addCriterion("insertDate <>", value, "insertdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInsertdateGreaterThan(Date value) {
+            addCriterion("insertDate >", value, "insertdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInsertdateGreaterThanOrEqualTo(Date value) {
+            addCriterion("insertDate >=", value, "insertdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInsertdateLessThan(Date value) {
+            addCriterion("insertDate <", value, "insertdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInsertdateLessThanOrEqualTo(Date value) {
+            addCriterion("insertDate <=", value, "insertdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInsertdateIn(List<Date> values) {
+            addCriterion("insertDate in", values, "insertdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInsertdateNotIn(List<Date> values) {
+            addCriterion("insertDate not in", values, "insertdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInsertdateBetween(Date value1, Date value2) {
+            addCriterion("insertDate between", value1, value2, "insertdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInsertdateNotBetween(Date value1, Date value2) {
+            addCriterion("insertDate not between", value1, value2, "insertdate");
             return (Criteria) this;
         }
     }

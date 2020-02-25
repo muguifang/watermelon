@@ -7,6 +7,7 @@ import com.muguifang.service.MusicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -50,8 +51,7 @@ public class MusicController {
      */
     @DeleteMapping("/deleteType")
     public ResultVo deleteType(@RequestBody List<Integer> ids){
-        musicService.deleteType(ids);
-        return ResultVo.sendResult(200, "success");
+        return musicService.deleteType(ids);
     }
 
     /**
@@ -76,6 +76,7 @@ public class MusicController {
      */
     @PostMapping("/addMusic")
     public ResultVo addMusic(@RequestBody TMusic tMusic){
+        tMusic.setInsertdate(new Date());
         musicService.addMusic(tMusic);
         return ResultVo.sendResult(200, "success");
     }
@@ -113,7 +114,7 @@ public class MusicController {
         if(param != null){
             musicname = (String)param.get("musicname");
         }
-        List<TMusic> musicByConditions = musicService.getMusicByConditions(musicname);
+        List<Map<String, Object>> musicByConditions = musicService.getMusicByConditions(musicname);
         return  ResultVo.sendResult(200, "success", musicByConditions);
     }
     /**

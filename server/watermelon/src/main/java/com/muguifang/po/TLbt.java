@@ -1,9 +1,13 @@
 package com.muguifang.po;
 
+import java.util.Date;
+
 public class TLbt {
     private Integer id;
 
     private String pic;
+
+    private Date insertdate;
 
     public Integer getId() {
         return id;
@@ -19,5 +23,13 @@ public class TLbt {
 
     public void setPic(String pic) {
         this.pic = pic;
+    }
+
+    public Date getInsertdate() {
+        return insertdate;
+    }
+
+    public void setInsertdate(Date insertdate) {
+        this.insertdate = insertdate;
     }
 }

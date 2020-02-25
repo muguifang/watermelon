@@ -10,12 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import sun.misc.BASE64Encoder;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -54,7 +51,7 @@ public class FileServiceImpl implements FileService {
         try {
             multipartFile.transferTo(targetFile);
             //将文件在服务器的存储路径返回
-            return new ResultVo(200, "success", targetFile);
+            return new ResultVo(200, "success", fileName);
         } catch (IOException e) {
             log.error("上传文件发生异常:{}", e.getMessage(), e);
             e.printStackTrace();
@@ -66,13 +63,15 @@ public class FileServiceImpl implements FileService {
     public void addLbt(String path) {
         TLbt tLbt = new TLbt();
         tLbt.setId(0);
-        tLbt.setPic(path);
+        tLbt.setPic("upload/"+path);
+        tLbt.setInsertdate(new Date());
         tLbtMapper.insert(tLbt);
     }
 
     @Override
     public List<Map<String, String>> getAllPhoto() {
         TLbtExample example = new TLbtExample();
+        example.setOrderByClause("insertDate DESC");
         List<TLbt> tLbts = tLbtMapper.selectByExample(example);
         List<Map<String, String>> result = new ArrayList<>();
         for(TLbt tLbt : tLbts){
@@ -81,7 +80,7 @@ public class FileServiceImpl implements FileService {
             String pic = picStr.substring(picStr.lastIndexOf("\\")+1,picStr.length());
 //            map.put(tLbt.getId(),"@/assets/"+ pic);
             map.put("id",tLbt.getId().toString());
-            map.put("pic","@/assets/"+ pic);
+            map.put("pic",pic);
             result.add(map);
         }
 

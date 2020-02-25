@@ -2,6 +2,7 @@ package com.muguifang.service;
 
 import com.muguifang.po.TMusic;
 import com.muguifang.po.TType;
+import com.muguifang.result.ResultVo;
 
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,7 @@ public interface MusicService {
      * 删除音乐类别
      * @param ids
      */
-    public void deleteType(List<Integer> ids);
+    public ResultVo deleteType(List<Integer> ids);
 
     /**
      * 修改音乐类别
@@ -60,7 +61,7 @@ public interface MusicService {
      * @param musicname
      * @return
      */
-    public List<TMusic> getMusicByConditions(String musicname);
+    public List<Map<String, Object>> getMusicByConditions(String musicname);
 
     /**
      * 按点击量倒序查询音乐

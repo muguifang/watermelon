@@ -8,6 +8,7 @@ import com.muguifang.service.InformationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,6 +23,7 @@ public class InformationServiceImpl implements InformationService {
     @Override
     public List<TInformation> getInfosByTitle(String title) {
         TInformationExample example =  new TInformationExample();
+        example.setOrderByClause("insertDate DESC");
         if(title != null && !"".equals(title)){
             TInformationExample.Criteria criteria = example.createCriteria();
             criteria.andTitleLike("%" + title + "%");
@@ -56,6 +58,7 @@ public class InformationServiceImpl implements InformationService {
 
     @Override
     public void addInfo(TInformation tInformation) {
+        tInformation.setInsertdate(new Date());
         tInformationMapper.insert(tInformation);
     }
 }

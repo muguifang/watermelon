@@ -1,6 +1,5 @@
 ﻿package com.muguifang.test;
 
-import com.muguifang.mapper.TUserMapper;
 import com.muguifang.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;

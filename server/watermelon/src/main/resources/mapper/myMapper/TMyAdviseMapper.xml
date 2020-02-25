@@ -4,7 +4,7 @@
     <select id="getAllAdviseInfo" resultType="java.util.Map" parameterType="java.lang.String">
         SELECT
             ta.id,
-            tu.realname,
+            tu.username,
             ta.phone,
             ta.content,
             ta.insertDate 

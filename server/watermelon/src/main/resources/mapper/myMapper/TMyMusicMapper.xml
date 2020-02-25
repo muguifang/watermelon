@@ -2,21 +2,39 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.muguifang.mapper.myMapper.TMyMusicMapper">
     <select id="getAllMusicInfo" resultType="java.util.Map" parameterType="java.lang.String">
-    select count(c.music_id) as num,m.id as mId,m.musicName as mName,m.musicPhoto as pic
-    from t_music m
-    left join t_collect c on m.id = c.music_id
-    <where>
-        <if test="_parameter != null and _parameter != ''">
-            and m.musicName like concat('%',#{_parameter},'%')
-        </if>
-    </where>
-    GROUP BY m.id
-    ORDER BY c.music_id desc
-  </select>
-    <update id="updateMusic" parameterType="java.util.Map">
-        update t_music m set m.type_id = null where m.type_id
-        <foreach  collection="ids" item="id" open="in (" close=")" separator=",">
-            #{id}
-        </foreach>
-    </update>
+        select count(c.music_id) as num,m.id as mId,m.musicName as mName,m.musicPhoto as pic
+        from t_music m
+        left join t_collect c on m.id = c.music_id
+        <where>
+            <if test="_parameter != null and _parameter != ''">
+                and m.musicName like concat('%',#{_parameter},'%')
+            </if>
+        </where>
+        GROUP BY m.id
+        ORDER BY c.music_id desc
+    </select>
+    <select id="getAllMusic" resultType="java.util.Map" parameterType="java.lang.String">
+        SELECT
+            tm.id,
+            tm.musicName,
+            tm.musicPhoto,
+            tm.musicPlay,
+            tm.mvPlay,
+            tm.playNum,
+            tm.recommend,
+            tm.STATUS,
+            tm.insertDate,
+            tt.typeName,
+            tt.id as tId
+        FROM
+	    t_music tm
+	    LEFT JOIN t_type tt ON tm.type_id = tt.id
+	    <where>
+            <if test="_parameter != null and _parameter != ''">
+                and tm.musicName like concat('%',#{_parameter},'%')
+            </if>
+        </where>
+        ORDER BY
+	    tm.insertDate DESC
+    </select>
 </mapper>

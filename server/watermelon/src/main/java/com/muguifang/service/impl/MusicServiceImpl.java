@@ -1,17 +1,17 @@
 package com.muguifang.service.impl;
 
+import com.muguifang.common.exception.exceptions.DataException;
 import com.muguifang.mapper.TCollectMapper;
 import com.muguifang.mapper.TMusicMapper;
 import com.muguifang.mapper.TTypeMapper;
 import com.muguifang.mapper.myMapper.TMyMusicMapper;
 import com.muguifang.po.*;
+import com.muguifang.result.ResultVo;
 import com.muguifang.service.MusicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Description qubaolai
@@ -31,19 +31,40 @@ public class MusicServiceImpl implements MusicService {
 
     @Override
     public void addType(TType tType) {
+        tType.setInsertdate(new Date());
         tTypeMapper.insert(tType);
     }
 
     @Override
-    public void deleteType(List<Integer> ids) {
+    public ResultVo deleteType(List<Integer> ids) {
+        TMusicExample tMusicExample = new TMusicExample();
+        TMusicExample.Criteria criteria = tMusicExample.createCriteria();
+        criteria.andTypeIdIn(ids);
+        List<TMusic> tMusics = tMusicMapper.selectByExample(tMusicExample);
+        List<Integer> idList = new ArrayList<>();
+        for(TMusic tMusic : tMusics){
+            for(Integer integer : ids){
+                if(tMusic.getTypeId() == integer){
+                    idList.add(integer);
+                }
+            }
+        }
+        TTypeExample typeExample = new TTypeExample();
+        TTypeExample.Criteria criteria2 = typeExample.createCriteria();
+        criteria2.andIdIn(idList);
+        List<TType> tTypes = tTypeMapper.selectByExample(typeExample);
+        if(tTypes != null || 0 > tTypes.size()){
+            return ResultVo.sendResult(401, "类别存在音乐", tTypes);
+        }
         TTypeExample example = new TTypeExample();
         TTypeExample.Criteria criteria1 = example.createCriteria();
         criteria1.andIdIn(ids);
         tTypeMapper.deleteByExample(example);
         //修改音乐信息
-        Map<String, Object> param = new HashMap<>();
-        param.put("ids", ids);
-        tMyMusicMapper.updateMusic(param);
+//        Map<String, Object> param = new HashMap<>();
+//        param.put("ids", ids);
+//        tMyMusicMapper.updateMusic(param);
+        return ResultVo.sendResult(200, "success");
     }
 
     @Override
@@ -54,6 +75,7 @@ public class MusicServiceImpl implements MusicService {
     @Override
     public List<TType> getTypeByConditions(String typename) {
         TTypeExample example = new TTypeExample();
+        example.setOrderByClause("insertDate DESC");
         if(null != typename && !"".equals(typename)){
             TTypeExample.Criteria criteria = example.createCriteria();
             criteria.andTypenameLike("%" + typename + "%");
@@ -86,15 +108,9 @@ public class MusicServiceImpl implements MusicService {
     }
 
     @Override
-    public List<TMusic> getMusicByConditions(String musicname) {
-        TMusicExample example = new TMusicExample();
-        //通过音乐名称模糊查询
-        if(null != musicname && !"".equals(musicname)){
-            TMusicExample.Criteria criteria = example.createCriteria();
-            criteria.andMusicnameLike("%" + musicname + "%");
-        }
-        List<TMusic> tMusics = tMusicMapper.selectByExample(example);
-        return tMusics;
+    public List<Map<String, Object>> getMusicByConditions(String musicname) {
+        List<Map<String, Object>> musics = tMyMusicMapper.getAllMusic(musicname);
+        return musics;
     }
 
     @Override

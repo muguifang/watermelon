@@ -77,7 +77,7 @@
           </el-table-column>
           <el-table-column prop="statusStr" label="状态" width="100">
           </el-table-column>
-          <el-table-column prop="typeId" label="音乐类别" width="100">
+          <el-table-column prop="typename" label="音乐类别" width="100">
           </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
@@ -431,13 +431,14 @@ export default {
               typename: ""
             };
             table.id = tableList[i].id;
-            table.musicname = tableList[i].musicname;
-            table.musicphoto = tableList[i].musicphoto;
-            table.musicplay = tableList[i].musicplay;
-            table.mvplay = tableList[i].mvplay;
+            table.musicname = tableList[i].musicName;
+            table.musicphoto = tableList[i].musicPhoto;
+            table.musicplay = tableList[i].musicPlay;
+            table.mvplay = tableList[i].mvPlay;
             table.recommend = tableList[i].recommend;
-            table.status = tableList[i].status;
+            table.status = "" + tableList[i].STATUS;
             //将数据库中的数据取出来转换成文字
+            debugger;
             if (table.status == 1) {
               table.statusStr = "上架";
             } else {
@@ -454,7 +455,8 @@ export default {
             } else if (table.recommend == 5) {
               table.recommendStr = "五星";
             }
-            table.typeId = tableList[i].typeId;
+            table.typeId = tableList[i].tId;
+            table.typename = tableList[i].typeName;
             this.tableData.push(table);
           }
         }
@@ -516,6 +518,7 @@ export default {
     },
     //修改之查询
     update(index, row) {
+      debugger;
       this.dialog_updateMusic = true;
       this.dialogForm.id = row.id;
       this.dialogForm.musicname = row.musicname;

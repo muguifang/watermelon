@@ -56,7 +56,7 @@
             </template>
           </el-table-column>
           <!-- <el-table-column prop="id" label="编号" width="80"> </el-table-column> -->
-          <el-table-column prop="userId" label="用户名称" width="200">
+          <el-table-column prop="username" label="用户名称" width="200">
           </el-table-column>
           <el-table-column prop="phone" label="联系方式" width="200">
           </el-table-column>
@@ -149,6 +149,7 @@ export default {
             };
             table.id = tableList[i].id;
             table.userId = tableList[i].userId;
+            table.username = tableList[i].username;
             table.phone = tableList[i].phone;
             table.content = tableList[i].content;
             table.insertdate = tableList[i].insertdate;

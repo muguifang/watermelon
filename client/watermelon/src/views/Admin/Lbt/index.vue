@@ -91,7 +91,9 @@
         >
           <el-upload
             class="avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="api/file/upload"
+            name="lbt"
+            :data="{ 'path': 'D:/imgs' }"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
@@ -163,7 +165,9 @@ export default {
       dialogForm: {
         id: "",
         pic: ""
-      }
+      },
+      //图片路径
+      url: ""
     };
   },
   methods: {
@@ -181,7 +185,7 @@ export default {
               pic: ""
             };
             table.id = tableList[i].id;
-            table.pic = tableList[i].pic;
+            table.pic = require("@/assets/"+tableList[i].pic);;
             this.tableData.push(table);
           }
         }
@@ -191,7 +195,7 @@ export default {
     addLbt() {
       this.dialog_insertLbt = false;
       const param = {
-        path: this.imageUrl
+        path: this.url
       };
       addLbt(param).then(response => {
         const data = response.data;
@@ -303,6 +307,7 @@ export default {
     },
     //图片上传后
     handleAvatarSuccess(res, file) {
+      this.url = res.data;
       this.imageUrl = URL.createObjectURL(file.raw);
     },
     //图片上传前
