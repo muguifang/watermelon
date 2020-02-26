@@ -7,43 +7,76 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    name: "Music",
-    redirect: "index",
+    redirect: "/index",
     meta: {
-      name: "音乐"
+      name: "首页"
     },
     component: layout,
     children: [
       {
         path: "/index",
-        name: "Index",
-        meta: {
-          name: "音乐页面"
-        },
         component: () => import("../views/music/music.vue")
       }
     ]
   },
   {
-    path: "/person",
-    name: "Person",
+    path: "/allMusic",
+    redirect: "/allMusic",
     meta: {
-      name: "个人中心"
+      name: "全部音乐"
     },
     component: layout,
     children: [
       {
-        path: "/info",
-        name: "Info",
-        meta: {
-          name: "我的信息"
-        },
-        component: () => import("../views/music/myMusic.vue")
+        path: "/allMusic",
+        name: "AllMusic",
+        component: () => import("../views/music/allMusic.vue")
+      }
+    ]
+  },
+  {
+    path: "/musicInfo",
+    redirect: "/MusicInfo",
+    meta: {
+      name: "音乐资讯"
+    },
+    component: layout,
+    children: [
+      {
+        path: "/musicInfo",
+        component: () => import("../views/music/musicInfomation.vue")
+      }
+    ]
+  },
+  {
+    path: "/hotMusic",
+    redirect: "/hotMusic",
+    meta: {
+      name: "热歌榜"
+    },
+    component: layout,
+    children: [
+      {
+        path: "/hotMusic",
+        component: () => import("../views/music/hotMusic.vue")
+      }
+    ]
+  },
+  {
+    path: "/recommended",
+    redirect: "/recommended",
+    meta: {
+      name: "每日推荐"
+    },
+    component: layout,
+    children: [
+      {
+        path: "/recommended",
+        component: () => import("../views/music/recommended.vue")
       }
     ]
   }
 ];
-
 const router = new VueRouter({
   routes
 });
