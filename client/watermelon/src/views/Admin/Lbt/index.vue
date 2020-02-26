@@ -93,7 +93,7 @@
             class="avatar-uploader"
             action="api/file/upload"
             name="lbt"
-            :data="{ path: 'D:/imgs' }"
+            :data="{ path: 'D:/img' }"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
@@ -102,20 +102,25 @@
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
           <div slot="footer" class="dialog-footer">
-            <el-button @click="dialog_insertLbt = false">取 消</el-button>
+            <el-button @click="cancel">取 消</el-button>
             <el-button type="primary" @click="addLbt()">确 定</el-button>
           </div>
         </el-dialog>
         <!-- 编辑弹窗 -->
         <el-dialog
           title="编辑首页轮播图"
+          :close-on-click-modal="false"
+          :close-on-press-escape="false"
+          :show-close="false"
           :visible.sync="dialog_updateLbt"
           :append-to-body="true"
           width="30%"
         >
           <el-upload
             class="avatar-uploader"
-            action="https://imgchr.com/i/3UYnMT"
+            action="/api/file/upload"
+            name="lbt"
+            :data='{ path: "D:/img" }'
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
@@ -124,7 +129,7 @@
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
           <div slot="footer" class="dialog-footer">
-            <el-button @click="dialog_updateLbt = false">取 消</el-button>
+            <el-button @click="cancel">取 消</el-button>
             <el-button type="primary" @click="updateLbt()">确 定</el-button>
           </div>
         </el-dialog>
@@ -138,6 +143,8 @@ import "../../../styles/config.scss";
 import { addLbt } from "@/api/admin/lbt/addLbt.js";
 import { getAllPhoto } from "@/api/admin/lbt/lbtList.js";
 import { deleteLbt } from "@/api/admin/lbt/deleteLbt.js";
+import { updateFile, deleteServerFile } from "@/api/file/file.js";
+import { base64ImgtoFile } from "@/utils/base64Util.js";
 export default {
   name: "zxIndex",
   inject: ["reload"],
@@ -167,8 +174,7 @@ export default {
         pic: "",
         insertdate: ""
       },
-      //图片路径
-      url: ""
+      fileName: ""
     };
   },
   methods: {
@@ -180,46 +186,29 @@ export default {
         if (data.code === 200) {
           const tableList = data.data;
           this.sumNum = tableList.length;
-          for(let i = 0; i < tableList.length; i++){
+          for (let i = 0; i < tableList.length; i++) {
             const table = {
               id: "",
               pic: ""
             };
             table.id = tableList[i].id;
             let base = tableList[i].pic;
-            table.pic = URL.createObjectURL(this.base64ImgtoFile(base));
+            table.pic = URL.createObjectURL(base64ImgtoFile(base));
             this.tableData.push(table);
           }
-          // for(let item in tableList[0]){
-          //   console.log(item);
-          // }
         }
-      });
-    },
-    //base64装为图片
-    base64ImgtoFile(dataurl, filename = "file") {
-      let arr = dataurl.split(",");
-      let mime = arr[0].match(/:(.*?);/)[1];
-      let suffix = mime.split("/")[1];
-      let bstr = atob(arr[1]);
-      let n = bstr.length;
-      let u8arr = new Uint8Array(n);
-      while (n--) {
-        u8arr[n] = bstr.charCodeAt(n);
-      }
-      return new File([u8arr], `${filename}.${suffix}`, {
-        type: mime
       });
     },
     //新增轮播图 【没有实现】
     addLbt() {
-      this.dialog_insertLbt = false;
-      const param = {
-        path: this.url
+      if(this.fileName != ""){
+        const param = {
+        path: this.fileName
       };
       addLbt(param).then(response => {
         const data = response.data;
         if (data.code == 200) {
+          this.dialog_insertLbt = false;
           this.$message({
             type: "success",
             message: "新增成功!"
@@ -227,6 +216,7 @@ export default {
           this.query();
         }
       });
+      }
     },
     //修改之查询  【没有实现】
     update(index, row) {
@@ -234,10 +224,38 @@ export default {
       this.dialogForm.id = row.id;
       this.dialogForm.pic = row.pic;
       this.dialogForm.insertdate = row.insertdate;
+      this.imageUrl = row.pic;
     },
     //修改之真正修改  【没有实现】
-    updateLbt(index, row) {
-      console.log(row);
+    updateLbt() {
+      const param = {
+        id: this.dialogForm.id,
+        name: this.fileName
+      };
+      updateFile(param).then(response => {
+        const data = response.data;
+        if (data.code === 200) {
+          this.dialog_updateLbt = false;
+          this.$message({
+            message: "修改成功!",
+            type: "success"
+          });
+        }
+      });
+    },
+    //取消按钮取消上传文件时删除服务器图片
+    cancel() {
+      this.dialog_updateLbt = false;
+      //删除文件
+      if(this.fileName != ""){
+        deleteServerFile(this.fileName).then(response => {
+        const data = response.data;
+        if (data.code === 200) {
+          this.dialog_updateLbt = false;
+          this.$message("以取消上传");
+        }
+      });
+      }
     },
     //删除轮播图
     deleteLbt(index, row) {
@@ -330,8 +348,8 @@ export default {
     },
     //图片上传后
     handleAvatarSuccess(res, file) {
-      // this.url = res.data;
-      // this.imageUrl = URL.createObjectURL(file.raw);
+      this.imageUrl = URL.createObjectURL(file.raw);
+      this.fileName = file.response.data;
     },
     //图片上传前
     beforeAvatarUpload(file) {

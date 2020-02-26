@@ -13,3 +13,10 @@ export function updateFile(data) {
     data: data
   });
 }
+export function deleteServerFile(data) {
+  return intercept.request({
+    method: "delete",
+    url: "/file/deleteServerFile",
+    params: { fileName: data }
+  });
+}
