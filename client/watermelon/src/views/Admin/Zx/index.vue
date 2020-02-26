@@ -385,7 +385,7 @@ export default {
       this.$refs.dialogForm.validate(valid => {
         if (valid) {
           this.dialog_updateZx = false;
-          if(this.dialogForm.pic == this.imageUrl){
+          if (this.dialogForm.pic == this.imageUrl) {
             this.dialogForm.pic = null;
           }else{
             this.dialogForm.pic = this.fileName;
