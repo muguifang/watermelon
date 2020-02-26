@@ -1,0 +1,30 @@
+//后台框架
+//菜单导航宽度
+$navMenu : 200px;
+$navMenuMin: 64px;
+$layoutHeader: 75px;
+
+//主颜色
+$mainColor: #f56c6c;
+
+//收缩后 过度效果 不那么生硬
+@mixin webkit($type, $value){
+    -webkit-#{$type}: $value;
+    -moz-#{$type}: $value;
+    -o-#{$type}: $value;
+    -ms-#{$type}: $value;
+    #{$type}: $value;
+  }
+
+//设置label的对齐方式、宽度、行高（如果没有默认常规）
+@mixin labelDom($align, $width, $line-height: "normal"){
+    label {
+        float: left;
+        width: $width + px;
+        text-align: $align;
+        line-height: $line-height + px;
+    }
+    .warp-content {
+        margin-left: $width + px;
+    }
+}
