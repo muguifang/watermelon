@@ -32,7 +32,19 @@ public interface FileService {
 
     /**
      * 删除文件
-     * @param id
+     * @param ids
      */
-    public void deleteFile(Integer id);
+    public void deleteFile(List<Integer> ids);
+
+    /**
+     * 修改图片信息
+     * @param param
+     */
+    public void updateFilePath(Map<String, Object> param);
+
+    /**
+     * 删除服务器指定名称文件
+     * @param fileName
+     */
+    public void deleteServerFile(String fileName);
 }

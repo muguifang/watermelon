@@ -6,8 +6,12 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import sun.misc.BASE64Encoder;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,12 +56,12 @@ public class FileController {
 
     /**
      * 从磁盘删除指定文件
-     * @param id
+     * @param ids
      * @return
      */
     @DeleteMapping("/deletePhoto")
-    public ResultVo deletePhoto(Integer id){
-        fileService.deleteFile(id);
+    public ResultVo deletePhoto(@RequestBody List<Integer> ids){
+        fileService.deleteFile(ids);
         return ResultVo.sendResult(200, "success");
     }
 
@@ -69,5 +73,22 @@ public class FileController {
     public ResultVo getAllPhoto(){
         List<Map<String, String>> allPhoto = fileService.getAllPhoto();
         return ResultVo.sendResult(200, "success", allPhoto);
+    }
+
+    /**
+     * 修改图片信息
+     * @param param
+     * @return
+     */
+    @PutMapping("/updateFile")
+    public ResultVo updateFilePath(@RequestBody Map<String, Object> param){
+        fileService.updateFilePath(param);
+        return ResultVo.sendResult(200, "success");
+    }
+
+    @DeleteMapping("/deleteServerFile")
+    public ResultVo deleteServerFile(String fileName){
+        fileService.deleteServerFile(fileName);
+        return ResultVo.sendResult(200, "success");
     }
 }

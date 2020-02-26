@@ -10,9 +10,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import sun.misc.BASE64Encoder;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -63,7 +64,7 @@ public class FileServiceImpl implements FileService {
     public void addLbt(String path) {
         TLbt tLbt = new TLbt();
         tLbt.setId(0);
-        tLbt.setPic("upload/"+path);
+        tLbt.setPic("D:/img/" + path);
         tLbt.setInsertdate(new Date());
         tLbtMapper.insert(tLbt);
     }
@@ -74,30 +75,84 @@ public class FileServiceImpl implements FileService {
         example.setOrderByClause("insertDate DESC");
         List<TLbt> tLbts = tLbtMapper.selectByExample(example);
         List<Map<String, String>> result = new ArrayList<>();
-        for(TLbt tLbt : tLbts){
+        for (TLbt tLbt : tLbts) {
             Map<String, String> map = new HashMap<>();
-            String picStr = tLbt.getPic();
-            String pic = picStr.substring(picStr.lastIndexOf("\\")+1,picStr.length());
-//            map.put(tLbt.getId(),"@/assets/"+ pic);
-            map.put("id",tLbt.getId().toString());
-            map.put("pic",pic);
+            String photo = getPhoto(tLbt.getPic());
+            tLbt.setPic(photo);
+            map.put("id", tLbt.getId().toString());
+            map.put("pic", "data:image/png;base64," + photo);
             result.add(map);
         }
-
         return result;
     }
 
     @Override
-    public void deleteFile(Integer id) {
-        TLbt tLbt = tLbtMapper.selectByPrimaryKey(id);
-        tLbtMapper.deleteByPrimaryKey(id);
-        String path = tLbt.getPic();
-        if (path == null || "".equals(path)) {
-            throw new ParamException(501, "文件路径无效");
+    public void deleteFile(List<Integer> ids) {
+        TLbtExample example = new TLbtExample();
+        TLbtExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIn(ids);
+        List<TLbt> tLbts = tLbtMapper.selectByExample(example);
+        for (TLbt tLbt : tLbts) {
+            tLbtMapper.deleteByPrimaryKey(tLbt.getId());
+            String path = tLbt.getPic();
+            if (path == null || "".equals(path)) {
+                throw new ParamException(501, "文件路径无效");
+            }
+            File file = new File(path);
+            if (file.isFile()) {// 表示该文件不是文件夹
+                file.delete();
+            }
         }
-        File file = new File(path);
+    }
+
+    @Override
+    public void updateFilePath(Map<String, Object> param) {
+        if (param == null) {
+            throw new ParamException(501, "图片信息获取异常");
+        }
+        Integer id = Integer.parseInt((String) param.get("id"));
+        String path = (String) param.get("name");
+        if (id == null || path == null || "".equals(path)) {
+            throw new ParamException(501, "图片信息获取异常");
+        }
+        TLbt tLbt = tLbtMapper.selectByPrimaryKey(id);
+        tLbt.setPic("D:/img/" + path);
+        tLbtMapper.updateByPrimaryKeySelective(tLbt);
+    }
+
+    @Override
+    public void deleteServerFile(String fileName) {
+        if (fileName == null || "".equals(fileName)) {
+            throw new ParamException(501, "获取文件名称失败");
+        }
+        File file = new File("D:/img/" + fileName);
         if (file.isFile()) {// 表示该文件不是文件夹
             file.delete();
+        } else {
+            // 首先得到当前的路径
+            String[] childFilePaths = file.list();
+            for (String childFilePath : childFilePaths) {
+                File childFile = new File(file.getAbsolutePath() + "/" + childFilePath);
+                deleteServerFile(fileName);
+            }
+            file.delete();
         }
+    }
+
+    public static String getPhoto(String path) {
+        InputStream in = null;
+        byte[] data = null;
+        //读取图片字节数组
+        try {
+            in = new FileInputStream(path);
+            data = new byte[in.available()];
+            in.read(data);
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //对字节数组Base64编码
+        BASE64Encoder encoder = new BASE64Encoder();
+        return encoder.encode(data);
     }
 }
