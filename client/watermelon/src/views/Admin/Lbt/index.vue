@@ -115,7 +115,7 @@
         >
           <el-upload
             class="avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="https://imgchr.com/i/3UYnMT"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
@@ -180,18 +180,35 @@ export default {
         if (data.code === 200) {
           const tableList = data.data;
           this.sumNum = tableList.length;
-          for (let i = 0; i < tableList.length; i++) {
+          for(let i = 0; i < tableList.length; i++){
             const table = {
               id: "",
-              pic: "",
-              insertdate: ""
+              pic: ""
             };
             table.id = tableList[i].id;
-            table.pic = require("@/assets/" + tableList[i].pic);
-            table.insertdate = tableList[i].insertdate;
+            let base = tableList[i].pic;
+            table.pic = URL.createObjectURL(this.base64ImgtoFile(base));
             this.tableData.push(table);
           }
+          // for(let item in tableList[0]){
+          //   console.log(item);
+          // }
         }
+      });
+    },
+    //base64装为图片
+    base64ImgtoFile(dataurl, filename = "file") {
+      let arr = dataurl.split(",");
+      let mime = arr[0].match(/:(.*?);/)[1];
+      let suffix = mime.split("/")[1];
+      let bstr = atob(arr[1]);
+      let n = bstr.length;
+      let u8arr = new Uint8Array(n);
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+      }
+      return new File([u8arr], `${filename}.${suffix}`, {
+        type: mime
       });
     },
     //新增轮播图 【没有实现】
@@ -313,8 +330,8 @@ export default {
     },
     //图片上传后
     handleAvatarSuccess(res, file) {
-      this.url = res.data;
-      this.imageUrl = URL.createObjectURL(file.raw);
+      // this.url = res.data;
+      // this.imageUrl = URL.createObjectURL(file.raw);
     },
     //图片上传前
     beforeAvatarUpload(file) {

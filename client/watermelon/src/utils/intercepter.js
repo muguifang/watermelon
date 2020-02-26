@@ -5,7 +5,7 @@ const BASEURL = process.env.NODE_ENV === "production" ? "" : "/api";
 //创建axios 赋给变量intercept
 const intercept = axios.create({
   baseURL: BASEURL,
-  timeout: 10000
+  timeout: 20000
 });
 // 添加请求拦截器
 intercept.interceptors.request.use(
