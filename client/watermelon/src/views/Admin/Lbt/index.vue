@@ -251,6 +251,7 @@ export default {
         deleteServerFile(this.fileName).then(response => {
         const data = response.data;
         if (data.code === 200) {
+          this.fileName = "";
           this.dialog_updateLbt = false;
           this.$message("以取消上传");
         }

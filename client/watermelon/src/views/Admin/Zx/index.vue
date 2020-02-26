@@ -70,6 +70,9 @@
           <el-table-column prop="content" label="内容" width="500">
           </el-table-column>
           <el-table-column prop="pic" label="图片" width="250">
+            <template slot-scope="scope">
+              <img style="width: 80px; height: 80px;" :src="scope.row.pic" />
+            </template>
           </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
@@ -146,11 +149,22 @@
               label="图片:"
               :label-width="formLabelWidth + ''"
             >
-              <el-input
+              <!-- <el-input
                 style="width: 250px;"
                 v-model="dialogForm.pic"
                 autocomplete="off"
-              ></el-input>
+              ></el-input> -->
+              <el-upload
+  class="avatar-uploader"
+  action="/api/file/upload"
+  name="lbt"
+  :data='{path: "D:/img"}'
+  :show-file-list="false"
+  :on-success="handleAvatarSuccess"
+  :before-upload="beforeAvatarUpload">
+  <img v-if="imageUrl" :src="imageUrl" class="avatar">
+  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+</el-upload>
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -200,11 +214,22 @@
               label="图片:"
               :label-width="formLabelWidth + ''"
             >
-              <el-input
+              <!-- <el-input
                 style="width: 250px;"
                 v-model="dialogForm.pic"
                 autocomplete="off"
-              ></el-input>
+              ></el-input> -->
+              <el-upload
+  class="avatar-uploader"
+  action="/api/file/upload"
+  name="lbt"
+  :data='{path: "D:/img"}'
+  :show-file-list="false"
+  :on-success="handleAvatarSuccess"
+  :before-upload="beforeAvatarUpload">
+  <img v-if="imageUrl" :src="imageUrl" class="avatar">
+  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+</el-upload>
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -223,11 +248,16 @@ import { getZxList } from "@/api/admin/zx/zxList.js";
 import { deleteZx } from "@/api/admin/zx/deleteZx.js";
 import { updateZx } from "@/api/admin/zx/updateZx.js";
 import { addZx } from "@/api/admin/zx/addZx.js";
+import { base64ImgtoFile } from "@/utils/base64Util.js";
+import { deleteServerFile } from "@/api/file/file.js";
 export default {
   name: "zxIndex",
   inject: ["reload"],
   data() {
     return {
+      fileName: "",
+      //新增资讯图片路径
+      imageUrl: "",
       //表格数据
       tableData: [],
       //搜索框
@@ -306,7 +336,7 @@ export default {
             table.id = tableList[i].id;
             table.title = tableList[i].title;
             table.content = tableList[i].content;
-            table.pic = tableList[i].pic;
+            table.pic = URL.createObjectURL(base64ImgtoFile(tableList[i].pic));
             table.insertdate = tableList[i].insertdate;
             this.tableData.push(table);
           }
@@ -326,6 +356,7 @@ export default {
           addZx(this.dialogForm).then(response => {
             const data = response.data;
             if (data.code == 200) {
+              this.imageUrl = "";
               this.$message({
                 type: "success",
                 message: "新增成功!"
@@ -347,12 +378,18 @@ export default {
       this.dialogForm.content = row.content;
       this.dialogForm.pic = row.pic;
       this.dialogForm.insertdate = row.insertdate;
+      this.imageUrl = row.pic;
     },
     //修改之真正修改
     updateZx() {
       this.$refs.dialogForm.validate(valid => {
         if (valid) {
           this.dialog_updateZx = false;
+          if(this.dialogForm.pic == this.imageUrl){
+            this.dialogForm.pic = null;
+          }else{
+            this.dialogForm.pic = this.fileName;
+          }
           updateZx(this.dialogForm).then(response => {
             const data = response.data;
             if (data.code == 200) {
@@ -450,11 +487,17 @@ export default {
     },
     //取消按钮
     closeInfo() {
+      //删除文件
+      if(this.fileName != ""){
+        deleteServerFile(this.fileName).then(response => {
+          const data = response.data;
+        if (data.code === 200) {
+          this.fileName = "";
       this.dialog_updateZx = false;
-      this.$message({
-        type: "info",
-        message: "已取消编辑"
+          this.$message("以取消上传");
+        }
       });
+      }
       this.query();
     },
     // 新增前清空内容
@@ -480,7 +523,25 @@ export default {
     //改变当前页
     handleCurrentChange(val) {
       this.currentPage = val;
-    }
+    },
+    //文件上传成功的钩子
+    handleAvatarSuccess(res, file) {
+      this.fileName = file.response.data;
+        this.imageUrl = URL.createObjectURL(file.raw);
+      },
+    //文件上传之前的钩子
+      beforeAvatarUpload(file) {
+        const isJPG = file.type === 'image/jpeg';
+        const isLt2M = file.size / 1024 / 1024 < 2;
+
+        if (!isJPG) {
+          this.$message.error('上传头像图片只能是 JPG 格式!');
+        }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!');
+        }
+        return isJPG && isLt2M;
+      }
   },
   //点击进来的时候查看那全部数据
   created: function() {
@@ -531,4 +592,27 @@ export default {
 div.dialog-footer {
   text-align: center;
 }
+.avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
 </style>
