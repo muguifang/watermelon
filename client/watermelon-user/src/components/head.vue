@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="margin-bottom: 20px;">
     <div>
       <el-link :underline="false">登录</el-link>
       <el-link :underline="false">注册</el-link>

@@ -15,7 +15,7 @@ const routes = [
     children: [
       {
         path: "/index",
-        component: () => import("../views/music/music.vue")
+        component: () => import("../views/music/index.vue")
       }
     ]
   },
