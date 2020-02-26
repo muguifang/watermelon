@@ -28,7 +28,7 @@
           </el-col>
         </el-row>
         <!-- 表格展示数据 -->
-        <el-table :data="tableData" border style="width: 100%">
+        <el-table :data="pageData" border style="width: 100%">
           <el-table-column type="selection" width="55"> </el-table-column>
           <el-table-column label="排名" width="80">
             <template slot-scope="scope">
