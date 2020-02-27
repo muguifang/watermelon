@@ -33,6 +33,7 @@
           v-for="item in routers"
           :key="item.id"
           :index="item.path"
+          v-show="item.hidden"
           >{{ item.meta.name }}</el-menu-item
         >
       </el-menu>
