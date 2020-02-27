@@ -8,7 +8,9 @@
       <el-collapse-item title="标题1" name="1">
         <div>
           与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；
-          <router-link to="/detailMusic"><button>跳转</button></router-link>
+          <el-button type="text" class="button" @click="toInfoView"
+            >查看音乐</el-button
+          >
         </div>
       </el-collapse-item>
       <el-collapse-item title="标题4" name="2">
@@ -30,7 +32,6 @@
   </div>
 </template>
 <script>
-// import router from "@/router";
 export default {
   name: "informationIndex",
   data() {
@@ -60,7 +61,11 @@ export default {
       ]
     };
   },
-  method: {}
+  methods: {
+    toInfoView() {
+      this.$router.push("/detailsInfo");
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

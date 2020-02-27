@@ -25,7 +25,9 @@
                 <div v-for="o in 5" :key="o" class="star">
                   <i class="el-icon-star-off"></i>
                 </div>
-                <el-button type="text" class="button">查看音乐</el-button>
+                <el-button type="text" class="button" @click="toView()"
+                  >查看音乐</el-button
+                >
               </div>
             </div>
           </el-card>
@@ -38,6 +40,11 @@
 export default {
   data() {
     return {};
+  },
+  methods: {
+    toView() {
+      this.$router.push("/musicInfo");
+    }
   }
 };
 </script>

@@ -8,6 +8,7 @@ const routes = [
   {
     path: "/",
     redirect: "/index",
+    hidden: true,
     meta: {
       name: "首页"
     },
@@ -22,6 +23,7 @@ const routes = [
   {
     path: "/allMusic",
     redirect: "/allMusic",
+    hidden: true,
     meta: {
       name: "全部音乐"
     },
@@ -35,28 +37,25 @@ const routes = [
     ]
   },
   {
-    path: "/musicInfo",
-    redirect: "/MusicInfo",
+    path: "/musicInfomation",
+    redirect: "/musicInfomation",
+    hidden: true,
     meta: {
       name: "音乐资讯"
     },
     component: layout,
     children: [
       {
-        path: "/musicInfo",
-        component: () => import("../views/music/musicInfomation.vue"),
-        children: [
-          {
-            path: "/detailMusic",
-            component: () => import("../views/music/detailInfo.vue")
-          }
-        ]
+        path: "/musicInfomation",
+        name: "MusicInfomation",
+        component: () => import("../views/music/musicInfomation.vue")
       }
     ]
   },
   {
     path: "/hotMusic",
     redirect: "/hotMusic",
+    hidden: true,
     meta: {
       name: "热歌榜"
     },
@@ -71,6 +70,7 @@ const routes = [
   {
     path: "/recommended",
     redirect: "/recommended",
+    hidden: true,
     meta: {
       name: "每日推荐"
     },
@@ -79,6 +79,36 @@ const routes = [
       {
         path: "/recommended",
         component: () => import("../views/music/recommended.vue")
+      }
+    ]
+  },
+  {
+    path: "/musicInfo",
+    redirect: "/musicInfo",
+    hidden: false,
+    meta: {
+      name: ""
+    },
+    component: layout,
+    children: [
+      {
+        path: "/musicInfo",
+        component: () => import("../views/music/musicInfo.vue")
+      }
+    ]
+  },
+  {
+    path: "/detailsInfo",
+    redirect: "/detailsInfo",
+    hidden: false,
+    meta: {
+      name: ""
+    },
+    component: layout,
+    children: [
+      {
+        path: "/detailsInfo",
+        component: () => import("../views/music/infomationDetails.vue")
       }
     ]
   }
