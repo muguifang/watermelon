@@ -114,6 +114,10 @@ public class MusicServiceImpl implements MusicService {
     @Override
     public List<Map<String, Object>> getMusicByConditions(String musicname) {
         List<Map<String, Object>> musics = tMyMusicMapper.getAllMusic(musicname);
+        for(Map map : musics){
+            String musicPhoto = (String)map.get("musicPhoto");
+            map.put("musicPhoto", Base64Util.base64Convert(musicPhoto));
+        }
         return musics;
     }
 
