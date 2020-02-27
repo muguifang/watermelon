@@ -38,13 +38,11 @@
           <!-- <el-table-column prop="id" label="编号" width="80"> </el-table-column> -->
           <el-table-column prop="musicname" label="音乐名称" width="500">
           </el-table-column>
-          <el-table-column prop="musicphoto" label="音乐图片" width="500">
-          </el-table-column>
-          <!-- <el-table-column prop="musicphoto" label="图片" width="250">
+          <el-table-column prop="musicphoto" label="图片" width="250">
             <template slot-scope="scope">
               <img :src="scope.row.musicphoto" />
             </template>
-          </el-table-column> -->
+          </el-table-column>
           <el-table-column prop="collectnum" label="收藏量"> </el-table-column>
         </el-table>
         <!-- 分页 -->
@@ -54,7 +52,7 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="currentPage"
-            :page-sizes="[4, 5, 6, 7]"
+            :page-sizes="[1, 2, 3, 4]"
             :page-size="pageSize"
             layout="total, sizes, prev, pager, next, jumper"
             :total="sumNum"
@@ -69,7 +67,7 @@
 import router from "@/router";
 import "../../../styles/config.scss";
 import { getAllMusicByCollect } from "@/api/music/sclList.js";
-// import { base64Convert } from "@/utils/base64Util.js";
+import { base64Convert } from "@/utils/base64Util.js";
 export default {
   name: "typeIndex",
   inject: ["reload"],
@@ -82,7 +80,7 @@ export default {
       //当前页码
       currentPage: 1,
       //每页条数
-      pageSize: 5
+      pageSize: 4
     };
   },
   methods: {
@@ -106,9 +104,9 @@ export default {
             };
             table.id = tableList[i].mId;
             table.musicname = tableList[i].mName;
-            table.musicphoto = tableList[i].pic;
-            // let base = tableList[i].pic;
-            // table.musicphoto = URL.createObjectURL(base64Convert(base));
+            // table.musicphoto = tableList[i].pic;
+            let base = tableList[i].pic;
+            table.musicphoto = URL.createObjectURL(base64Convert(base));
             table.collectnum = tableList[i].num;
             this.tableData.push(table);
           }

@@ -92,13 +92,13 @@
               <el-button
                 size="mini"
                 icon="el-icon-video-play"
-                @click="playMusic(scope.$index, scope.row)"
+                @click="playMusic(scope.row)"
                 >播放音乐</el-button
               >
               <el-button
                 size="mini"
                 icon="el-icon-video-play"
-                @click="playMusicMV(scope.$index, scope.row)"
+                @click="playMusicMV(scope.row)"
                 >播放 MV</el-button
               >
               <el-button
@@ -112,7 +112,7 @@
                 type="success"
                 size="mini"
                 icon="el-icon-edit"
-                @click="update(scope.$index, scope.row)"
+                @click="update(scope.row)"
                 >编辑</el-button
               >
             </template>
@@ -125,7 +125,7 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="currentPage"
-            :page-sizes="[4, 5, 6, 7]"
+            :page-sizes="[1, 2, 3, 4]"
             :page-size="pageSize"
             layout="total, sizes, prev, pager, next, jumper"
             :total="sumNum"
@@ -488,7 +488,7 @@
           width="30%"
         >
           <div style="width:100%;">
-            <audio style="width:100%;" :src="src" controls="controls" />
+            <audio style="width:100%;" :src="musicSrc" controls="controls" />
           </div>
         </el-dialog>
         <!-- 播放MV弹窗 -->
@@ -500,7 +500,7 @@
         >
           <!-- 视频代码。。没找到 -->
           <div style="width:100%;">
-            <video style="width:100%;" :src="src" controls="controls" />
+            <video style="width:100%;" :src="mvSrc" controls="controls"></video>
           </div>
         </el-dialog>
       </div>
@@ -516,6 +516,8 @@ import { updateMusic } from "@/api/music/updateMusic.js";
 import { addMusic } from "@/api/music/addMusic.js";
 import { getMusicType } from "@/api/music/typeList.js";
 import { base64Convert } from "@/utils/base64Util.js";
+import { returnBase64 } from "@/api/music/dialogPlayMusic.js";
+import { updateFile, deleteServerFile } from "@/api/file/file.js";
 export default {
   name: "typeIndex",
   inject: ["reload"],
@@ -541,7 +543,7 @@ export default {
       //当前页码
       currentPage: 1,
       //每页条数
-      pageSize: 5,
+      pageSize: 4,
       //选中的对象
       sels: [],
       //选中的id
@@ -585,22 +587,54 @@ export default {
         status: [{ required: true, message: "请选择状态", trigger: "blur" }],
         typeId: [{ required: true, message: "请选择音乐类别", trigger: "blur" }]
       },
-      src: "",
+      //图片名称
+      fileName: "",
+      //音乐路径
+      musicSrc: "",
+      //MV路径
+      mvSrc: "",
       fileList: []
     };
   },
   methods: {
     //点击播放音乐按钮
-    playMusic(index, row) {
+    playMusic(row) {
+      debugger;
       this.dialog_playMusic = true;
-      this.src = require("D:/mp3/薛之谦 - 像风一样.mp3");
-      console.log(row);
+      this.musicSrc = row.musicplay;
+      const param = {
+        path: this.musicSrc
+      };
+      returnBase64(param).then(response => {
+        const data = response.data;
+        if (data.code === 200) {
+          this.musicSrc = URL.createObjectURL(base64Convert(data.data));
+        } else {
+          this.$message({
+            type: "error",
+            message: "获取播放源失败"
+          });
+        }
+      });
     },
     //点击播放MV按钮
-    playMusicMV(index, row) {
-      this.dialog_playMusic = true;
-      this.src = require("D:/mp3/薛之谦 - 像风一样.mp3");
-      console.log(row);
+    playMusicMV(row) {
+      this.dialog_playMV = true;
+      this.mvSrc = row.mvplay;
+      const param = {
+        path: this.mvSrc
+      };
+      returnBase64(param).then(response => {
+        const data = response.data;
+        if (data.code === 200) {
+          this.mvSrc = URL.createObjectURL(base64Convert(data.data));
+        } else {
+          this.$message({
+            type: "error",
+            message: "获取播放源失败"
+          });
+        }
+      });
     },
     //点击搜过框查询时
     query() {
@@ -720,13 +754,17 @@ export default {
       });
     },
     //修改之查询
-    update(index, row) {
+    update(row) {
+      debugger;
       this.dialog_updateMusic = true;
       this.dialogForm.id = row.id;
       this.dialogForm.musicname = row.musicname;
       this.dialogForm.musicphoto = row.musicphoto;
+      this.imageUrl = row.musicphoto;
       this.dialogForm.musicplay = row.musicplay;
+      // this.dialogForm.musicplay = this.musicSrc;
       this.dialogForm.mvplay = row.mvplay;
+      // this.dialogForm.mvplay = this.mvSrc;
       this.dialogForm.recommend = row.recommend;
       this.dialogForm.status = row.status;
       this.dialogForm.typeId = row.typeId;
@@ -739,6 +777,11 @@ export default {
       this.$refs.dialogForm.validate(valid => {
         if (valid) {
           this.dialog_updateMusic = false;
+          if (this.dialogForm.pic == this.imageUrl) {
+            this.dialogForm.pic = null;
+          } else {
+            this.dialogForm.pic = this.fileName;
+          }
           updateMusic(this.dialogForm).then(response => {
             const data = response.data;
             if (data.code == 200) {
@@ -836,13 +879,31 @@ export default {
       }
     },
     //取消按钮
+    // closeInfo() {
+    //   this.dialog_updateMusic = false;
+    //   this.$message({
+    //     type: "info",
+    //     message: "已取消编辑"
+    //   });
+    //   // this.reset();
+    //   this.options = [];
+    //   console.log(this.options);
+    //   this.query();
+    // },
+    //取消按钮取消上传文件时删除服务器图片
     closeInfo() {
       this.dialog_updateMusic = false;
-      this.$message({
-        type: "info",
-        message: "已取消编辑"
-      });
-      // this.reset();
+      //删除文件
+      if (this.fileName != "") {
+        deleteServerFile(this.fileName).then(response => {
+          const data = response.data;
+          if (data.code === 200) {
+            this.fileName = "";
+            this.dialog_updateMusic = false;
+            this.$message("以取消上传");
+          }
+        });
+      }
       this.options = [];
       console.log(this.options);
       this.query();
@@ -897,6 +958,7 @@ export default {
     },
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
+      this.fileName = file.response.data;
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === "image/jpeg";

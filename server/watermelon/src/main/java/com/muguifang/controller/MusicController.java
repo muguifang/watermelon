@@ -164,4 +164,15 @@ public class MusicController {
         List<Map<String, Object>> allMusicInfo = musicService.getAllMusicInfo(musicname);
         return ResultVo.sendResult(200, "success", allMusicInfo);
     }
+
+    /**
+     * 返回base64
+     * @return
+     */
+    @PostMapping("/returnBase64")
+    public ResultVo returnBase64(@RequestBody Map<String, Object> param){
+        String path = (String) param.get("path");
+        String base64String = musicService.returnBase64(path);
+        return ResultVo.sendResult(200, "success", base64String);
+    }
 }

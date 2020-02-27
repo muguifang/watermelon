@@ -1,6 +1,7 @@
 package com.muguifang.service.impl;
 
 import com.muguifang.common.exception.exceptions.DataException;
+import com.muguifang.common.exception.exceptions.ParamException;
 import com.muguifang.common.utils.Base64Util;
 import com.muguifang.mapper.TCollectMapper;
 import com.muguifang.mapper.TMusicMapper;
@@ -130,12 +131,20 @@ public class MusicServiceImpl implements MusicService {
             criteria.andMusicnameLike("%" + name + "%");
         }
         List<TMusic> tMusics = tMusicMapper.selectByExample(example);
+        for(TMusic tMusic : tMusics){
+            String musicphoto = tMusic.getMusicphoto();
+            tMusic.setMusicphoto(Base64Util.base64Convert(musicphoto));
+        }
         return tMusics;
     }
 
     @Override
     public List<Map<String, Object>> getAllMusicInfo(String musicName) {
         List<Map<String, Object>> allMusicInfo = tMyMusicMapper.getAllMusicInfo(musicName);
+        for(Map<String, Object> tMusicMap : allMusicInfo){
+            String musicphoto = tMusicMap.get("pic").toString();
+            tMusicMap.put("pic",Base64Util.base64Convert(musicphoto));
+        }
         return allMusicInfo;
     }
 
@@ -147,5 +156,14 @@ public class MusicServiceImpl implements MusicService {
         List<TMusic> tMusics = tMusicMapper.selectByExample(example);
         return tMusics;
     }
+
+    @Override
+    public String returnBase64(String path) {
+        if(path == null || "".equals(path)){
+            throw new ParamException(501, "获取路径失败！");
+        }
+        return Base64Util.base64Convert(path);
+    }
+
 
 }

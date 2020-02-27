@@ -81,4 +81,12 @@ public interface MusicService {
      * @return
      */
     public List<TMusic> getMusicsByType(Integer id);
+
+    /**
+     * 返回base64
+     * @param path
+     * @return
+     */
+    public String returnBase64(String path);
+
 }
