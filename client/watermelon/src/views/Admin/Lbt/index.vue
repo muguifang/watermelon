@@ -120,7 +120,7 @@
             class="avatar-uploader"
             action="/api/file/upload"
             name="lbt"
-            :data='{ path: "D:/img" }'
+            :data="{ path: 'D:/img' }"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
@@ -201,21 +201,21 @@ export default {
     },
     //新增轮播图 【没有实现】
     addLbt() {
-      if(this.fileName != ""){
+      if (this.fileName != "") {
         const param = {
-        path: this.fileName
-      };
-      addLbt(param).then(response => {
-        const data = response.data;
-        if (data.code == 200) {
-          this.dialog_insertLbt = false;
-          this.$message({
-            type: "success",
-            message: "新增成功!"
-          });
-          this.query();
-        }
-      });
+          path: this.fileName
+        };
+        addLbt(param).then(response => {
+          const data = response.data;
+          if (data.code == 200) {
+            this.dialog_insertLbt = false;
+            this.$message({
+              type: "success",
+              message: "新增成功!"
+            });
+            this.query();
+          }
+        });
       }
     },
     //修改之查询  【没有实现】
@@ -247,15 +247,15 @@ export default {
     cancel() {
       this.dialog_updateLbt = false;
       //删除文件
-      if(this.fileName != ""){
+      if (this.fileName != "") {
         deleteServerFile(this.fileName).then(response => {
-        const data = response.data;
-        if (data.code === 200) {
-          this.fileName = "";
-          this.dialog_updateLbt = false;
-          this.$message("以取消上传");
-        }
-      });
+          const data = response.data;
+          if (data.code === 200) {
+            this.fileName = "";
+            this.dialog_updateLbt = false;
+            this.$message("以取消上传");
+          }
+        });
       }
     },
     //删除轮播图

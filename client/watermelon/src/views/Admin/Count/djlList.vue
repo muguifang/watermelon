@@ -40,6 +40,11 @@
           </el-table-column>
           <el-table-column prop="musicphoto" label="音乐图片" width="500">
           </el-table-column>
+          <!-- <el-table-column prop="musicphoto" label="图片" width="250">
+            <template slot-scope="scope">
+              <img :src="scope.row.musicphoto" />
+            </template>
+          </el-table-column> -->
           <el-table-column prop="playnum" label="点击量"> </el-table-column>
         </el-table>
         <!-- 分页 -->
@@ -64,6 +69,7 @@
 import router from "@/router";
 import "../../../styles/config.scss";
 import { getAllMusicByPlay } from "@/api/music/djlList.js";
+// import { base64Convert } from "@/utils/base64Util.js";
 export default {
   name: "typeIndex",
   inject: ["reload"],
@@ -101,6 +107,8 @@ export default {
             table.id = tableList[i].id;
             table.musicname = tableList[i].musicname;
             table.musicphoto = tableList[i].musicphoto;
+            // let base = tableList[i].musicphoto;
+            // table.musicphoto = URL.createObjectURL(base64Convert(base));
             table.playnum = tableList[i].playnum;
             this.tableData.push(table);
           }
@@ -159,5 +167,10 @@ export default {
   &.title {
     @include labelDom(left, 60, 40);
   }
+}
+img {
+  width: 150px;
+  height: 80px;
+  margin: 0 auto;
 }
 </style>

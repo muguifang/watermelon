@@ -71,7 +71,7 @@
           </el-table-column>
           <el-table-column prop="pic" label="图片" width="250">
             <template slot-scope="scope">
-              <img style="width: 80px; height: 80px;" :src="scope.row.pic" />
+              <img :src="scope.row.pic" />
             </template>
           </el-table-column>
           <el-table-column label="操作">
@@ -155,16 +155,17 @@
                 autocomplete="off"
               ></el-input> -->
               <el-upload
-  class="avatar-uploader"
-  action="/api/file/upload"
-  name="lbt"
-  :data='{path: "D:/img"}'
-  :show-file-list="false"
-  :on-success="handleAvatarSuccess"
-  :before-upload="beforeAvatarUpload">
-  <img v-if="imageUrl" :src="imageUrl" class="avatar">
-  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-</el-upload>
+                class="avatar-uploader"
+                action="/api/file/upload"
+                name="lbt"
+                :data="{ path: 'D:/img' }"
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload"
+              >
+                <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              </el-upload>
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -220,16 +221,17 @@
                 autocomplete="off"
               ></el-input> -->
               <el-upload
-  class="avatar-uploader"
-  action="/api/file/upload"
-  name="lbt"
-  :data='{path: "D:/img"}'
-  :show-file-list="false"
-  :on-success="handleAvatarSuccess"
-  :before-upload="beforeAvatarUpload">
-  <img v-if="imageUrl" :src="imageUrl" class="avatar">
-  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-</el-upload>
+                class="avatar-uploader"
+                action="/api/file/upload"
+                name="lbt"
+                :data="{ path: 'D:/img' }"
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload"
+              >
+                <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              </el-upload>
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -387,7 +389,7 @@ export default {
           this.dialog_updateZx = false;
           if (this.dialogForm.pic == this.imageUrl) {
             this.dialogForm.pic = null;
-          }else{
+          } else {
             this.dialogForm.pic = this.fileName;
           }
           updateZx(this.dialogForm).then(response => {
@@ -488,15 +490,15 @@ export default {
     //取消按钮
     closeInfo() {
       //删除文件
-      if(this.fileName != ""){
+      if (this.fileName != "") {
         deleteServerFile(this.fileName).then(response => {
           const data = response.data;
-        if (data.code === 200) {
-          this.fileName = "";
-      this.dialog_updateZx = false;
-          this.$message("以取消上传");
-        }
-      });
+          if (data.code === 200) {
+            this.fileName = "";
+            this.dialog_updateZx = false;
+            this.$message("以取消上传");
+          }
+        });
       }
       this.query();
     },
@@ -527,21 +529,21 @@ export default {
     //文件上传成功的钩子
     handleAvatarSuccess(res, file) {
       this.fileName = file.response.data;
-        this.imageUrl = URL.createObjectURL(file.raw);
-      },
+      this.imageUrl = URL.createObjectURL(file.raw);
+    },
     //文件上传之前的钩子
-      beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 2;
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === "image/jpeg";
+      const isLt2M = file.size / 1024 / 1024 < 2;
 
-        if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!');
-        }
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
-        }
-        return isJPG && isLt2M;
+      if (!isJPG) {
+        this.$message.error("上传头像图片只能是 JPG 格式!");
       }
+      if (!isLt2M) {
+        this.$message.error("上传头像图片大小不能超过 2MB!");
+      }
+      return isJPG && isLt2M;
+    }
   },
   //点击进来的时候查看那全部数据
   created: function() {
@@ -593,26 +595,31 @@ div.dialog-footer {
   text-align: center;
 }
 .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
-    text-align: center;
-  }
-  .avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
-  }
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+img {
+  width: 150px;
+  height: 80px;
+  margin: 0 auto;
+}
 </style>
