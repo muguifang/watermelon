@@ -89,7 +89,7 @@ export default {
   }
 };
 </script>
-<style>
+<style lang="scss" scoped>
 .index-wrap {
   width: 100%;
 }
@@ -134,6 +134,7 @@ label {
 .el-row {
   width: 100%;
   float: right;
+  margin-top: 20px;
 }
 .el-col {
   margin-right: 25px;

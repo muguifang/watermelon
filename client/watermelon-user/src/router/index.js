@@ -44,7 +44,13 @@ const routes = [
     children: [
       {
         path: "/musicInfo",
-        component: () => import("../views/music/musicInfomation.vue")
+        component: () => import("../views/music/musicInfomation.vue"),
+        children: [
+          {
+            path: "/detailMusic",
+            component: () => import("../views/music/detailInfo.vue")
+          }
+        ]
       }
     ]
   },
