@@ -73,6 +73,9 @@
             </template>
           </el-table-column> -->
           <el-table-column prop="musicphoto" label="音乐图片" width="250">
+            <template slot-scope="scope">
+              <img :src="scope.row.musicphoto" />
+            </template>
           </el-table-column>
           <!-- <el-table-column prop="musicplay" label="音乐播放" width="150">
           </el-table-column>
@@ -512,12 +515,13 @@ import { deleteMusic } from "@/api/music/deleteMusic.js";
 import { updateMusic } from "@/api/music/updateMusic.js";
 import { addMusic } from "@/api/music/addMusic.js";
 import { getMusicType } from "@/api/music/typeList.js";
-// import { base64Convert } from "@/utils/base64Util.js";
+import { base64Convert } from "@/utils/base64Util.js";
 export default {
   name: "typeIndex",
   inject: ["reload"],
   data() {
     return {
+      imageUrl: "",
       //表格数据
       tableData: [],
       //搜索框
@@ -589,13 +593,13 @@ export default {
     //点击播放音乐按钮
     playMusic(index, row) {
       this.dialog_playMusic = true;
-      this.src = require("D:/mp3/演员.mp3");
+      this.src = require("D:/mp3/薛之谦 - 像风一样.mp3");
       console.log(row);
     },
     //点击播放MV按钮
     playMusicMV(index, row) {
       this.dialog_playMusic = true;
-      this.src = require("D:/mp3/演员.mp3");
+      this.src = require("D:/mp3/薛之谦 - 像风一样.mp3");
       console.log(row);
     },
     //点击搜过框查询时
@@ -627,9 +631,9 @@ export default {
             };
             table.id = tableList[i].id;
             table.musicname = tableList[i].musicName;
-            table.musicphoto = tableList[i].musicPhoto;
-            // let base = tableList[i].musicPhoto;
-            // table.musicphoto = URL.createObjectURL(base64Convert(base));
+            // table.musicphoto = tableList[i].musicPhoto;
+            let base = tableList[i].musicPhoto;
+            table.musicphoto = URL.createObjectURL(base64Convert(base));
             table.musicplay = tableList[i].musicPlay;
             table.mvplay = tableList[i].mvPlay;
             table.recommend = tableList[i].recommend;
@@ -890,6 +894,21 @@ export default {
     beforeRemove(file, fileList) {
       console.log(fileList);
       return this.$confirm(`确定移除 ${file.name}？`);
+    },
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === "image/jpeg";
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error("上传头像图片只能是 JPG 格式!");
+      }
+      if (!isLt2M) {
+        this.$message.error("上传头像图片大小不能超过 2MB!");
+      }
+      return isJPG && isLt2M;
     }
   },
   //点击进来的时候查看那全部数据
