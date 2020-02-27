@@ -1,6 +1,8 @@
 package com.muguifang.service.impl;
 
 import com.muguifang.common.exception.exceptions.NoDataException;
+import com.muguifang.common.utils.Base64Util;
+import com.muguifang.common.utils.FileUtil;
 import com.muguifang.mapper.TInformationMapper;
 import com.muguifang.po.TInformation;
 import com.muguifang.po.TInformationExample;
@@ -33,19 +35,19 @@ public class InformationServiceImpl implements InformationService {
             throw new NoDataException(400, "资讯信息为空!");
         }
         for(TInformation tInformation : tInformations){
-            String picStr = tInformation.getPic();
-            String pic = "";
-            if(picStr != null){
-                pic = picStr.substring(picStr.lastIndexOf("\\")+1,picStr.length());
-                tInformation.setPic("@/assets/"+ pic);
-            }
+            String path = tInformation.getPic();
+            tInformation.setPic(Base64Util.base64Convert(path));
         }
         return tInformations;
     }
 
     @Override
     public void updateInfo(TInformation tInformation) {
-        tInformationMapper.updateByPrimaryKey(tInformation);
+        String filePath =  tInformation.getPic();
+        if(filePath != null && !"".equals(filePath)){
+            tInformation.setPic("D:/img/"+filePath);
+        }
+        tInformationMapper.updateByPrimaryKeySelective(tInformation);
     }
 
     @Override
@@ -53,11 +55,19 @@ public class InformationServiceImpl implements InformationService {
         TInformationExample example = new TInformationExample();
         TInformationExample.Criteria criteria = example.createCriteria();
         criteria.andIdIn(ids);
+        List<TInformation> tInformations = tInformationMapper.selectByExample(example);
+        //删除图片文件
+        for(TInformation tInformation : tInformations){
+            String file = tInformation.getPic();
+            FileUtil.deleteFile(file);
+        }
         tInformationMapper.deleteByExample(example);
     }
 
     @Override
     public void addInfo(TInformation tInformation) {
+        String param = tInformation.getPic();
+        tInformation.setPic("D:/img/"+param);
         tInformation.setInsertdate(new Date());
         tInformationMapper.insert(tInformation);
     }

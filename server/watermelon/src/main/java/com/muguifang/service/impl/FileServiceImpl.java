@@ -1,6 +1,8 @@
 package com.muguifang.service.impl;
 
 import com.muguifang.common.exception.exceptions.ParamException;
+import com.muguifang.common.utils.Base64Util;
+import com.muguifang.common.utils.FileUtil;
 import com.muguifang.mapper.TLbtMapper;
 import com.muguifang.po.TLbt;
 import com.muguifang.po.TLbtExample;
@@ -77,10 +79,10 @@ public class FileServiceImpl implements FileService {
         List<Map<String, String>> result = new ArrayList<>();
         for (TLbt tLbt : tLbts) {
             Map<String, String> map = new HashMap<>();
-            String photo = getPhoto(tLbt.getPic());
+            String photo = Base64Util.base64Convert(tLbt.getPic());
             tLbt.setPic(photo);
             map.put("id", tLbt.getId().toString());
-            map.put("pic", "data:image/png;base64," + photo);
+            map.put("pic", photo);
             result.add(map);
         }
         return result;
@@ -95,13 +97,14 @@ public class FileServiceImpl implements FileService {
         for (TLbt tLbt : tLbts) {
             tLbtMapper.deleteByPrimaryKey(tLbt.getId());
             String path = tLbt.getPic();
-            if (path == null || "".equals(path)) {
-                throw new ParamException(501, "文件路径无效");
-            }
-            File file = new File(path);
-            if (file.isFile()) {// 表示该文件不是文件夹
-                file.delete();
-            }
+            FileUtil.deleteFile(path);
+//            if (path == null || "".equals(path)) {
+//                throw new ParamException(501, "文件路径无效");
+//            }
+//            File file = new File(path);
+//            if (file.isFile()) {// 表示该文件不是文件夹
+//                file.delete();
+//            }
         }
     }
 
@@ -139,20 +142,4 @@ public class FileServiceImpl implements FileService {
         }
     }
 
-    public static String getPhoto(String path) {
-        InputStream in = null;
-        byte[] data = null;
-        //读取图片字节数组
-        try {
-            in = new FileInputStream(path);
-            data = new byte[in.available()];
-            in.read(data);
-            in.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //对字节数组Base64编码
-        BASE64Encoder encoder = new BASE64Encoder();
-        return encoder.encode(data);
-    }
 }

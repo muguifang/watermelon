@@ -1,5 +1,6 @@
 package com.muguifang.controller;
 
+import com.muguifang.common.utils.Base64Util;
 import com.muguifang.result.ResultVo;
 import com.muguifang.service.FileService;
 import org.apache.ibatis.annotations.Param;
@@ -86,9 +87,15 @@ public class FileController {
         return ResultVo.sendResult(200, "success");
     }
 
+    /**
+     * 上传取消后删除服务器文件
+     * @param fileName
+     * @return
+     */
     @DeleteMapping("/deleteServerFile")
     public ResultVo deleteServerFile(String fileName){
         fileService.deleteServerFile(fileName);
         return ResultVo.sendResult(200, "success");
     }
+
 }

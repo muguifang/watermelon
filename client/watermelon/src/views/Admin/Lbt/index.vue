@@ -144,7 +144,7 @@ import { addLbt } from "@/api/admin/lbt/addLbt.js";
 import { getAllPhoto } from "@/api/admin/lbt/lbtList.js";
 import { deleteLbt } from "@/api/admin/lbt/deleteLbt.js";
 import { updateFile, deleteServerFile } from "@/api/file/file.js";
-import { base64ImgtoFile } from "@/utils/base64Util.js";
+import { base64Convert } from "@/utils/base64Util.js";
 export default {
   name: "zxIndex",
   inject: ["reload"],
@@ -193,7 +193,7 @@ export default {
             };
             table.id = tableList[i].id;
             let base = tableList[i].pic;
-            table.pic = URL.createObjectURL(base64ImgtoFile(base));
+            table.pic = URL.createObjectURL(base64Convert(base));
             this.tableData.push(table);
           }
         }
@@ -251,6 +251,7 @@ export default {
         deleteServerFile(this.fileName).then(response => {
         const data = response.data;
         if (data.code === 200) {
+          this.fileName = "";
           this.dialog_updateLbt = false;
           this.$message("以取消上传");
         }
