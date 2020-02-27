@@ -95,4 +95,7 @@ label {
   height: 50px;
   line-height: 50px;
 }
+.el-collapse-item {
+  font-size: 18px;
+}
 </style>
