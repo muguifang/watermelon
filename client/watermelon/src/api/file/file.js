@@ -20,3 +20,9 @@ export function deleteServerFile(data) {
     params: { fileName: data }
   });
 }
+export function test() {
+  return intercept.request({
+    method: "post",
+    url: "/file/test"
+  });
+}

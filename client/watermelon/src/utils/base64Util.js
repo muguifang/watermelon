@@ -1,5 +1,5 @@
 //base64装为图片
-export function base64ImgtoFile(dataurl, filename = "file") {
+export function base64Convert(dataurl, filename = "file") {
     let arr = dataurl.split(",");
     let mime = arr[0].match(/:(.*?);/)[1];
     let suffix = mime.split("/")[1];
@@ -13,4 +13,3 @@ export function base64ImgtoFile(dataurl, filename = "file") {
       type: mime
     });
   }
-  

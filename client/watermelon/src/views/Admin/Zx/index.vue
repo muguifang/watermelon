@@ -248,7 +248,7 @@ import { getZxList } from "@/api/admin/zx/zxList.js";
 import { deleteZx } from "@/api/admin/zx/deleteZx.js";
 import { updateZx } from "@/api/admin/zx/updateZx.js";
 import { addZx } from "@/api/admin/zx/addZx.js";
-import { base64ImgtoFile } from "@/utils/base64Util.js";
+import { base64Convert } from "@/utils/base64Util.js";
 import { deleteServerFile } from "@/api/file/file.js";
 export default {
   name: "zxIndex",
@@ -336,7 +336,7 @@ export default {
             table.id = tableList[i].id;
             table.title = tableList[i].title;
             table.content = tableList[i].content;
-            table.pic = URL.createObjectURL(base64ImgtoFile(tableList[i].pic));
+            table.pic = URL.createObjectURL(base64Convert(tableList[i].pic));
             table.insertdate = tableList[i].insertdate;
             this.tableData.push(table);
           }
