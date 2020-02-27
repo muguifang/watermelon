@@ -82,7 +82,7 @@ public class FileServiceImpl implements FileService {
             String photo = Base64Util.base64Convert(tLbt.getPic());
             tLbt.setPic(photo);
             map.put("id", tLbt.getId().toString());
-            map.put("pic", "data:image/png;base64," + photo);
+            map.put("pic", photo);
             result.add(map);
         }
         return result;

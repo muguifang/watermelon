@@ -1,6 +1,7 @@
 package com.muguifang.service.impl;
 
 import com.muguifang.common.exception.exceptions.DataException;
+import com.muguifang.common.utils.Base64Util;
 import com.muguifang.mapper.TCollectMapper;
 import com.muguifang.mapper.TMusicMapper;
 import com.muguifang.mapper.TTypeMapper;

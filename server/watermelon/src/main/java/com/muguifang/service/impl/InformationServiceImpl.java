@@ -36,7 +36,7 @@ public class InformationServiceImpl implements InformationService {
         }
         for(TInformation tInformation : tInformations){
             String path = tInformation.getPic();
-            tInformation.setPic("data:image/png;base64," + Base64Util.base64Convert(path));
+            tInformation.setPic(Base64Util.base64Convert(path));
         }
         return tInformations;
     }
