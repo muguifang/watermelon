@@ -5,8 +5,13 @@
         <span>音乐类别</span>
         <el-button style="padding: 3px 0;" type="text">更多</el-button>
       </div>
-      <div v-for="o in 4" :key="o" class="text item">
-        {{ "列表内容 " + o }}
+      <div
+        v-for="item in typeList"
+        :key="item.id"
+        class="text item"
+        @click="getMusic(item.id)"
+      >
+        {{ item.name }}
       </div>
     </el-card>
     <div class="music-info">
