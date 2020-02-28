@@ -1,7 +1,7 @@
-// -- 引入外部其他文件 --// -- 引入外部其他文件 --
+// -- 引入外部其他文件 --
 // -- 名字 --
 
-const name = "";
+const name = "detailsInfo";
 
 // -- 数据 --
 
@@ -12,9 +12,8 @@ const data = function() {
 // -- 方法 --
 
 const methods = {
-  //页面内路由跳转
-  toView() {
-    this.$router.push("/musicInfo");
+  goBack() {
+    this.$router.push("/musicInfomation");
   }
 };
 

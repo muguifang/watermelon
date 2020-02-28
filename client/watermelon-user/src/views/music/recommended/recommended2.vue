@@ -1,0 +1,57 @@
+<template>
+  <div>
+    <audio :src="music" id="audio"></audio>
+    <div class="audio-box bbb">
+      <span class="time-font">
+        {{
+          second / 60 > 9 ? parseInt(second / 60) : "0" + parseInt(second / 60)
+        }}:{{
+          second % 60 >= 10
+            ? parseInt(second % 60)
+            : "0" + parseInt(second % 60)
+        }}
+      </span>
+      <el-progress
+        :percentage="progressing_audio"
+        status="success"
+        :stroke-width="4"
+        style="margin-top:10px;margin-left:30px;float:left;width:414px;"
+      ></el-progress>
+      <img
+        :src="audioPlayShow ? imgA : imgB"
+        class="rong-circle-control"
+        @click="controlAudio()"
+      />
+    </div>
+  </div>
+</template>
+<script src="./recommended.js"></script>
+<style>
+.rong-circle-control {
+  width: 56px;
+  height: 56px;
+  margin-left: 46px;
+  float: left;
+  /*background-color: red;*/
+  border-radius: 50%;
+}
+.time-font {
+  margin-top: 10px;
+  font-size: 24px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: rgba(153, 153, 153, 1);
+  line-height: 34px;
+  float: left;
+  margin-left: 0px;
+}
+.audio-box {
+  height: 56px;
+  width: 610px;
+  padding: 20px 30px;
+  margin: 40px;
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0px 14px 30px 0px rgba(154, 159, 182, 0.1);
+  border-radius: 20px;
+}
+</style>
