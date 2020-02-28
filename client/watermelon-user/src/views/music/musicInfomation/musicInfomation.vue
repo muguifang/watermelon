@@ -31,43 +31,7 @@
     </el-collapse>
   </div>
 </template>
-<script>
-export default {
-  name: "informationIndex",
-  data() {
-    return {
-      activeName: "1",
-      tableData: [
-        {
-          id: 1,
-          title: "新资讯1",
-          content: "没有什么内容哦哦哦！"
-        },
-        {
-          id: 2,
-          title: "新资讯2",
-          content: "没有什么内容哦哦哦！"
-        },
-        {
-          id: 3,
-          title: "新资讯3",
-          content: "没有什么内容哦哦哦！"
-        },
-        {
-          id: 4,
-          title: "新资讯4",
-          content: "没有什么内容哦哦哦！"
-        }
-      ]
-    };
-  },
-  methods: {
-    toInfoView() {
-      this.$router.push("/detailsInfo");
-    }
-  }
-};
-</script>
+<script src="./musicInfomation.js"></script>
 <style lang="scss" scoped>
 .el-collapse {
   width: 70%;

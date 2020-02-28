@@ -36,18 +36,7 @@
     </div>
   </div>
 </template>
-<script>
-export default {
-  data() {
-    return {};
-  },
-  methods: {
-    toView() {
-      this.$router.push("/musicInfo");
-    }
-  }
-};
-</script>
+<script src="./allMusic.js"></script>
 <style lang="scss" scoped>
 .info-wrap {
   width: 80%;

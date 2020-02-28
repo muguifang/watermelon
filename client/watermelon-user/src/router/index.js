@@ -16,7 +16,7 @@ const routes = [
     children: [
       {
         path: "/index",
-        component: () => import("../views/music/index.vue")
+        component: () => import("../views/music/index/index.vue")
       }
     ]
   },
@@ -32,7 +32,7 @@ const routes = [
       {
         path: "/allMusic",
         name: "AllMusic",
-        component: () => import("../views/music/allMusic.vue")
+        component: () => import("../views/music/allMusic/allMusic.vue")
       }
     ]
   },
@@ -48,7 +48,8 @@ const routes = [
       {
         path: "/musicInfomation",
         name: "MusicInfomation",
-        component: () => import("../views/music/musicInfomation.vue")
+        component: () =>
+          import("../views/music/musicInfomation/musicInfomation.vue")
       }
     ]
   },
@@ -63,7 +64,7 @@ const routes = [
     children: [
       {
         path: "/hotMusic",
-        component: () => import("../views/music/hotMusic.vue")
+        component: () => import("../views/music/hotMusic/hotMusic.vue")
       }
     ]
   },
@@ -78,7 +79,7 @@ const routes = [
     children: [
       {
         path: "/recommended",
-        component: () => import("../views/music/recommended.vue")
+        component: () => import("../views/music/recommended/recommended.vue")
       }
     ]
   },
@@ -93,7 +94,7 @@ const routes = [
     children: [
       {
         path: "/musicInfo",
-        component: () => import("../views/music/musicInfo.vue")
+        component: () => import("../views/music/musicInfo/musicInfo.vue")
       }
     ]
   },
@@ -108,7 +109,8 @@ const routes = [
     children: [
       {
         path: "/detailsInfo",
-        component: () => import("../views/music/infomationDetails.vue")
+        component: () =>
+          import("../views/music/infomationDetails/infomationDetails.vue")
       }
     ]
   },
@@ -123,7 +125,7 @@ const routes = [
     children: [
       {
         path: "/webAdvice",
-        component: () => import("../views/music/webAdvice.vue")
+        component: () => import("../views/music/webAdvice/webAdvice.vue")
       }
     ]
   },
@@ -138,7 +140,7 @@ const routes = [
     children: [
       {
         path: "/myCollect",
-        component: () => import("../views/music/myCollect.vue")
+        component: () => import("../views/music/myCollect/myCollect.vue")
       }
     ]
   }
