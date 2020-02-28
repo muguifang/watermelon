@@ -64,23 +64,13 @@
               <span>{{ scope.$index + 1 }}</span>
             </template>
           </el-table-column>
-          <!-- <el-table-column prop="id" label="编号" width="80"> </el-table-column> -->
           <el-table-column prop="musicname" label="音乐名称" width="200">
           </el-table-column>
-          <!-- <el-table-column prop="musicphoto" label="图片" width="250">
-            <template slot-scope="scope">
-              <img :src="scope.row.musicphoto" />
-            </template>
-          </el-table-column> -->
           <el-table-column prop="musicphoto" label="音乐图片" width="250">
             <template slot-scope="scope">
               <img :src="scope.row.musicphoto" />
             </template>
           </el-table-column>
-          <!-- <el-table-column prop="musicplay" label="音乐播放" width="150">
-          </el-table-column>
-          <el-table-column prop="mvplay" label="MV播放" width="200">
-          </el-table-column> -->
           <el-table-column prop="recommendStr" label="推荐星级" width="100">
           </el-table-column>
           <el-table-column prop="statusStr" label="状态" width="100">
@@ -158,17 +148,6 @@
                 autocomplete="off"
               ></el-input>
             </el-form-item>
-            <!-- <el-form-item
-              prop="musicphoto"
-              label="音乐图片:"
-              :label-width="formLabelWidth + ''"
-            >
-              <el-input
-                style="width: 250px;"
-                v-model="dialogForm.musicphoto"
-                autocomplete="off"
-              ></el-input>
-            </el-form-item> -->
             <el-form-item
               prop="musicphoto"
               label="音乐图片:"
@@ -177,7 +156,7 @@
               <el-upload
                 class="avatar-uploader"
                 action="api/file/upload"
-                name="lbt"
+                name="file"
                 :data="{ path: 'D:/img' }"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
@@ -187,73 +166,69 @@
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
             </el-form-item>
-            <!-- <el-form-item
-              prop="musicplay"
-              label="音乐播放:"
-              :label-width="formLabelWidth + ''"
-            >
-              <el-input
-                style="width: 250px;"
-                v-model="dialogForm.musicplay"
-                autocomplete="off"
-              ></el-input>
-            </el-form-item> -->
             <el-form-item
               prop="musicplay"
-              label="音乐播放:"
+              label="音乐文件:"
               :label-width="formLabelWidth + ''"
             >
               <el-upload
                 class="upload-demo"
-                action="api/file/upload"
-                name="music"
-                :data="{ path: 'D:/img' }"
-                :on-preview="handlePreview"
-                :on-remove="handleRemove"
-                :before-remove="beforeRemove"
-                multiple
+                ref="uploadMusic"
+                action="/api/file/upload"
+                name="file"
+                :before-upload="uploadMusicBefore"
+                :on-success="successMusic"
+                :data="{path: 'D:/music'}"
                 :limit="1"
                 :on-exceed="handleExceed"
                 :file-list="fileList"
+                :auto-upload="false"
               >
-                <el-button size="small" type="primary">点击上传</el-button>
+                <el-button slot="trigger" size="small" type="primary"
+                  >选取文件</el-button
+                >
+                <el-button
+                  style="margin-left: 10px;"
+                  size="small"
+                  type="success"
+                  @click="submitUploadMusic"
+                  >上传到服务器</el-button
+                >
                 <div slot="tip" class="el-upload__tip">
-                  只能上传1个文件，且不超过500kb
+                  只能上传mp3文件
                 </div>
               </el-upload>
             </el-form-item>
-            <!-- <el-form-item
-              prop="mvplay"
-              label="MV 播放:"
-              :label-width="formLabelWidth + ''"
-            >
-              <el-input
-                style="width: 250px;"
-                v-model="dialogForm.mvplay"
-                autocomplete="off"
-              ></el-input>
-            </el-form-item> -->
             <el-form-item
               prop="mvplay"
-              label="MV 播放:"
+              label="MV 文件:"
               :label-width="formLabelWidth + ''"
             >
               <el-upload
                 class="upload-demo"
-                action="api/file/upload"
-                name="musicMV"
-                :data="{ path: 'D:/img' }"
-                :on-preview="handlePreview"
-                :on-remove="handleRemove"
-                :before-remove="beforeRemove"
-                multiple
+                ref="uploadMV"
+                name="file"
+                action="/api/file/upload"
+                :before-upload="uploadMVBefore"
+                :data="{path: 'D:/mv'}"
+                :on-success="successMv"
                 :limit="1"
                 :on-exceed="handleExceed"
                 :file-list="fileList"
+                :auto-upload="false"
               >
-                <el-button size="small" type="primary">点击上传</el-button>
+                <el-button slot="trigger" size="small" type="primary"
+                  >选取文件</el-button
+                >
+                <el-button
+                  style="margin-left: 10px;"
+                  size="small"
+                  type="success"
+                  @click="submitUploadMV"
+                  >上传到服务器</el-button
+                >
                 <div slot="tip" class="el-upload__tip">
-                  只能上传1个文件，且不超过500kb
+                  只能上传avi文件
                 </div>
               </el-upload>
             </el-form-item>
@@ -332,17 +307,6 @@
                 autocomplete="off"
               ></el-input>
             </el-form-item>
-            <!-- <el-form-item
-              prop="musicphoto"
-              label="音乐图片:"
-              :label-width="formLabelWidth + ''"
-            >
-              <el-input
-                style="width: 250px;"
-                v-model="dialogForm.musicphoto"
-                autocomplete="off"
-              ></el-input>
-            </el-form-item> -->
             <el-form-item
               prop="musicphoto"
               label="音乐图片:"
@@ -351,7 +315,7 @@
               <el-upload
                 class="avatar-uploader"
                 action="api/file/upload"
-                name="musicPhoto"
+                name="file"
                 :data="{ path: 'D:/img' }"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
@@ -361,73 +325,69 @@
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
             </el-form-item>
-            <!-- <el-form-item
-              prop="musicplay"
-              label="音乐播放:"
-              :label-width="formLabelWidth + ''"
-            >
-              <el-input
-                style="width: 250px;"
-                v-model="dialogForm.musicplay"
-                autocomplete="off"
-              ></el-input>
-            </el-form-item> -->
             <el-form-item
               prop="musicplay"
-              label="音乐播放:"
+              label="音乐文件:"
               :label-width="formLabelWidth + ''"
             >
               <el-upload
                 class="upload-demo"
-                action="api/file/upload"
-                name="music"
-                :data="{ path: 'D:/img' }"
-                :on-preview="handlePreview"
-                :on-remove="handleRemove"
-                :before-remove="beforeRemove"
-                multiple
+                ref="uploadMusic"
+                action="/api/file/upload"
+                name="file"
+                :before-upload="uploadMusicBefore"
+                :on-success="successMusic"
+                :data="{path: 'D:/music'}"
                 :limit="1"
                 :on-exceed="handleExceed"
                 :file-list="fileList"
+                :auto-upload="false"
               >
-                <el-button size="small" type="primary">点击上传</el-button>
+                <el-button slot="trigger" size="small" type="primary"
+                  >选取文件</el-button
+                >
+                <el-button
+                  style="margin-left: 10px;"
+                  size="small"
+                  type="success"
+                  @click="submitUploadMusic"
+                  >上传到服务器</el-button
+                >
                 <div slot="tip" class="el-upload__tip">
-                  只能上传1个文件，且不超过500kb
+                  只能上传mp3文件
                 </div>
               </el-upload>
             </el-form-item>
-            <!-- <el-form-item
-              prop="mvplay"
-              label="MV 播放:"
-              :label-width="formLabelWidth + ''"
-            >
-              <el-input
-                style="width: 250px;"
-                v-model="dialogForm.mvplay"
-                autocomplete="off"
-              ></el-input>
-            </el-form-item> -->
             <el-form-item
               prop="mvplay"
-              label="MV 播放:"
+              label="MV 文件:"
               :label-width="formLabelWidth + ''"
             >
               <el-upload
                 class="upload-demo"
-                action="api/file/upload"
-                name="musicMV"
-                :data="{ path: 'D:/img' }"
-                :on-preview="handlePreview"
-                :on-remove="handleRemove"
-                :before-remove="beforeRemove"
-                multiple
+                ref="uploadMV"
+                name="file"
+                action="/api/file/upload"
+                :before-upload="uploadMVBefore"
+                :data="{path: 'D:/mv'}"
+                :on-success="successMv"
                 :limit="1"
                 :on-exceed="handleExceed"
                 :file-list="fileList"
+                :auto-upload="false"
               >
-                <el-button size="small" type="primary">点击上传</el-button>
+                <el-button slot="trigger" size="small" type="primary"
+                  >选取文件</el-button
+                >
+                <el-button
+                  style="margin-left: 10px;"
+                  size="small"
+                  type="success"
+                  @click="submitUploadMV"
+                  >上传到服务器</el-button
+                >
                 <div slot="tip" class="el-upload__tip">
-                  只能上传1个文件，且不超过500kb
+                  只能上传avi文件
                 </div>
               </el-upload>
             </el-form-item>
@@ -517,12 +477,16 @@ import { addMusic } from "@/api/music/addMusic.js";
 import { getMusicType } from "@/api/music/typeList.js";
 import { base64Convert } from "@/utils/base64Util.js";
 import { returnBase64 } from "@/api/music/dialogPlayMusic.js";
-import { updateFile, deleteServerFile } from "@/api/file/file.js";
+import { deleteServerFile } from "@/api/file/file.js";
 export default {
   name: "typeIndex",
   inject: ["reload"],
   data() {
     return {
+      //磁盘音乐名称
+      musicName: "",
+      //磁盘mv名称
+      mvName: "",
       imageUrl: "",
       //表格数据
       tableData: [],
@@ -599,7 +563,6 @@ export default {
   methods: {
     //点击播放音乐按钮
     playMusic(row) {
-      debugger;
       this.dialog_playMusic = true;
       this.musicSrc = row.musicplay;
       const param = {
@@ -716,12 +679,15 @@ export default {
       //   status: this.dialogForm.status,
       //   typeId: this.dialogForm.typeId
       // };
+      this.dialogForm.musicphoto = "D:/img/"+this.fileName;
+      this.dialogForm.musicplay = "D:/music/"+this.musicName;
+      this.dialogForm.mvplay = "D:/mv/"+this.mvName;
       this.$refs.dialogForm.validate(valid => {
         if (valid) {
-          this.dialog_addMusic = false;
           addMusic(this.dialogForm).then(response => {
             const data = response.data;
             if (data.code == 200) {
+              this.dialog_addMusic = false;
               this.$message({
                 type: "success",
                 message: "新增成功!"
@@ -755,7 +721,6 @@ export default {
     },
     //修改之查询
     update(row) {
-      debugger;
       this.dialog_updateMusic = true;
       this.dialogForm.id = row.id;
       this.dialogForm.musicname = row.musicname;
@@ -774,30 +739,33 @@ export default {
     },
     //修改之真正修改
     updateMusic() {
-      this.$refs.dialogForm.validate(valid => {
-        if (valid) {
-          this.dialog_updateMusic = false;
-          if (this.dialogForm.pic == this.imageUrl) {
-            this.dialogForm.pic = null;
+          debugger;
+          if (this.dialogForm.musicphoto == this.imageUrl) {
+            this.dialogForm.musicphoto = null;
           } else {
-            this.dialogForm.pic = this.fileName;
+            this.dialogForm.musicphoto = "D:/img/"+this.fileName;
+          }
+          if( this.musicName != "" && this.mvName != ""){
+            this.dialogForm.musicplay = "D:/music/"+this.musicName;
+          this.dialogForm.mvplay = "D:/mv/"+this.mvName;
+          }else{
+             this.dialogForm.musicplay = null;
+          this.dialogForm.mvplay = null;
           }
           updateMusic(this.dialogForm).then(response => {
             const data = response.data;
             if (data.code == 200) {
+          this.dialog_updateMusic = false;
               this.$message({
                 type: "success",
                 message: "修改成功!"
               });
+              this.fileList =[];
+              this.imageUrl="";
               this.options = [];
               this.query();
             }
           });
-        } else {
-          console.log("error");
-          return false;
-        }
-      });
     },
     //删除音乐
     deleteMusic(index, row) {
@@ -905,7 +873,6 @@ export default {
         });
       }
       this.options = [];
-      console.log(this.options);
       this.query();
     },
     // 新增前清空内容
@@ -937,12 +904,13 @@ export default {
     handleCurrentChange(val) {
       this.currentPage = val;
     },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    },
-    handlePreview(file) {
-      console.log(file);
-    },
+    //上传至服务器
+    submitUploadMV() {
+        this.$refs.uploadMV.submit();
+      },
+      submitUploadMusic() {
+        this.$refs.uploadMusic.submit();
+      },
     //限制一个文件
     handleExceed(files, fileList) {
       this.$message.warning(
@@ -952,8 +920,7 @@ export default {
       );
     },
     //删除音乐之前
-    beforeRemove(file, fileList) {
-      console.log(fileList);
+    beforeRemove(file) {
       return this.$confirm(`确定移除 ${file.name}？`);
     },
     handleAvatarSuccess(res, file) {
@@ -971,7 +938,42 @@ export default {
         this.$message.error("上传头像图片大小不能超过 2MB!");
       }
       return isJPG && isLt2M;
+    },
+    successMv(res){
+      this.mvName = res.data;
+    },
+    successMusic(res){
+      this.musicName = res.data;
+    },
+    //上传音乐之前
+    uploadMusicBefore(file){
+      const isMp3 = file.type === "audio/mp3";
+      if (!isMp3) {
+        this.$message.error("只能上传mp3文件!");
+      }
+    },
+    uploadMVBefore(file){
+      const isAvi = file.type === "video/avi";
+      if (!isAvi) {
+        this.$message.error("只能上传avi文件!");
+      }
     }
+    // removeFileMusic(){
+    //   deleteServerFile(this.musicName).then(response =>{
+    //     const data = response.data;
+    //     if(data.code === 200){
+    //       this.$message("以取消上传");
+    //     }
+    //   });
+    // },
+    // removeFileMV(){
+    //   deleteServerFile(this.mvName).then(response =>{
+    //     const data = response.data;
+    //     if(data.code === 200){
+    //       this.$message("以取消上传");
+    //     }
+    //   });
+    // }
   },
   //点击进来的时候查看那全部数据
   created: function() {

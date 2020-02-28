@@ -92,7 +92,7 @@
           <el-upload
             class="avatar-uploader"
             action="api/file/upload"
-            name="lbt"
+            name="file"
             :data="{ path: 'D:/img' }"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
@@ -119,7 +119,7 @@
           <el-upload
             class="avatar-uploader"
             action="/api/file/upload"
-            name="lbt"
+            name="file"
             :data="{ path: 'D:/img' }"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
