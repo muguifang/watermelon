@@ -30,14 +30,14 @@ public class FileController {
 
     /**
      * 文件上传
-     * @param lbt
+     * @param file
      * @param path
      * @return
      */
     @PostMapping("/upload")
-    public ResultVo uploadFile(@Param("lbt") MultipartFile lbt, @Param("path") String path){
+    public ResultVo uploadFile(@Param("file") MultipartFile file, @Param("path") String path){
         Map<String, Object> param = new HashMap<>();
-        param.put("multipartFile", lbt);
+        param.put("multipartFile", file);
         param.put("path", path);
         ResultVo resultVo = fileService.uploadFile(param);
         return resultVo;

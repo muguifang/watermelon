@@ -107,7 +107,7 @@ http://www.springframework.org/schema/aop
     </bean>
     <!-- 配置支持文件上传 -->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
-          p:maxUploadSize="500000"/>
+          p:maxUploadSize="10000000000"/>
 
     <!-- 开启spring缓存注解 -->
     <cache:annotation-driven cache-manager="ehCacheCacheManager"/>

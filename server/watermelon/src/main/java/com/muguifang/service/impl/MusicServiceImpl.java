@@ -109,7 +109,7 @@ public class MusicServiceImpl implements MusicService {
 
     @Override
     public void updateMusic(TMusic tMusic) {
-        tMusicMapper.updateByPrimaryKey(tMusic);
+        tMusicMapper.updateByPrimaryKeySelective(tMusic);
     }
 
     @Override
