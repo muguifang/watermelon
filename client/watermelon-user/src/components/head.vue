@@ -1,9 +1,14 @@
 <template>
   <div id="head-wrap">
     <div class="user-info">
+      <el-link :underline="false" icon="el-icon-star-off" @click="toCollect()"
+        >我的收藏</el-link
+      >
       <el-link :underline="false">登录</el-link>
       <el-link :underline="false">注册</el-link>
-      <el-link :underline="false" icon="el-icon-message">网站建议</el-link>
+      <el-link :underline="false" icon="el-icon-message" @click="toAdvice()"
+        >网站建议</el-link
+      >
     </div>
     <div class="web-info">
       <img src="@/assets/xgImg.png" class="xgImg xg" />
@@ -53,6 +58,14 @@ export default {
   methods: {
     handleSelect() {
       this.routerPath = this.$route.path;
+    },
+    //跳转网站建议页面
+    toAdvice() {
+      this.$router.push("/webAdvice");
+    },
+    //跳转我的收藏页面
+    toCollect() {
+      this.$router.push("/myCollect");
     }
   },
   created() {

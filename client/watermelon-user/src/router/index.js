@@ -87,7 +87,7 @@ const routes = [
     redirect: "/musicInfo",
     hidden: false,
     meta: {
-      name: ""
+      name: "音乐详情"
     },
     component: layout,
     children: [
@@ -102,13 +102,43 @@ const routes = [
     redirect: "/detailsInfo",
     hidden: false,
     meta: {
-      name: ""
+      name: "资讯详情"
     },
     component: layout,
     children: [
       {
         path: "/detailsInfo",
         component: () => import("../views/music/infomationDetails.vue")
+      }
+    ]
+  },
+  {
+    path: "/webAdvice",
+    redirect: "/webAdvice",
+    hidden: false,
+    meta: {
+      name: "网站建议"
+    },
+    component: layout,
+    children: [
+      {
+        path: "/webAdvice",
+        component: () => import("../views/music/webAdvice.vue")
+      }
+    ]
+  },
+  {
+    path: "/myCollect",
+    redirect: "/myCollect",
+    hidden: false,
+    meta: {
+      name: "我的收藏"
+    },
+    component: layout,
+    children: [
+      {
+        path: "/myCollect",
+        component: () => import("../views/music/myCollect.vue")
       }
     ]
   }
