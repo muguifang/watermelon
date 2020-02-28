@@ -1,57 +1,94 @@
 <template>
-  <div>
-    <audio :src="music" id="audio"></audio>
-    <div class="audio-box bbb">
-      <span class="time-font">
-        {{
-          second / 60 > 9 ? parseInt(second / 60) : "0" + parseInt(second / 60)
-        }}:{{
-          second % 60 >= 10
-            ? parseInt(second % 60)
-            : "0" + parseInt(second % 60)
-        }}
-      </span>
-      <el-progress
-        :percentage="progressing_audio"
-        status="success"
-        :stroke-width="4"
-        style="margin-top:10px;margin-left:30px;float:left;width:414px;"
-      ></el-progress>
-      <img
-        :src="audioPlayShow ? imgA : imgB"
-        class="rong-circle-control"
-        @click="controlAudio()"
-      />
+  <div id="info-wrap">
+    <el-card class="box-card">
+      <div slot="header" class="card-info clearfix">
+        <span>音乐类别</span>
+        <el-button style="padding: 3px 0;" type="text">更多</el-button>
+      </div>
+      <div v-for="o in 4" :key="o" class="text item">
+        {{ "列表内容 " + o }}
+      </div>
+    </el-card>
+    <div class="music-info">
+      <el-row>
+        <el-col
+          :span="5"
+          v-for="(o, index) in 10"
+          :key="o"
+          :offset="index > 0 ? 10 : 0"
+        >
+          <el-card :body-style="{ padding: '0px' }">
+            <img src="@/assets/login.jpg" class="image" />
+            <div style="padding: 14px;">
+              <span>推荐的音乐</span>
+              <div class="bottom clearfix">
+                <div v-for="o in 5" :key="o" class="star">
+                  <i class="el-icon-star-off"></i>
+                </div>
+                <el-button type="text" class="button" @click="toView()"
+                  >查看音乐</el-button
+                >
+              </div>
+            </div>
+          </el-card>
+        </el-col>
+      </el-row>
     </div>
   </div>
 </template>
 <script src="./recommended.js"></script>
-<style>
-.rong-circle-control {
-  width: 56px;
-  height: 56px;
-  margin-left: 46px;
-  float: left;
-  /*background-color: red;*/
-  border-radius: 50%;
+<style lang="scss" scoped>
+.info-wrap {
+  width: 80%;
+  height: 100%;
+  margin: 0 auto;
+  .card-info {
+    width: 30%;
+    height: 100%;
+  }
 }
-.time-font {
-  margin-top: 10px;
-  font-size: 24px;
-  font-family: PingFangSC-Regular;
-  font-weight: 400;
-  color: rgba(153, 153, 153, 1);
-  line-height: 34px;
+.box-card {
+  width: 20%;
+  height: 270px;
+  margin-left: 200px;
   float: left;
-  margin-left: 0px;
 }
-.audio-box {
-  height: 56px;
-  width: 610px;
-  padding: 20px 30px;
-  margin: 40px;
-  background: rgba(255, 255, 255, 1);
-  box-shadow: 0px 14px 30px 0px rgba(154, 159, 182, 0.1);
-  border-radius: 20px;
+.music-info {
+  width: 100%;
+  .el-row {
+    width: 67%;
+    float: right;
+  }
+  .el-col {
+    margin-right: 10px;
+    margin-bottom: 20px;
+  }
+}
+.image {
+  width: 100%;
+}
+.bottom {
+  height: 44px;
+  line-height: 44px;
+}
+.el-button {
+  float: right;
+}
+.star {
+  display: inline;
+}
+.text {
+  font-size: 14px;
+}
+.item {
+  margin-bottom: 18px;
+}
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+.clearfix:after {
+  clear: both;
 }
 </style>
