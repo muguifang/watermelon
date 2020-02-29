@@ -13,13 +13,14 @@
     >
       <el-form-item label="建议内容" prop="content">
         <el-input
-          type="text"
+          placeholder="建议内容不超过200字"
+          type="textarea"
           v-model="ruleForm.content"
           autocomplete="off"
         ></el-input>
       </el-form-item>
       <el-form-item label="联系方式" prop="phone">
-        <el-input v-model.number="ruleForm.phone"></el-input>
+        <el-input v-model="ruleForm.phone" placeholder="请输入联系方式"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button
