@@ -89,4 +89,15 @@ public interface MusicService {
      */
     public String returnBase64(String path);
 
+    /**
+     * 最新的十首音乐
+     * @return
+     */
+    public List<TMusic> getTenMusic();
+
+    /**
+     * 点击量最多的十首音乐
+     * @return
+     */
+    public List<TMusic> getRecommendMusic();
 }

@@ -1,5 +1,6 @@
 package com.muguifang.controller;
 
+import com.muguifang.common.exception.exceptions.NoDataException;
 import com.muguifang.po.TMusic;
 import com.muguifang.po.TType;
 import com.muguifang.result.ResultVo;
@@ -131,16 +132,6 @@ public class MusicController {
         return ResultVo.sendResult(200, "success", allMusic);
     }
 
-//    /**
-//     * 通过条件查询音乐 条件为空查询全部
-//     * @return
-//     */
-//    @GetMapping("/getAllMusicByCollection")
-//    public ResultVo getAllMusicByCollection(String name){
-//        List<TMusic> musicByConditions = musicService.getMusicByConditions(name);
-//        return ResultVo.sendResult(200, "success", musicByConditions);
-//    }
-
     /**
      * 通过音乐类别获取音乐
      * @return
@@ -174,5 +165,25 @@ public class MusicController {
         String path = (String) param.get("path");
         String base64String = musicService.returnBase64(path);
         return ResultVo.sendResult(200, "success", base64String);
+    }
+
+    /**
+     * 获取最新添加的十条音乐
+     * @return
+     */
+    @GetMapping("/getTenMusic")
+    public ResultVo getTenMusic(){
+        List<TMusic> tenMusic = musicService.getTenMusic();
+        return ResultVo.sendResult(200, "success", tenMusic);
+    }
+
+    /**
+     * 获取推荐的十首音乐
+     * @return
+     */
+    @GetMapping("/getRecommendMusic")
+    public ResultVo getRecommendMusic(){
+        List<TMusic> recommendMusic = musicService.getRecommendMusic();
+        return ResultVo.sendResult(200, "success", recommendMusic);
     }
 }

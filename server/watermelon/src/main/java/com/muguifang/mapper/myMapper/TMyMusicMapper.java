@@ -1,5 +1,7 @@
 package com.muguifang.mapper.myMapper;
 
+import com.muguifang.po.TMusic;
+
 import java.util.List;
 import java.util.Map;
 
@@ -12,4 +14,8 @@ public interface TMyMusicMapper {
     public List<Map<String, Object>> getAllMusicInfo(String name);
 
     public List<Map<String, Object>> getAllMusic(String musicName);
+
+    public List<TMusic> getTenMusic();
+
+    public List<TMusic> getRecommendMusic();
 }
