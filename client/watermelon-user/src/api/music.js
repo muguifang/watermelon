@@ -8,10 +8,25 @@ export function getAllType(data) {
     data: data
   });
 }
-//通过类别获取该类别下所有音乐
+//通过type获取所有音乐
 export function getMusicByType(data) {
   return intercept.request({
-    method: "/music/getAllMusicByType",
+    method: "post",
+    url: "/music/getAllMusicByType",
     data: data
+  });
+}
+//初始化页面获取最新的10首音乐
+export function getTenMusic() {
+  return intercept.request({
+    method: "get",
+    url: "/music/getTenMusic"
+  });
+}
+//获取播放最多的十首音乐
+export function getRecommendMusic() {
+  return intercept.request({
+    method: "get",
+    url: "/music/getRecommendMusic"
   });
 }
