@@ -1,5 +1,6 @@
 // -- 引入外部其他文件 --// -- 引入外部其他文件 --
-import { getAllType, getMusicByType } from "@/api/music.js";
+import { base64Convert } from "@/utils/base64Util.js";
+import { getAllType, getMusicByType, getTenMusic } from "@/api/music.js";
 // -- 名字 --
 
 const name = "AllMusic";
@@ -8,28 +9,49 @@ const name = "AllMusic";
 
 const data = function() {
   return {
-    typeList: []
+    //音乐类别
+    typeList: [],
+    //全部音乐
+    allMusics: []
   };
 };
 
 // -- 方法 --
 
 const methods = {
+  init() {
+    //加载最新音乐
+    getTenMusic().then(response => {
+      const res = response.data;
+      if (res.code === 200) {
+        this.allMusics = [];
+        const data = res.data;
+        for (let i = 0; i < data.length; i++) {
+          const music = {
+            id: "",
+            pic: "",
+            star: "",
+            name: ""
+          };
+          music.id = data[i].id;
+          const img = data[i].musicphoto;
+          music.pic = URL.createObjectURL(base64Convert(img));
+          music.name = data[i].musicname;
+          music.star = parseInt(data[i].recommend);
+          this.allMusics.push(music);
+        }
+      }
+    });
+  },
   //页面内路由跳转
   toView() {
     this.$router.push("/musicInfo");
-  },
-  //点击类别获取该类别下音乐
-  getMusic(param){
-    getMusicByType(param).then(response => {
-      const res = response.data;
-      console.log(res);
-    });
   }
 };
 
 // -- 页面加载完成 --
 const created = function() {
+  this.init();
   this.typeList = [];
   const param = { typename: "" };
   getAllType(param).then(response => {

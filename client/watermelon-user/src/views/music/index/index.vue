@@ -1,4 +1,4 @@
-<template>
+<template v-loading="loading">
   <div id="index-wrap">
     <div class="lbt-card">
       <el-carousel :interval="4000" type="card" height="200px">
@@ -15,16 +15,16 @@
         <el-row>
           <el-col
             :span="4"
-            v-for="(o, index) in 10"
-            :key="o"
+            v-for="(item, index) in newMusics"
+            :key="item.id"
             :offset="index > 0 ? 10 : 0"
           >
             <el-card :body-style="{ padding: '0px' }">
-              <img src="@/assets/login.jpg" class="image" />
+              <img :src="item.pic" class="image" />
               <div style="padding: 14px;">
-                <span>好听的音乐</span>
+                <span>{{ item.name }}</span>
                 <div class="bottom clearfix">
-                  <div v-for="o in 5" :key="o" class="star">
+                  <div v-for="o in item.star" :key="o" class="star">
                     <i class="el-icon-star-off"></i>
                   </div>
                   <el-button type="text" class="button">查看音乐</el-button>
@@ -43,16 +43,16 @@
         <el-row>
           <el-col
             :span="4"
-            v-for="(o, index) in 10"
-            :key="o"
+            v-for="(item, index) in recommendMusics"
+            :key="item.id"
             :offset="index > 0 ? 10 : 0"
           >
             <el-card :body-style="{ padding: '0px' }">
-              <img src="@/assets/login.jpg" class="image" />
+              <img :src="item.pic" class="image" />
               <div style="padding: 14px;">
-                <span>好听的音乐</span>
+                <span>{{ item.name }}</span>
                 <div class="bottom clearfix">
-                  <div v-for="o in 5" :key="o" class="star">
+                  <div v-for="o in item.star" :key="o" class="star">
                     <i class="el-icon-star-off"></i>
                   </div>
                   <el-button type="text" class="button">查看音乐</el-button>

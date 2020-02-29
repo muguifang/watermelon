@@ -1,6 +1,7 @@
 package com.muguifang.service.impl;
 
 import com.muguifang.common.exception.exceptions.DataException;
+import com.muguifang.common.exception.exceptions.NoDataException;
 import com.muguifang.common.exception.exceptions.ParamException;
 import com.muguifang.common.utils.Base64Util;
 import com.muguifang.mapper.TCollectMapper;
@@ -163,6 +164,32 @@ public class MusicServiceImpl implements MusicService {
             throw new ParamException(501, "获取路径失败！");
         }
         return Base64Util.base64Convert(path);
+    }
+
+    @Override
+    public List<TMusic> getTenMusic() {
+        List<TMusic> tenMusic = tMyMusicMapper.getTenMusic();
+        if(tenMusic == null || 0 >= tenMusic.size()){
+            throw new NoDataException(400, "数据为空");
+        }
+        for(TMusic tMusic : tenMusic){
+            String imgFile = tMusic.getMusicphoto();
+            tMusic.setMusicphoto(Base64Util.base64Convert(imgFile));
+        }
+        return tenMusic;
+    }
+
+    @Override
+    public List<TMusic> getRecommendMusic() {
+        List<TMusic> recommendMusic = tMyMusicMapper.getRecommendMusic();
+        if(recommendMusic == null || 0 >= recommendMusic.size()){
+            throw new NoDataException(400, "数据为空");
+        }
+        for(TMusic tMusic : recommendMusic){
+            String imgFile = tMusic.getMusicphoto();
+            tMusic.setMusicphoto(Base64Util.base64Convert(imgFile));
+        }
+        return recommendMusic;
     }
 
 

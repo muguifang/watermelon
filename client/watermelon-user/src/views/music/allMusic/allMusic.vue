@@ -5,29 +5,28 @@
         <span>音乐类别</span>
         <el-button style="padding: 3px 0;" type="text">更多</el-button>
       </div>
-      <div
-        v-for="item in typeList"
-        :key="item.id"
-        class="text item"
-        @click="getMusic(item.id)"
-      >
-        {{ item.name }}
+      <div>
+        <ul v-for="item in typeList" :key="item.id" class="text item">
+          <li>
+            <el-link type="primary" :underline="false">{{ item.name }}</el-link>
+          </li>
+        </ul>
       </div>
     </el-card>
     <div class="music-info">
       <el-row>
         <el-col
           :span="5"
-          v-for="(o, index) in 10"
-          :key="o"
+          v-for="(item, index) in allMusics"
+          :key="item.id"
           :offset="index > 0 ? 10 : 0"
         >
           <el-card :body-style="{ padding: '0px' }">
-            <img src="@/assets/login.jpg" class="image" />
+            <img :src="item.pic" class="image" />
             <div style="padding: 14px;">
-              <span>好听的音乐</span>
+              <span>{{ item.name }}</span>
               <div class="bottom clearfix">
-                <div v-for="o in 5" :key="o" class="star">
+                <div v-for="o in item.star" :key="o" class="star">
                   <i class="el-icon-star-off"></i>
                 </div>
                 <el-button type="text" class="button" @click="toView()"
