@@ -1,8 +1,10 @@
 package com.muguifang.po;
 
+import com.muguifang.pojo.TMusicFather;
+
 import java.util.Date;
 
-public class TMusic {
+public class TMusic extends TMusicFather {
     private Integer id;
 
     private String musicname;

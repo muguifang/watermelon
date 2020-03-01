@@ -15,7 +15,7 @@ public interface AdviceService {
      * 添加网站建议
      * @param tAdvise
      */
-    public void addAdvice(TAdvise tAdvise);
+//    public void addAdvice(TAdvise tAdvise);
 
     /**
      * 批量删除网站建议
@@ -24,4 +24,10 @@ public interface AdviceService {
     public void deleteAdvice(List<Integer> ids);
 
     public List<Map<String, Object>> getAdviceByConditions(String conditions);
+
+    /**
+     * 添加网站建议
+     * @param param
+     */
+    public void addAdvice(Map<String, Object> param);
 }

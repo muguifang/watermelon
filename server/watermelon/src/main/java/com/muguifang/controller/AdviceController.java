@@ -26,14 +26,14 @@ public class AdviceController {
      * @param tAdvise
      * @return
      */
-    @PostMapping("/addAdvice")
-    public ResultVo addAdvice(@RequestBody TAdvise tAdvise){
-        if(tAdvise == null){
-            throw new ParamException(501, "请填写网站建议必要信息");
-        }
-        adviceService.addAdvice(tAdvise);
-        return ResultVo.sendResult(200, "success");
-    }
+//    @PostMapping("/addAdvice")
+//    public ResultVo addAdvice(@RequestBody TAdvise tAdvise){
+//        if(tAdvise == null){
+//            throw new ParamException(501, "请填写网站建议必要信息");
+//        }
+//        adviceService.addAdvice(tAdvise);
+//        return ResultVo.sendResult(200, "success");
+//    }
 
     /**
      * 批量删除网站建议
@@ -55,5 +55,19 @@ public class AdviceController {
     public ResultVo getAdviceByConditions(String phone){
         List<Map<String, Object>> adviceByConditions = adviceService.getAdviceByConditions(phone);
         return ResultVo.sendResult(200, "success", adviceByConditions);
+    }
+
+    /**
+     * 添加网站建议
+     * @param param
+     * @return
+     */
+    @PostMapping("/addAdvice")
+    public ResultVo addAdvice(@RequestBody Map<String, Object> param){
+        if(param == null || 0 >= param.size()){
+            throw new ParamException(501, "参数异常");
+        }
+        adviceService.addAdvice(param);
+        return ResultVo.sendResult(200, "success");
     }
 }

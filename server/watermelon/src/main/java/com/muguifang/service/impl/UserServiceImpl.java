@@ -85,6 +85,7 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 
     @Override
     public void register(TUser tUser) {
+        tUser.setRole(1);
         tUserMapper.insert(tUser);
     }
 

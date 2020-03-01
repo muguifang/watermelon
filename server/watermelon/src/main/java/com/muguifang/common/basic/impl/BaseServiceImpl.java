@@ -5,8 +5,11 @@ import com.muguifang.po.TUser;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class BaseServiceImpl implements BaseService {

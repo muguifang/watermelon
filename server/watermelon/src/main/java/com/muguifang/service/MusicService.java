@@ -100,4 +100,31 @@ public interface MusicService {
      * @return
      */
     public List<TMusic> getRecommendMusic();
+
+    /**
+     * 通过音乐id获取音乐详情
+     * @param id
+     * @return
+     */
+    public TMusic getMusicById(Integer id);
+
+    /**
+     * 收藏歌曲
+     * @param param
+     * @return
+     */
+    public ResultVo collectMusic(Map<String, Object> param);
+
+    /**
+     * 获取我的收藏
+     * @param id
+     * @return
+     */
+    public List<Map<String, Object>> getMyCollect(Integer id);
+
+    /**
+     * 取消收藏
+     * @param id
+     */
+    public void cancelCollect(Integer id);
 }

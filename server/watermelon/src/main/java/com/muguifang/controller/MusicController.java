@@ -1,13 +1,17 @@
 package com.muguifang.controller;
 
 import com.muguifang.common.exception.exceptions.NoDataException;
+import com.muguifang.common.exception.exceptions.ParamException;
 import com.muguifang.po.TMusic;
 import com.muguifang.po.TType;
 import com.muguifang.result.ResultVo;
 import com.muguifang.service.MusicService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -137,8 +141,8 @@ public class MusicController {
      * @return
      */
     @PostMapping("/getAllMusicByType")
-    public ResultVo getAllMusicByType(Integer id){
-        List<TMusic> musicsByType = musicService.getMusicsByType(id);
+    public ResultVo getAllMusicByType(@RequestBody Map<String, Integer> param){
+        List<TMusic> musicsByType = musicService.getMusicsByType(param.get("typeId"));
         return ResultVo.sendResult(200, "success", musicsByType);
     }
 
@@ -186,4 +190,60 @@ public class MusicController {
         List<TMusic> recommendMusic = musicService.getRecommendMusic();
         return ResultVo.sendResult(200, "success", recommendMusic);
     }
+
+    /**
+     * 通过音乐id获取音乐详情
+     * @param id
+     * @return
+     */
+    @GetMapping("/getMusicById")
+    public ResultVo getMusicById(Integer id){
+        TMusic musicById = musicService.getMusicById(id);
+        return ResultVo.sendResult(200, "success", musicById);
+    }
+
+    /**
+     * 收藏歌曲
+     * @param param
+     * @return
+     */
+    @PostMapping("/collectMusic")
+    public ResultVo collectMusic(@RequestBody Map<String, Object> param, HttpServletRequest request){
+        if(param == null || param.size() <= 0){
+            throw new ParamException(501, "参数异常!");
+        }
+        Cookie[] cookies = request.getCookies();
+        for(Cookie cookie : cookies){
+            if("_u_i".equals(cookie.getName())){
+                if(cookie.getValue() == null || "".equals(cookie.getValue())){
+                    return ResultVo.sendResult(401, "登录失效!");
+                }
+            }
+        }
+        ResultVo resultVo = musicService.collectMusic(param);
+        return resultVo;
+    }
+
+    /**
+     * 获取我的收藏
+     * @param id
+     * @return
+     */
+    @GetMapping("/getMyCollect")
+    public ResultVo getMyCollect(Integer id){
+        List<Map<String, Object>> myCollect = musicService.getMyCollect(id);
+        return ResultVo.sendResult(200, "success", myCollect);
+    }
+
+    /**
+     * 取消收藏
+     * @param id
+     * @return
+     */
+    @DeleteMapping("/cancelCollect")
+    public ResultVo cancelCollect(Integer id){
+        musicService.cancelCollect(id);
+        return ResultVo.sendResult(200, "success");
+    }
+
 }
