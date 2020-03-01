@@ -5,8 +5,8 @@
   </div>
 </template>
 <script>
-import LayoutHeader from "@/components/head";
-import LayoutMain from "@/components/main";
+import LayoutHeader from "@/components/head/head.vue";
+import LayoutMain from "@/components/main.vue";
 export default {
   name: "Layout",
   components: { LayoutHeader, LayoutMain },

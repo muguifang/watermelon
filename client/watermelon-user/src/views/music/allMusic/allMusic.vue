@@ -8,7 +8,12 @@
       <div>
         <ul v-for="item in typeList" :key="item.id" class="text item">
           <li>
-            <el-link type="primary" :underline="false">{{ item.name }}</el-link>
+            <el-link
+              type="primary"
+              :underline="false"
+              @click="getMusicByTypeId(item.id)"
+              >{{ item.name }}</el-link
+            >
           </li>
         </ul>
       </div>
@@ -29,7 +34,7 @@
                 <div v-for="o in item.star" :key="o" class="star">
                   <i class="el-icon-star-off"></i>
                 </div>
-                <el-button type="text" class="button" @click="toView()"
+                <el-button type="text" class="button" @click="toView(item.id)"
                   >查看音乐</el-button
                 >
               </div>

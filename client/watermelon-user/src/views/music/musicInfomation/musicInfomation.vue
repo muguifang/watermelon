@@ -5,27 +5,17 @@
       <label>最新资讯</label>
     </div>
     <el-collapse v-model="activeName" accordion>
-      <el-collapse-item title="标题1" name="1">
+      <el-collapse-item
+        v-for="item in tableData"
+        :key="item.id"
+        :title="item.title"
+        name="1"
+      >
         <div>
-          与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；
-          <el-button type="text" class="button" @click="toInfoView"
+          {{ item.content }}
+          <el-button type="text" class="button" @click="toInfoView(item)"
             >查看音乐</el-button
           >
-        </div>
-      </el-collapse-item>
-      <el-collapse-item title="标题4" name="2">
-        <div>
-          与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；
-        </div>
-      </el-collapse-item>
-      <el-collapse-item title="标题2" name="3">
-        <div>
-          与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；
-        </div>
-      </el-collapse-item>
-      <el-collapse-item title="标题3" name="4">
-        <div>
-          与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；
         </div>
       </el-collapse-item>
     </el-collapse>

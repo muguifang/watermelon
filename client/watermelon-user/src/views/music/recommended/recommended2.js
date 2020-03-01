@@ -38,17 +38,14 @@ const methods = {
     if (!this.params) {
       return false;
     } else {
-      console.log(this.params);
       this.music = this.params.url;
       let audio0 = document.getElementById("audio");
       let leng = audio0.duration;
-      console.log(audio0.duratuion);
       if (this.audioPlayShow) {
         audio0.play();
 
         this.audioPlayShow = false;
         this.timer = setInterval(() => {
-          console.log(1 / leng);
           this.progressing_audio =
             (this.progressing_audio / 100 + 0.1 / leng) * 100;
           this.second = this.second + 0.1;
@@ -57,7 +54,6 @@ const methods = {
             this.progressing_audio = 0;
             this.second = 0;
           }
-          console.log(this.progressing_audio);
         }, 100);
       } else {
         audio0.pause();

@@ -92,6 +92,10 @@ const methods = {
       const timer = window.setTimeout((this.loading = false), 1000);
       window.clearTimeout(timer);
     }
+  },
+  //页面内路由跳转
+  toView(musicId) {
+    this.$router.push({ path: "/musicInfo", query: { id: musicId } });
   }
 };
 

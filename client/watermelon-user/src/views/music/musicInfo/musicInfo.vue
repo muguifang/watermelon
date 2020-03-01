@@ -1,25 +1,36 @@
 <template>
   <div id="musicInfo-wrap">
-    <el-page-header style="margin-bottom: 20px;" @back="goBack" content="音乐详情页面"></el-page-header>
+    <el-page-header
+      style="margin-bottom: 20px;"
+      @back="goBack"
+      content="音乐详情页面"
+    ></el-page-header>
     <!-- 音乐信息 -->
     <div id="musicinfo-content">
-      <img src="@/assets/login.jpg" />
+      <img :src="musicInfo.musicphoto" />
       <div class="music-info">
-        <p>音乐名称-像鱼</p>
+        <p>{{ musicInfo.musicname }}</p>
         <el-divider></el-divider>
-        <p>分类：流行</p>
-        <p>点击量：234</p>
-        <p>收藏量：11</p>
+        <p>分类：{{ musicInfo.typeName }}</p>
+        <p>点击量：{{ musicInfo.playnum == null ? 0 : musicInfo.playnum }}</p>
+        <p>
+          收藏量：{{ musicInfo.collectNum == null ? 0 : musicInfo.collectNum }}
+        </p>
         <div class="recommendNum-info">
           <span>推荐指数：</span>
-          <div v-for="o in 5" :key="o" class="star">
+          <div v-for="o in musicInfo.recommend" :key="o" class="star">
             <i class="el-icon-star-off"></i>
           </div>
         </div>
-        <el-button class="button" icon="el-icon-star-off">收藏</el-button>
+        <el-button
+          class="button"
+          icon="el-icon-star-off"
+          @click="collect(musicInfo)"
+          >收藏</el-button
+        >
       </div>
     </div>
-    <!-- 类别信息 -->
+    <!-- 类别信息
     <el-card class="box-card">
       <div slot="header" class="card-info clearfix">
         <span>音乐类别</span>
@@ -27,27 +38,30 @@
       <div v-for="o in 4" :key="o" class="text item">
         {{ "列表内容 " + o }}
       </div>
-    </el-card>
+    </el-card> -->
     <!-- 音乐播放器 -->
     <div style="width:74%;margin:100px 0;">
-      <audio style="width:100%;" src="@/components/test/radio/try.mp3" controls="controls" />
+      <audio
+        style="width:100%;"
+        src="@/components/test/radio/try.mp3"
+        controls="controls"
+      />
     </div>
     <!-- 视频播放器 -->
     <div style="width:74%;margin:50px 0;">
-      <video style="width:100%;" src="@/components/test/radio/try1.mp4" controls="controls"></video>
+      <video
+        style="width:100%;"
+        src="@/components/test/radio/try1.mp4"
+        controls="controls"
+      ></video>
     </div>
     <!-- 评论区 -->
     <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
-      <!-- <el-tab-pane label="歌词" name="first">
-        没哟歌词没哟歌词没哟歌词没哟歌词没哟歌词没哟歌词没哟歌词没哟歌词
-        没哟歌词没哟歌词没哟歌词没哟歌词没哟歌词没哟歌词没哟歌词没哟歌词没哟歌词
-        没哟歌词没哟歌词没哟歌词没哟歌词没哟歌词没哟歌词没哟歌词没哟歌词没哟歌词
-        没哟歌词没哟歌词没哟歌词没哟歌词没哟歌词没哟歌词没哟歌词没哟歌词没哟歌词
-        没哟歌词没哟歌词没哟歌词没哟歌词没哟歌词没哟歌词没哟歌词没哟歌词没哟歌词
-      </el-tab-pane> -->
       <el-tab-pane label="评论" name="first">
-        <div v-for="o in 5" :key="o" class="text item">
-          <p>用户名：评论内容    （评论时间）</p>
+        <div v-for="item in comments" :key="item.id" class="text item">
+          <p>
+            {{ item.username }}：{{ item.content }} （{{ item.insertDate }}）
+          </p>
         </div>
         <el-form ref="form" :model="form" style="margin:14px;">
           <p style="font-weight:bold;font-size:18px;margin:0;">评论：</p>
@@ -55,8 +69,13 @@
             <el-input type="textarea" v-model="form.content"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button style="float: right;margin:0 5px;" @click="submitForm('form')">发表评论</el-button>
-            <el-button style="float: right;margin:0 5px;" @click="resetForm('ruleForm')">清空
+            <el-button style="float: right;margin:0 5px;" @click="submitForm()"
+              >发表评论</el-button
+            >
+            <el-button
+              style="float: right;margin:0 5px;"
+              @click="resetForm('ruleForm')"
+              >清空
             </el-button>
           </el-form-item>
         </el-form>

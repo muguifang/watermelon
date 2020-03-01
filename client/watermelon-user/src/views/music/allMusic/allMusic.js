@@ -19,6 +19,33 @@ const data = function() {
 // -- 方法 --
 
 const methods = {
+  //通过音乐类别获取音乐
+  getMusicByTypeId(id) {
+    getMusicByType({ typeId: id }).then(response => {
+      const res = response.data;
+      this.allMusics = [];
+      const data = res.data;
+      if (data != null && data.length > 0) {
+        for (let i = 0; i < data.length; i++) {
+          const music = {
+            id: "",
+            pic: "",
+            star: "",
+            name: ""
+          };
+          music.id = data[i].id;
+          const img = data[i].musicphoto;
+          music.pic = URL.createObjectURL(base64Convert(img));
+          music.name = data[i].musicname;
+          music.star = parseInt(data[i].recommend);
+          this.allMusics.push(music);
+        }
+      } else {
+        this.$message("该类别下无音乐!");
+      }
+    });
+  },
+  //页面初始化方法
   init() {
     //加载最新音乐
     getTenMusic().then(response => {
@@ -44,8 +71,8 @@ const methods = {
     });
   },
   //页面内路由跳转
-  toView() {
-    this.$router.push("/musicInfo");
+  toView(musicId) {
+    this.$router.push({ path: "/musicInfo", query: { id: musicId } });
   }
 };
 

@@ -27,7 +27,9 @@
                   <div v-for="o in item.star" :key="o" class="star">
                     <i class="el-icon-star-off"></i>
                   </div>
-                  <el-button type="text" class="button">查看音乐</el-button>
+                  <el-button type="text" class="button" @click="toView(item.id)"
+                    >查看音乐</el-button
+                  >
                 </div>
               </div>
             </el-card>
@@ -55,7 +57,9 @@
                   <div v-for="o in item.star" :key="o" class="star">
                     <i class="el-icon-star-off"></i>
                   </div>
-                  <el-button type="text" class="button">查看音乐</el-button>
+                  <el-button type="text" class="button" @click="toView(item.id)"
+                    >查看音乐</el-button
+                  >
                 </div>
               </div>
             </el-card>

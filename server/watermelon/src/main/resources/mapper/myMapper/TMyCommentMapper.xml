@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.muguifang.mapper.myMapper.TMyCommentMapper">
+    <select id="getCommentByMusicId" parameterType="java.lang.Integer" resultType="java.util.Map">
+      	SELECT
+		tc.id cid,
+		tu.username username,
+		tc.content tcontent,
+		tc.insertDate insertdate
+		FROM
+		t_comment tc
+		LEFT JOIN t_user tu ON tc.user_id = tu.id
+		WHERE tc.music_id = #{_parameter}
+		ORDER BY
+		tc.insertDate DESC
+  </select>
+</mapper>

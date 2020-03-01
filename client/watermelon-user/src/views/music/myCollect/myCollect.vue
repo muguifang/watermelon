@@ -25,7 +25,11 @@
         >
         </el-table-column>
         <el-table-column label="操作" align="center">
-          <el-button icon="el-icon-star-on">取消收藏</el-button>
+          <template slot-scope="scope">
+            <el-button icon="el-icon-star-on" @click="cancel(scope.row.id)"
+              >取消收藏</el-button
+            >
+          </template>
         </el-table-column>
       </el-table>
     </template>

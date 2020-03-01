@@ -30,3 +30,35 @@ export function getRecommendMusic() {
     url: "/music/getRecommendMusic"
   });
 }
+//通过音乐id获取音乐详情
+export function getMusicById(data) {
+  return intercept.request({
+    method: "get",
+    url: "/music/getMusicById",
+    params: { id: data }
+  });
+}
+//收藏音乐
+export function collectMusic(data) {
+  return intercept.request({
+    method: "post",
+    url: "/music/collectMusic",
+    data: data
+  });
+}
+//获取收藏音乐
+export function getMyCollect(data) {
+  return intercept.request({
+    method: "get",
+    url: "/music/getMyCollect",
+    params: { id: data }
+  });
+}
+//获取收藏音乐
+export function cancelCollect(data) {
+  return intercept.request({
+    method: "delete",
+    url: "/music/cancelCollect",
+    params: { id: data }
+  });
+}
