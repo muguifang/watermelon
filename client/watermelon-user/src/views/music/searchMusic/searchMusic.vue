@@ -1,0 +1,50 @@
+<template>
+  <div id="search-wrap">
+    <div style="margin-top: 15px;">
+      <el-input
+        placeholder="请输入音乐名称"
+        v-model="input"
+        class="input-with-select"
+      >
+        <el-button
+          slot="append"
+          icon="el-icon-search"
+          @click="query()"
+        ></el-button>
+      </el-input>
+    </div>
+    <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+      <el-tab-pane label="歌曲" name="first">
+        <template>
+          <el-table :data="tableData" style="width: 99%;margin:0 auto;">
+            <el-table-column prop="musicName" label="音乐名称" width="580">
+              <!-- <i class="el-icon-video-play"></i> -->
+            </el-table-column>
+            <el-table-column prop="playNum" label="播放量" width="180">
+            </el-table-column>
+            <el-table-column prop="typeName" label="音乐类别" width="180">
+            </el-table-column>
+            <el-table-column
+              prop="insertDate"
+              label="发布时间"
+            ></el-table-column>
+          </el-table>
+        </template>
+      </el-tab-pane>
+    </el-tabs>
+  </div>
+</template>
+<script src="./searchMusic.js"></script>
+<style lang="scss" scoped>
+#search-wrap {
+  width: 70%;
+  min-height: 79vh;
+  margin: 0 auto;
+  border: 1px solid #dcd9d9;
+  margin-top: -42px;
+}
+.el-input {
+  width: 30%;
+  margin-left: 330px;
+}
+</style>

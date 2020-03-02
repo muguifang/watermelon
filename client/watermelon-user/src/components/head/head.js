@@ -81,6 +81,8 @@ const data = function() {
     routers,
     //自动登录
     checked: false,
+    //登录标志
+    flag: false,
     routerPath: "",
     //搜索框
     input: "",
@@ -88,8 +90,10 @@ const data = function() {
     dialogLogin: false,
     //注册弹窗标志
     dialogRegist: false,
-    //个人信息抽屉标志
+    //账号抽屉标志
     drawer: false,
+    //个人信息抽屉标志
+    drawerUser: false,
     //抽屉方向
     direction: "rtl",
     //头像路径
@@ -147,6 +151,8 @@ const methods = {
               saveCookie("_u_i", JSON.stringify(res.data.id));
             }
             this.dialogLogin = false;
+            //登录成功改为true
+            this.flag = true;
           }
         });
       }
@@ -180,9 +186,14 @@ const methods = {
       }
     });
   },
+  //跳转账号页面
+  getZhInfo() {
+    this.drawer = true;
+  },
   //跳转个人信息页面
   getUserInfo() {
-    this.drawer = true;
+    this.drawer = false;
+    this.$router.push("/userInfo");
   },
   //修改个人信息
   updateInfoForm(formName) {
@@ -193,13 +204,13 @@ const methods = {
     });
   },
   //关闭个人信息抽屉时
-  handleClose(done) {
-    this.$confirm("确认关闭？")
-      .then(() => {
-        done();
-      })
-      .catch(() => {});
-  },
+  // handleClose(done) {
+  //   this.$confirm("确认关闭？")
+  //     .then(() => {
+  //       done();
+  //     })
+  //     .catch(() => {});
+  // },
   //退出登录
   exit() {
     this.$confirm("是否确认退出登录?", "提示", {
@@ -213,9 +224,12 @@ const methods = {
           type: "success",
           message: "注销成功!"
         });
+        this.drawer = false;
         //删除保存的信息 游客身份返回首页
         // sessionStorage.removeItem("user");
         this.$router.push("/index");
+        //注销登录改为false
+        this.flag = false;
       })
       .catch(() => {
         this.$message({
@@ -236,11 +250,18 @@ const methods = {
   },
   //跳转网站建议页面
   toAdvice() {
+    this.drawer = false;
     this.$router.push("/webAdvice");
   },
   //跳转我的收藏页面
   toCollect() {
+    this.drawer = false;
     this.$router.push("/myCollect");
+  },
+  //跳转音乐搜索页面
+  toSearch() {
+    this.$router.push("/searchMusic");
+    // this.$router.push({ name: "/searchMusic", param: { name: this.input } });
   },
   //登录弹窗
   login() {

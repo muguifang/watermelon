@@ -38,6 +38,7 @@ const methods = {
             insertdate: data[i].insertdate
           };
           this.tableData.push(table);
+          console.log(this.tableData);
         }
       }
     });

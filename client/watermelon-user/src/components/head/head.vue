@@ -2,17 +2,23 @@
   <div id="head-wrap">
     <!-- 右上角信息 -->
     <div class="user-info">
-      <el-link :underline="false" icon="el-icon-star-off" @click="toCollect()"
+      <!-- <el-link :underline="false" icon="el-icon-star-off" @click="toCollect()"
         >我的收藏</el-link
+      > -->
+      <img v-if="flag" class="photo" src="@/assets/photo.png" />
+      <el-link v-if="flag" :underline="false" @click="getZhInfo()"
+        >用户名</el-link
       >
-      <img class="photo" src="@/assets/photo.png" />
-      <el-link :underline="false" @click="getUserInfo()">用户名</el-link>
-      <el-link :underline="false" @click="exit()">退出</el-link>
-      <el-link :underline="false" @click="login()">登录</el-link>
-      <el-link :underline="false" @click="regist()">注册</el-link>
-      <el-link :underline="false" icon="el-icon-message" @click="toAdvice()"
+      <!-- <el-link v-if="flag" :underline="false" @click="exit()">退出</el-link> -->
+      <el-link v-if="flag == false" :underline="false" @click="login()"
+        >登录</el-link
+      >
+      <el-link v-if="flag == false" :underline="false" @click="regist()"
+        >注册</el-link
+      >
+      <!-- <el-link :underline="false" icon="el-icon-message" @click="toAdvice()"
         >网站建议</el-link
-      >
+      > -->
     </div>
     <!-- logo 搜索框 -->
     <div class="web-info">
@@ -20,12 +26,12 @@
       <label>音乐网</label>
       <div class="search-info">
         <el-input
-          placeholder="请输入内容"
+          placeholder="请输入音乐名称"
           style="width: 250px; display: inline-block;"
           v-model="input"
           clearable
         ></el-input>
-        <el-button type="info" icon="el-icon-search">搜索</el-button>
+        <el-button type="info" icon="el-icon-search" @click="toSearch()">搜索</el-button>
       </div>
     </div>
     <!-- 导航信息 -->
@@ -85,7 +91,9 @@
           ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-checkbox v-model="checked">7天自动登录</el-checkbox>
+          <el-checkbox style="margin-left: 260px;" v-model="checked"
+            >7天自动登录</el-checkbox
+          >
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -175,80 +183,36 @@
         >
       </div>
     </el-dialog>
-    <!-- 个人信息抽屉 -->
-    <el-radio-group v-model="direction">
+    <!-- 账号抽屉 -->
+    <el-radio-group v-model="direction" width="25%">
       <el-radio label="rtl" hidden="true">从右往左开</el-radio>
-      <el-drawer
-        title="我的信息"
-        :visible.sync="drawer"
-        :direction="direction"
-        :before-close="handleClose"
-      >
-        <el-form
-          :model="registForm"
-          :rules="infoRules"
-          ref="registForm"
-          status-icon
+      <el-drawer title="账号" :visible.sync="drawer" :direction="direction">
+        <img class="photo" src="@/assets/photo.png" />
+        <el-link :underline="false" class="username" @click="getUserInfo()"
+          >用户名</el-link
         >
-          <el-form-item prop="pic">
-            <el-upload
-              class="avatar-uploader"
-              action="api/file/upload"
-              name="photo"
-              :show-file-list="false"
-              :on-success="handleAvatarSuccess"
-              :before-upload="beforeAvatarUpload"
-            >
-              <img src="@/assets/photo.png" class="avatar" />
-              <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar"> -->
-              <!-- <i v-else class="el-icon-plus avatar-uploader-icon"></i> -->
-            </el-upload>
-          </el-form-item>
-          <el-form-item
-            prop="username"
-            label="账号:"
-            :label-width="formLabelWidth"
-          >
-            <el-input
-              v-model="registForm.username"
-              autocomplete="off"
-              disabled
-            ></el-input>
-          </el-form-item>
-          <el-form-item
-            prop="realname"
-            label="真实姓名:"
-            :label-width="formLabelWidth"
-          >
-            <el-input
-              v-model="registForm.realname"
-              autocomplete="off"
-              disabled
-            ></el-input>
-          </el-form-item>
-          <el-form-item
-            placeholder="请输入联系方式"
-            prop="phone"
-            label="联系方式:"
-            :label-width="formLabelWidth"
-          >
-            <el-input v-model="registForm.phone" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item
-            placeholder="请输入邮箱"
-            prop="email"
-            label="邮箱:"
-            :label-width="formLabelWidth"
-          >
-            <el-input v-model="registForm.email" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label-width="160px">
-            <el-button @click="resetForm('registForm')">重 置</el-button>
-            <el-button type="primary" @click="updateInfoForm('registForm')"
-              >确 定</el-button
-            >
-          </el-form-item>
-        </el-form>
+        <el-divider></el-divider>
+        <el-link
+          :underline="false"
+          class="user-item"
+          icon="el-icon-star-off"
+          @click="toCollect()"
+          >我的收藏</el-link
+        >
+        <el-link
+          :underline="false"
+          class="user-item"
+          icon="el-icon-message"
+          @click="toAdvice()"
+          >网站建议</el-link
+        >
+        <el-link
+          :underline="false"
+          class="user-exit"
+          icon="el-icon-switch-button"
+          @click="exit()"
+          >退出</el-link
+        >
       </el-drawer>
     </el-radio-group>
   </div>
@@ -270,7 +234,8 @@
 .photo {
   width: 35px;
   height: 35px;
-  display: inline;
+  // display: inline;
+  display: inline-block;
   position: relative;
   top: 10px;
   left: -6px;
@@ -342,5 +307,25 @@
   height: 120px;
   display: block;
   border-radius: 50%;
+}
+.el-drawer img {
+  width: 50px;
+  height: 50px;
+  margin-left: 30px;
+  margin-bottom: 20px;
+}
+.el-drawer .username {
+  position: relative;
+  top: -24px;
+  left: 10px;
+}
+.el-drawer .user-item {
+  display: block;
+  margin: 20px 50px;
+}
+.el-drawer .user-exit {
+  position: relative;
+  top: 400px;
+  left: 50px;
 }
 </style>

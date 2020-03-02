@@ -62,3 +62,11 @@ export function cancelCollect(data) {
     params: { id: data }
   });
 }
+//根据音乐名称搜索音乐
+export function getMusicByConditions(data) {
+  return intercept.request({
+    method: "post",
+    url: "/music/getMusicByConditions",
+    data: data
+  });
+}

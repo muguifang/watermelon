@@ -143,6 +143,36 @@ const routes = [
         component: () => import("../views/music/myCollect/myCollect.vue")
       }
     ]
+  },
+  {
+    path: "/userInfo",
+    redirect: "/userInfo",
+    hidden: false,
+    meta: {
+      name: "个人信息"
+    },
+    component: layout,
+    children: [
+      {
+        path: "/userInfo",
+        component: () => import("../views/music/userInfo/userInfo.vue")
+      }
+    ]
+  },
+  {
+    path: "/searchMusic",
+    redirect: "/searchMusic",
+    hidden: false,
+    meta: {
+      name: "音乐搜索"
+    },
+    component: layout,
+    children: [
+      {
+        path: "/searchMusic",
+        component: () => import("../views/music/searchMusic/searchMusic.vue")
+      }
+    ]
   }
 ];
 const router = new VueRouter({
