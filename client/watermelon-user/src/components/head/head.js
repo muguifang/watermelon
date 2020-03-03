@@ -102,6 +102,8 @@ const data = function() {
     drawerUser: false,
     //抽屉方向
     direction: "rtl",
+    //抽屉遮罩
+    modal: false,
     //头像路径
     imageUrl: "",
     //登录表单

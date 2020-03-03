@@ -178,7 +178,7 @@
                 name="file"
                 :before-upload="uploadMusicBefore"
                 :on-success="successMusic"
-                :data="{path: 'D:/music'}"
+                :data="{ path: 'D:/music' }"
                 :limit="1"
                 :on-exceed="handleExceed"
                 :file-list="fileList"
@@ -210,7 +210,7 @@
                 name="file"
                 action="/api/file/upload"
                 :before-upload="uploadMVBefore"
-                :data="{path: 'D:/mv'}"
+                :data="{ path: 'D:/mv' }"
                 :on-success="successMv"
                 :limit="1"
                 :on-exceed="handleExceed"
@@ -337,7 +337,7 @@
                 name="file"
                 :before-upload="uploadMusicBefore"
                 :on-success="successMusic"
-                :data="{path: 'D:/music'}"
+                :data="{ path: 'D:/music' }"
                 :limit="1"
                 :on-exceed="handleExceed"
                 :file-list="fileList"
@@ -369,7 +369,7 @@
                 name="file"
                 action="/api/file/upload"
                 :before-upload="uploadMVBefore"
-                :data="{path: 'D:/mv'}"
+                :data="{ path: 'D:/mv' }"
                 :on-success="successMv"
                 :limit="1"
                 :on-exceed="handleExceed"
@@ -679,9 +679,9 @@ export default {
       //   status: this.dialogForm.status,
       //   typeId: this.dialogForm.typeId
       // };
-      this.dialogForm.musicphoto = "D:/img/"+this.fileName;
-      this.dialogForm.musicplay = "D:/music/"+this.musicName;
-      this.dialogForm.mvplay = "D:/mv/"+this.mvName;
+      this.dialogForm.musicphoto = "D:/img/" + this.fileName;
+      this.dialogForm.musicplay = "D:/music/" + this.musicName;
+      this.dialogForm.mvplay = "D:/mv/" + this.mvName;
       this.$refs.dialogForm.validate(valid => {
         if (valid) {
           addMusic(this.dialogForm).then(response => {
@@ -739,33 +739,33 @@ export default {
     },
     //修改之真正修改
     updateMusic() {
-          debugger;
-          if (this.dialogForm.musicphoto == this.imageUrl) {
-            this.dialogForm.musicphoto = null;
-          } else {
-            this.dialogForm.musicphoto = "D:/img/"+this.fileName;
-          }
-          if( this.musicName != "" && this.mvName != ""){
-            this.dialogForm.musicplay = "D:/music/"+this.musicName;
-          this.dialogForm.mvplay = "D:/mv/"+this.mvName;
-          }else{
-             this.dialogForm.musicplay = null;
-          this.dialogForm.mvplay = null;
-          }
-          updateMusic(this.dialogForm).then(response => {
-            const data = response.data;
-            if (data.code == 200) {
+      debugger;
+      if (this.dialogForm.musicphoto == this.imageUrl) {
+        this.dialogForm.musicphoto = null;
+      } else {
+        this.dialogForm.musicphoto = "D:/img/" + this.fileName;
+      }
+      if (this.musicName != "" && this.mvName != "") {
+        this.dialogForm.musicplay = "D:/music/" + this.musicName;
+        this.dialogForm.mvplay = "D:/mv/" + this.mvName;
+      } else {
+        this.dialogForm.musicplay = null;
+        this.dialogForm.mvplay = null;
+      }
+      updateMusic(this.dialogForm).then(response => {
+        const data = response.data;
+        if (data.code == 200) {
           this.dialog_updateMusic = false;
-              this.$message({
-                type: "success",
-                message: "修改成功!"
-              });
-              this.fileList =[];
-              this.imageUrl="";
-              this.options = [];
-              this.query();
-            }
+          this.$message({
+            type: "success",
+            message: "修改成功!"
           });
+          this.fileList = [];
+          this.imageUrl = "";
+          this.options = [];
+          this.query();
+        }
+      });
     },
     //删除音乐
     deleteMusic(index, row) {
@@ -906,11 +906,11 @@ export default {
     },
     //上传至服务器
     submitUploadMV() {
-        this.$refs.uploadMV.submit();
-      },
-      submitUploadMusic() {
-        this.$refs.uploadMusic.submit();
-      },
+      this.$refs.uploadMV.submit();
+    },
+    submitUploadMusic() {
+      this.$refs.uploadMusic.submit();
+    },
     //限制一个文件
     handleExceed(files, fileList) {
       this.$message.warning(
@@ -939,20 +939,20 @@ export default {
       }
       return isJPG && isLt2M;
     },
-    successMv(res){
+    successMv(res) {
       this.mvName = res.data;
     },
-    successMusic(res){
+    successMusic(res) {
       this.musicName = res.data;
     },
     //上传音乐之前
-    uploadMusicBefore(file){
+    uploadMusicBefore(file) {
       const isMp3 = file.type === "audio/mp3";
       if (!isMp3) {
         this.$message.error("只能上传mp3文件!");
       }
     },
-    uploadMVBefore(file){
+    uploadMVBefore(file) {
       const isAvi = file.type === "video/avi";
       if (!isAvi) {
         this.$message.error("只能上传avi文件!");

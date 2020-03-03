@@ -4,7 +4,8 @@
   <select id="getMyCollect" parameterType="java.lang.Integer" resultType="java.util.Map">
     SELECT
 	tc.id,
-	tm.musicName mName
+	tm.musicName mName,
+	tc.insertDate insertdate
     FROM
 	t_collect tc
 	LEFT JOIN t_music tm ON tc.music_id = tm.id

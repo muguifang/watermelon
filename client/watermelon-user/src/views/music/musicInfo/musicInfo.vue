@@ -6,7 +6,7 @@
       content="音乐详情页面"
     ></el-page-header>
     <!-- 音乐信息 -->
-    <div id="musicinfo-content">
+    <div id="musicinfo-content clearfix">
       <img :src="musicInfo.musicphoto" />
       <div class="music-info">
         <p>{{ musicInfo.musicname }}</p>
@@ -28,6 +28,9 @@
           @click="collect(musicInfo)"
           >收藏</el-button
         >
+        <el-button class="button" icon="el-icon-video-play" @click="playMusic()"
+          >播放</el-button
+        >
       </div>
     </div>
     <!-- 类别信息
@@ -40,15 +43,34 @@
       </div>
     </el-card> -->
     <!-- 音乐播放器 -->
-    <div style="width:74%;margin:100px 0;">
+    <!-- <div class="btn-audio">
       <audio
-        style="width:100%;"
+        style="width:80%;margin:0px 155px;"
         src="@/components/test/radio/try.mp3"
         controls="controls"
       />
-    </div>
+    </div> -->
+    <!-- 音乐播放器抽屉 -->
+    <el-radio-group v-model="direction">
+      <el-radio label="btt" hidden="true">从下往上开</el-radio>
+      <el-drawer
+        title="音乐播放器"
+        :with-header="false"
+        :visible.sync="drawer"
+        :direction="direction"
+        :modal="modal"
+      >
+        <div class="btn-audio">
+          <audio
+            style="width:80%;margin:0px 155px;"
+            src="@/components/test/radio/try.mp3"
+            controls="controls"
+          />
+        </div>
+      </el-drawer>
+    </el-radio-group>
     <!-- 视频播放器 -->
-    <div style="width:74%;margin:50px 0;">
+    <div style="width:74%;margin:370px 100px 100px 100px;">
       <video
         style="width:100%;"
         src="@/components/test/radio/try1.mp4"
@@ -86,11 +108,11 @@
 <script src="./musicInfo.js"></script>
 <style lang="scss" scoped>
 #musicInfo-wrap {
-  width: 65%;
+  width: 60%;
   margin: 0 auto;
 }
 .musicinfo-content {
-  width: 40%;
+  width: 60%;
   float: left;
   margin-top: 30px;
 }
@@ -98,6 +120,7 @@ img {
   width: 400px;
   height: 300px;
   float: left;
+  margin-left: 100px;
 }
 .el-divider {
   width: 90%;
@@ -154,5 +177,10 @@ p {
   width: 74%;
   min-height: 300px;
   margin-bottom: 200px;
+  margin-left: 100px;
+}
+.btn-audio {
+  width: 100%;
+  margin: 100px auto;
 }
 </style>

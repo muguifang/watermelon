@@ -20,13 +20,23 @@ const data = function() {
     //cookie存储的用户信息
     u_info: "",
     //评论信息
-    comments: []
+    comments: [],
+    //抽屉标志
+    drawer: false,
+    //抽屉方向
+    direction: "btt",
+    //抽屉是否带遮罩
+    modal: false
   };
 };
 
 // -- 方法 --
 
 const methods = {
+  //音乐播放器抽屉
+  playMusic() {
+    this.drawer = true;
+  },
   //收藏方法
   collect(item) {
     const _u_i = getCookie("_u_i");

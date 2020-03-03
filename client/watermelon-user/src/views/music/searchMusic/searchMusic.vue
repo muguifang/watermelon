@@ -19,8 +19,19 @@
           <el-table :data="tableData" style="width: 99%;margin:0 auto;">
             <el-table-column label="音乐名称" width="580">
               <template slot-scope="scope">
-                <i class="el-icon-video-play"></i>
                 <span style="margin-left: 10px">{{ scope.row.musicName }}</span>
+                <i
+                  v-if="number == false"
+                  class="el-icon-video-pause"
+                  style="position: relative;left: 340px;cursor: pointer;"
+                  @click="playMusic(scope.row)"
+                ></i>
+                <i
+                  v-if="number == true"
+                  class="el-icon-video-play"
+                  style="position: relative;left: 340px;cursor: pointer;"
+                  @click="playMusic(scope.row)"
+                ></i>
               </template>
             </el-table-column>
             <el-table-column prop="playNum" label="播放量" width="180">
@@ -35,6 +46,7 @@
         </template>
       </el-tab-pane>
     </el-tabs>
+    <audio ref="music" :src="musicUrl" />
   </div>
 </template>
 <script src="./searchMusic.js"></script>

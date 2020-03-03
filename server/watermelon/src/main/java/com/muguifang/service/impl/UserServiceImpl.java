@@ -49,7 +49,9 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
         if(!user.getPassword().equals(tUser.getPassword())){
             throw new NoLoginException(502, "密码错误!");
         }
-        user.setHeadpic(Base64Util.base64Convert(user.getHeadpic()));
+        if(user.getRole() == 1){
+            user.setHeadpic(Base64Util.base64Convert(user.getHeadpic()));
+        }
         return user;
     }
 

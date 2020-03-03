@@ -188,7 +188,12 @@
     <!-- 账号抽屉 -->
     <el-radio-group v-model="direction" width="25%">
       <el-radio label="rtl" hidden="true">从右往左开</el-radio>
-      <el-drawer title="账号" :visible.sync="drawer" :direction="direction">
+      <el-drawer
+        title="账号"
+        :visible.sync="drawer"
+        :direction="direction"
+        :modal="modal"
+      >
         <img class="photo" :src="headpic" />
         <el-link :underline="false" class="username" @click="getUserInfo()">{{
           username

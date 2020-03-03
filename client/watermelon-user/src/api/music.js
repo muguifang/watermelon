@@ -70,3 +70,11 @@ export function getMusicByConditions(data) {
     data: data
   });
 }
+//转换音乐
+export function returnBase64(data) {
+  return intercept.request({
+    method: "post",
+    url: "/music/returnBase64",
+    data: data
+  });
+}
