@@ -2,6 +2,7 @@ package com.muguifang.controller;
 
 import com.muguifang.common.exception.exceptions.NoLoginException;
 import com.muguifang.common.exception.exceptions.ParamException;
+import com.muguifang.common.utils.Base64Util;
 import com.muguifang.po.TUser;
 import com.muguifang.result.ResultVo;
 import com.muguifang.service.UserService;
@@ -121,5 +122,20 @@ public class UserController {
         }
         session.removeAttribute("user");
         return ResultVo.sendResult(200, "success");
+    }
+
+    /**
+     * 查询用户信息
+     * @param param
+     * @return
+     */
+    @PostMapping("/getUserInfo")
+    public ResultVo getUserInfo(@RequestBody Map<String, Object> param){
+        TUser userInfo = null;
+        if(param != null){
+            int userId = Integer.parseInt((String) param.get("userId"));
+            userInfo = userService.getUserInfo(userId);
+        }
+        return ResultVo.sendResult(200, "success", userInfo);
     }
 }

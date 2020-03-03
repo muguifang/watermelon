@@ -48,4 +48,10 @@ public interface UserService extends BaseService {
      * @param ids
      */
     public void deleteUser(List<Integer> ids);
+
+    /**
+     * 查询用户信息
+     * @param id
+     */
+    public TUser getUserInfo(Integer id);
 }

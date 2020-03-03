@@ -5,6 +5,7 @@ import com.muguifang.common.exception.exceptions.LoginException;
 import com.muguifang.common.exception.exceptions.NoDataException;
 import com.muguifang.common.exception.exceptions.NoLoginException;
 import com.muguifang.common.exception.exceptions.ParamException;
+import com.muguifang.common.utils.Base64Util;
 import com.muguifang.mapper.TUserMapper;
 import com.muguifang.po.TUser;
 import com.muguifang.po.TUserExample;
@@ -48,6 +49,7 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
         if(!user.getPassword().equals(tUser.getPassword())){
             throw new NoLoginException(502, "密码错误!");
         }
+        user.setHeadpic(Base64Util.base64Convert(user.getHeadpic()));
         return user;
     }
 
@@ -112,4 +114,12 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
         criteria.andIdIn(ids);
         tUserMapper.deleteByExample(example);
     }
+
+    @Override
+    public TUser getUserInfo(Integer id) {
+        TUser tUser = tUserMapper.selectByPrimaryKey(id);
+        tUser.setHeadpic(Base64Util.base64Convert(tUser.getHeadpic()));
+        return tUser;
+    }
+
 }
