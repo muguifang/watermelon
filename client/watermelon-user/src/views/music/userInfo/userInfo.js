@@ -1,7 +1,4 @@
 // -- 引入外部其他文件 --
-import { getMyCollect, cancelCollect } from "@/api/music.js";
-import { stripscript, validatePass, validateName } from "@/utils/validate";
-import { getCookie } from "@/utils/store.js";
 // -- 名字 --
 
 const name = "userInfo";
@@ -10,6 +7,8 @@ const name = "userInfo";
 
 const data = function() {
   return {
+    //头像文件名称
+    fileName: "",
     //cookie存储的用户信息
     u_info: "",
     //注册表单
@@ -41,6 +40,7 @@ const methods = {
   },
   //头像上传成功后
   handleAvatarSuccess(res, file) {
+    console.log(file);
     this.imageUrl = URL.createObjectURL(file.raw);
   },
   //上传之前

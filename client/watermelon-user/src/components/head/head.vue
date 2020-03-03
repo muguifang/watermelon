@@ -5,10 +5,10 @@
       <!-- <el-link :underline="false" icon="el-icon-star-off" @click="toCollect()"
         >我的收藏</el-link
       > -->
-      <img v-if="flag" class="photo" src="@/assets/photo.png" />
-      <el-link v-if="flag" :underline="false" @click="getZhInfo()"
-        >用户名</el-link
-      >
+      <img v-if="flag" class="photo" :src="headpic" />
+      <el-link v-if="flag" :underline="false" @click="getZhInfo()">{{
+        username
+      }}</el-link>
       <!-- <el-link v-if="flag" :underline="false" @click="exit()">退出</el-link> -->
       <el-link v-if="flag == false" :underline="false" @click="login()"
         >登录</el-link
@@ -31,7 +31,9 @@
           v-model="input"
           clearable
         ></el-input>
-        <el-button type="info" icon="el-icon-search" @click="toSearch()">搜索</el-button>
+        <el-button type="info" icon="el-icon-search" @click="toSearch()"
+          >搜索</el-button
+        >
       </div>
     </div>
     <!-- 导航信息 -->
@@ -187,10 +189,10 @@
     <el-radio-group v-model="direction" width="25%">
       <el-radio label="rtl" hidden="true">从右往左开</el-radio>
       <el-drawer title="账号" :visible.sync="drawer" :direction="direction">
-        <img class="photo" src="@/assets/photo.png" />
-        <el-link :underline="false" class="username" @click="getUserInfo()"
-          >用户名</el-link
-        >
+        <img class="photo" :src="headpic" />
+        <el-link :underline="false" class="username" @click="getUserInfo()">{{
+          username
+        }}</el-link>
         <el-divider></el-divider>
         <el-link
           :underline="false"

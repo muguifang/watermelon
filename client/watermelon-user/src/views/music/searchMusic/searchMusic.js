@@ -58,7 +58,8 @@ const methods = {
 
 // -- 页面加载完成 --
 const created = function() {
-  //   this.query();
+  this.input = this.$route.query.serach;
+  this.query();
 };
 
 // -- 自动计算属性 --

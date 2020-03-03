@@ -1,7 +1,9 @@
 // -- 引入外部其他文件 --
 import { stripscript, validatePass, validateName } from "@/utils/validate";
-import { login, register } from "@/api/user.js";
+import { base64Convert } from "@/utils/base64Util.js";
+import { login, register, getUserInfo } from "@/api/user.js";
 import { saveCookie } from "@/utils/store.js";
+import { getCookie } from "@/utils/store.js";
 // -- 名字 --
 
 const name = "LayoutHeader";
@@ -78,6 +80,10 @@ const data = function() {
     }
   };
   return {
+    //头像
+    headpic: "",
+    //用户名
+    username: "",
     routers,
     //自动登录
     checked: false,
@@ -144,6 +150,7 @@ const methods = {
         };
         login(param).then(response => {
           const res = response.data;
+          this.headpic = URL.createObjectURL(base64Convert(res.data.headpic));
           if (res.code === 200) {
             if (this.checked == true) {
               saveCookie("_u_i", JSON.stringify(res.data.id), 7);
@@ -220,6 +227,7 @@ const methods = {
     })
       .then(() => {
         saveCookie("_u_i", JSON.stringify(null), 0);
+        saveCookie("_u_info", JSON.stringify(null), 0);
         this.$message({
           type: "success",
           message: "注销成功!"
@@ -246,6 +254,22 @@ const methods = {
   },
   //导航信息跳转
   handleSelect() {
+    const _u_i = getCookie("_u_i");
+    if (_u_i != "" && _u_i != null) {
+      //查询用户信息
+      const param = {
+        userId: _u_i
+      };
+      getUserInfo(param).then(response => {
+        const res = response.data;
+        if (res.code === 200) {
+          const data = res.data;
+          this.username = data.username;
+          this.headpic = URL.createObjectURL(base64Convert(data.headpic));
+        }
+      });
+      this.flag = true;
+    }
     this.routerPath = this.$route.path;
   },
   //跳转网站建议页面
@@ -260,8 +284,9 @@ const methods = {
   },
   //跳转音乐搜索页面
   toSearch() {
-    this.$router.push("/searchMusic");
-    // this.$router.push({ name: "/searchMusic", param: { name: this.input } });
+    // this.$router.push("/searchMusic");
+    this.$router.push({ path: "/searchMusic", query: { serach: this.input } });
+    this.input = "";
   },
   //登录弹窗
   login() {
@@ -277,6 +302,7 @@ const methods = {
   },
   //头像上传成功后
   handleAvatarSuccess(res, file) {
+    console.log(file);
     this.imageUrl = URL.createObjectURL(file.raw);
   },
   //上传之前

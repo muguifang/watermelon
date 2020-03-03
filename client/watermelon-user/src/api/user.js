@@ -24,3 +24,11 @@ export function addAdvice(data) {
     data: data
   });
 }
+//查询用户信息
+export function getUserInfo(data) {
+  return intercept.request({
+    method: "post",
+    url: "/user/getUserInfo",
+    data: data
+  });
+}

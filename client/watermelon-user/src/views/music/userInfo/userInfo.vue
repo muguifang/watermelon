@@ -14,14 +14,15 @@
           <el-upload
             class="avatar-uploader"
             action="api/file/upload"
-            name="photo"
+            name="file"
+            :data="{ path: 'D:/img' }"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
           >
             <img src="@/assets/photo.png" class="avatar" />
-            <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar"> -->
-            <!-- <i v-else class="el-icon-plus avatar-uploader-icon"></i> -->
+            <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i> -->
           </el-upload>
         </el-form-item>
         <el-form-item

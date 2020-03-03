@@ -17,8 +17,11 @@
       <el-tab-pane label="歌曲" name="first">
         <template>
           <el-table :data="tableData" style="width: 99%;margin:0 auto;">
-            <el-table-column prop="musicName" label="音乐名称" width="580">
-              <!-- <i class="el-icon-video-play"></i> -->
+            <el-table-column label="音乐名称" width="580">
+              <template slot-scope="scope">
+                <i class="el-icon-video-play"></i>
+                <span style="margin-left: 10px">{{ scope.row.musicName }}</span>
+              </template>
             </el-table-column>
             <el-table-column prop="playNum" label="播放量" width="180">
             </el-table-column>
