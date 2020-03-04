@@ -15,8 +15,13 @@ const data = function() {
     tableData: [],
     //音乐路径
     musicUrl: "",
-    //控制播放和暂停
-    number: true
+    //音乐加载完成
+    isLoad: false,
+    isPlay: false,
+    //当前音乐
+    nowMu: "",
+    //上一个播放按钮
+    playBut: ""
   };
 };
 
@@ -50,38 +55,54 @@ const methods = {
               insertDate: tableList[i].insertDate
             };
             this.tableData.push(table);
-            console.log(this.tableData);
           }
         }
       });
     }
   },
   //播放音乐
-  playMusic(row) {
-    this.musicUrl = row.musicPlay;
-    const param = {
-      path: this.musicUrl
-    };
-    returnBase64(param).then(response => {
-      const data = response.data;
-      if (data.code === 200) {
-        this.musicUrl = URL.createObjectURL(base64Convert(data.data));
-      } else {
-        this.$message({
-          type: "error",
-          message: "获取播放源失败"
-        });
-      }
-    });
-    //获取audio元素
-    const music = this.$refs.music;
-    //控制播放和暂停
-    if (this.number == true) {
-      this.number = false;
-      music.play();
+  playMusic(row, key) {
+    const icon = document.getElementById(key);
+    if (icon.className == "el-icon-video-play") {
+      icon.className = "el-icon-video-pause";
     } else {
-      this.number = true;
-      music.pause();
+      icon.className = "el-icon-video-play";
+    }
+    const param = {
+      path: row.musicPlay
+    };
+    if (this.nowMu != row.musicPlay) {
+      this.isLoad = false;
+      if (this.playBut != "") {
+        const lasticon = document.getElementById(this.playBut);
+        lasticon.className = "el-icon-video-play";
+      }
+    }
+    if (!this.isLoad) {
+      returnBase64(param).then(response => {
+        const data = response.data;
+        if (data.code === 200) {
+          this.musicUrl = URL.createObjectURL(base64Convert(data.data));
+          this.nowMu = param.path;
+          this.playBut = key;
+          this.isLoad = true;
+        } else {
+          this.$message({
+            type: "error",
+            message: "获取播放源失败"
+          });
+        }
+      });
+    }
+    //自动播放 状态是true播放中
+    //判断播放中 点击后将音乐暂停 状态false
+    if (this.isPlay) {
+      document.getElementById("music").pause();
+      this.isPlay = false;
+    } else {
+      //判断暂停 点击播放 转台为true
+      document.getElementById("music").play();
+      this.isPlay = true;
     }
   },
   handleClick(tab, event) {

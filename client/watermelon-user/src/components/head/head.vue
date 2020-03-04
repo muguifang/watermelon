@@ -40,7 +40,6 @@
     <div class="nav-wrap">
       <el-menu
         :default-active="routerPath == '/index' ? '/' : routerPath"
-        :select="handleSelect()"
         mode="horizontal"
         background-color="#545c64"
         text-color="#fff"

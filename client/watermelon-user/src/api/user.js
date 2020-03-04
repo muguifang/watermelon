@@ -32,3 +32,11 @@ export function getUserInfo(data) {
     data: data
   });
 }
+//修改用户信息
+export function updateUserInfo(data) {
+  return intercept.request({
+    method: "put",
+    url: "/user/updateUser",
+    data: data
+  });
+}

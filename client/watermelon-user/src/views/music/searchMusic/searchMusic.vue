@@ -21,16 +21,10 @@
               <template slot-scope="scope">
                 <span style="margin-left: 10px">{{ scope.row.musicName }}</span>
                 <i
-                  v-if="number == false"
-                  class="el-icon-video-pause"
-                  style="position: relative;left: 340px;cursor: pointer;"
-                  @click="playMusic(scope.row)"
-                ></i>
-                <i
-                  v-if="number == true"
+                  :id="'playIcon' + scope.$index"
                   class="el-icon-video-play"
                   style="position: relative;left: 340px;cursor: pointer;"
-                  @click="playMusic(scope.row)"
+                  @click="playMusic(scope.row, 'playIcon' + scope.$index)"
                 ></i>
               </template>
             </el-table-column>
@@ -46,7 +40,7 @@
         </template>
       </el-tab-pane>
     </el-tabs>
-    <audio ref="music" :src="musicUrl" />
+    <audio id="music" :src="musicUrl" controls autoplay v-show="false" />
   </div>
 </template>
 <script src="./searchMusic.js"></script>

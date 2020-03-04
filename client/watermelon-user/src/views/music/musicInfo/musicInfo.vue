@@ -63,7 +63,7 @@
         <div class="btn-audio">
           <audio
             style="width:80%;margin:0px 155px;"
-            src="@/components/test/radio/try.mp3"
+            :src="musicInfo.musicplay"
             controls="controls"
           />
         </div>
@@ -73,7 +73,7 @@
     <div style="width:74%;margin:370px 100px 100px 100px;">
       <video
         style="width:100%;"
-        src="@/components/test/radio/try1.mp4"
+        :src="musicInfo.mvplay"
         controls="controls"
       ></video>
     </div>

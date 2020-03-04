@@ -1,5 +1,5 @@
 // -- 引入外部其他文件 --
-import { getMusicById, collectMusic } from "@/api/music.js";
+import { getMusicById, collectMusic, returnBase64 } from "@/api/music.js";
 import { getComments, insertComment } from "@/api/comment.js";
 import { base64Convert } from "@/utils/base64Util.js";
 import { getCookie } from "@/utils/store.js";
@@ -36,6 +36,23 @@ const methods = {
   //音乐播放器抽屉
   playMusic() {
     this.drawer = true;
+    //获取音乐
+    const param = {
+      path: this.musicInfo.musicplay
+    };
+    returnBase64(param).then(response => {
+      const data = response.data;
+      if (data.code === 200) {
+        this.musicInfo.musicplay = URL.createObjectURL(
+          base64Convert(data.data)
+        );
+      } else {
+        this.$message({
+          type: "error",
+          message: "获取播放源失败"
+        });
+      }
+    });
   },
   //收藏方法
   collect(item) {
@@ -105,6 +122,20 @@ const methods = {
       const music = res.data;
       music.musicphoto = URL.createObjectURL(base64Convert(music.musicphoto));
       this.musicInfo = res.data;
+      const param = {
+        path: this.musicInfo.mvplay
+      };
+      returnBase64(param).then(response => {
+        const data = response.data;
+        if (data.code === 200) {
+          this.musicInfo.mvplay = URL.createObjectURL(base64Convert(data.data));
+        } else {
+          this.$message({
+            type: "error",
+            message: "获取播放源失败"
+          });
+        }
+      });
     });
   },
   //获取该音乐评论

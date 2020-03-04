@@ -20,9 +20,9 @@
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
           >
-            <img src="@/assets/photo.png" class="avatar" />
-            <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i> -->
+            <!-- <img src="@/assets/photo.png" class="avatar" /> -->
+            <img v-if="registForm.pic" :src="registForm.pic" class="avatar" />
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
         <el-form-item
@@ -64,7 +64,7 @@
           <el-input v-model="registForm.email" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label-width="160px">
-          <el-button @click="resetForm('registForm')">重 置</el-button>
+          <el-button @click="cancel('registForm')">取 消</el-button>
           <el-button type="primary" @click="updateInfoForm('registForm')"
             >确 定</el-button
           >

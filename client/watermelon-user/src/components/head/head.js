@@ -152,12 +152,16 @@ const methods = {
         };
         login(param).then(response => {
           const res = response.data;
+          const name = res.data.username;
           this.headpic = URL.createObjectURL(base64Convert(res.data.headpic));
+          const info = { name: name, p_bl: this.headpic };
           if (res.code === 200) {
             if (this.checked == true) {
               saveCookie("_u_i", JSON.stringify(res.data.id), 7);
+              saveCookie("u_if", JSON.stringify(info), 7);
             } else {
               saveCookie("_u_i", JSON.stringify(res.data.id));
+              saveCookie("u_if", JSON.stringify(info));
             }
             this.dialogLogin = false;
             //登录成功改为true
@@ -229,7 +233,7 @@ const methods = {
     })
       .then(() => {
         saveCookie("_u_i", JSON.stringify(null), 0);
-        saveCookie("_u_info", JSON.stringify(null), 0);
+        saveCookie("_u_if", JSON.stringify(null), 0);
         this.$message({
           type: "success",
           message: "注销成功!"
@@ -256,22 +260,22 @@ const methods = {
   },
   //导航信息跳转
   handleSelect() {
-    const _u_i = getCookie("_u_i");
-    if (_u_i != "" && _u_i != null) {
-      //查询用户信息
-      const param = {
-        userId: _u_i
-      };
-      getUserInfo(param).then(response => {
-        const res = response.data;
-        if (res.code === 200) {
-          const data = res.data;
-          this.username = data.username;
-          this.headpic = URL.createObjectURL(base64Convert(data.headpic));
-        }
-      });
-      this.flag = true;
-    }
+    // const _u_i = getCookie("_u_i");
+    // if (_u_i != "" && _u_i != null) {
+    //   this.flag = true;
+    // }
+    // const u_if = getCookie("u_if");
+    // if (u_if != null && u_if != "") {
+    //   const info = JSON.parse(u_if);
+    //   console.log(info);
+    //   this.headpic = info.p_bl;
+    //   this.username = info.name;
+    // } else {
+    //   this.$message({
+    //     type: "info",
+    //     message: "登录失效"
+    //   });
+    // }
     this.routerPath = this.$route.path;
   },
   //跳转网站建议页面
@@ -304,7 +308,6 @@ const methods = {
   },
   //头像上传成功后
   handleAvatarSuccess(res, file) {
-    console.log(file);
     this.imageUrl = URL.createObjectURL(file.raw);
   },
   //上传之前
@@ -325,6 +328,26 @@ const methods = {
 // -- 页面加载完成 --
 const created = function() {
   this.handleSelect();
+  const _u_i = getCookie("_u_i");
+  if (_u_i != "" && _u_i != null) {
+    this.flag = true;
+    const param = {
+      userId: _u_i
+    };
+    getUserInfo(param).then(response => {
+      const res = response.data;
+      if (res.code === 200) {
+        const data = res.data;
+        this.username = data.username;
+        this.headpic = URL.createObjectURL(base64Convert(data.headpic));
+      }
+    });
+  } else {
+    this.$message({
+      type: "info",
+      message: "登录失效"
+    });
+  }
 };
 
 // -- 自动计算属性 --

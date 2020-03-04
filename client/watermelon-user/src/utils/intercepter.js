@@ -29,7 +29,7 @@ intercept.interceptors.response.use(
   },
   function(error) {
     // 对响应错误做点什么
-    console.log(error);
+    Message.error(error);
   }
 );
 export default intercept;
