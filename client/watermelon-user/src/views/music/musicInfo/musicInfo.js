@@ -121,7 +121,8 @@ const methods = {
       const res = response.data;
       const music = res.data;
       music.musicphoto = URL.createObjectURL(base64Convert(music.musicphoto));
-      this.musicInfo = res.data;
+      this.musicInfo = music;
+      this.musicInfo.recommend = parseInt(this.musicInfo.recommend);
       const param = {
         path: this.musicInfo.mvplay
       };
@@ -136,6 +137,7 @@ const methods = {
           });
         }
       });
+      console.log(this.musicInfo.recommend);
     });
   },
   //获取该音乐评论

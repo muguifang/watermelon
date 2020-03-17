@@ -6,10 +6,10 @@
     </div>
     <el-collapse v-model="activeName" accordion>
       <el-collapse-item
-        v-for="item in tableData"
+        v-for="(item, index) in tableData"
         :key="item.id"
         :title="item.title"
-        name="1"
+        :name="index"
       >
         <div>
           {{ item.content }}

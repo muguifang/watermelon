@@ -18,7 +18,7 @@
         </p>
         <div class="recommendNum-info">
           <span>推荐指数：</span>
-          <div v-for="o in musicInfo.recommend" :key="o" class="star">
+          <div v-for="item in musicInfo.recommend" :key="item.id" class="star">
             <i class="el-icon-star-off"></i>
           </div>
         </div>
