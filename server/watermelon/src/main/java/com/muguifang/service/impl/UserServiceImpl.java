@@ -80,9 +80,9 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
             throw new LoginException(501, "新密码与确认密码不一致!");
         }
         //判断旧密码是否正确
-        if(!currentLoginEmployee.getPassword().equals((String)param.get("oldPassword"))){
-            throw new LoginException(501, "旧密码错误!");
-        }
+//        if(!currentLoginEmployee.getPassword().equals((String)param.get("oldPassword"))){
+//            throw new LoginException(501, "旧密码错误!");
+//        }
         currentLoginEmployee.setPassword((String)param.get("newPassword"));
         tUserMapper.updateByPrimaryKey(currentLoginEmployee);
     }
@@ -96,8 +96,9 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
     @Override
     public List<TUser> getAllUser(String username) {
         TUserExample example = new TUserExample();
+        TUserExample.Criteria criteria = example.createCriteria();
+        criteria.andRoleEqualTo(1);
         if(null != username && !"".equals(username)){
-            TUserExample.Criteria criteria = example.createCriteria();
             criteria.andUsernameLike("%" + username + "%");
         }
         List<TUser> tUsers = tUserMapper.selectByExample(example);
