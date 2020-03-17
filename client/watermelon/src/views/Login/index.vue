@@ -91,7 +91,7 @@ export default {
       // ],
       // 表单返回值
       form: {
-        username: "xiaohong",
+        username: "",
         password: ""
       },
       // 校验规则

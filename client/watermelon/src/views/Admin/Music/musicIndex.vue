@@ -115,7 +115,7 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="currentPage"
-            :page-sizes="[1, 2, 3, 4]"
+            :page-sizes="[2, 3, 4]"
             :page-size="pageSize"
             layout="total, sizes, prev, pager, next, jumper"
             :total="sumNum"
@@ -458,7 +458,6 @@
           :append-to-body="true"
           width="30%"
         >
-          <!-- 视频代码。。没找到 -->
           <div style="width:100%;">
             <video style="width:100%;" :src="mvSrc" controls="controls"></video>
           </div>
@@ -683,7 +682,12 @@ export default {
       this.dialogForm.musicplay = "D:/music/" + this.musicName;
       this.dialogForm.mvplay = "D:/mv/" + this.mvName;
       this.$refs.dialogForm.validate(valid => {
-        if (valid) {
+        if (
+          valid &&
+          this.fileName != "" &&
+          this.musicName != "" &&
+          this.mvName != ""
+        ) {
           addMusic(this.dialogForm).then(response => {
             const data = response.data;
             if (data.code == 200) {
@@ -697,8 +701,7 @@ export default {
             }
           });
         } else {
-          console.log("error submit!!");
-          return false;
+          this.$message("还有没上传的文件哦~");
         }
       });
     },
@@ -739,7 +742,6 @@ export default {
     },
     //修改之真正修改
     updateMusic() {
-      debugger;
       if (this.dialogForm.musicphoto == this.imageUrl) {
         this.dialogForm.musicphoto = null;
       } else {
@@ -822,7 +824,7 @@ export default {
               if (data.code == 200) {
                 this.$message({
                   type: "success",
-                  message: "删除成功!"
+                  message: "批量删除成功!"
                 });
                 this.deleteIds = [];
                 this.deleteNames = [];
@@ -833,7 +835,7 @@ export default {
           .catch(() => {
             this.$message({
               type: "info",
-              message: "已取消删除"
+              message: "已取消批量删除"
             });
             this.deleteIds = [];
             this.deleteNames = [];
@@ -868,9 +870,11 @@ export default {
           if (data.code === 200) {
             this.fileName = "";
             this.dialog_updateMusic = false;
-            this.$message("以取消上传");
+            this.$message("已取消上传");
           }
         });
+      } else {
+        this.$message("已取消编辑");
       }
       this.options = [];
       this.query();
@@ -947,7 +951,7 @@ export default {
     },
     //上传音乐之前
     uploadMusicBefore(file) {
-      const isMp3 = file.type === "audio/mp3";
+      const isMp3 = file.type === "audio/mp3" || file.type === "audio/mpeg";
       if (!isMp3) {
         this.$message.error("只能上传mp3文件!");
       }

@@ -8,6 +8,7 @@ export default {};
 </script>
 <style lang="scss" scoped>
 #welcome-wrap {
+  text-align: center;
   p {
     font-size: 30px;
     color: #c7c0cd;

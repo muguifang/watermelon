@@ -25,7 +25,7 @@
               type="primary"
               style="width: 100%;float:right;margin: 17px auto;"
               icon="el-icon-plus"
-              @click="dialog_insertLbt = true"
+              @click="add()"
               >新增</el-button
             >
           </el-col>
@@ -102,7 +102,7 @@
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
           <div slot="footer" class="dialog-footer">
-            <el-button @click="cancel">取 消</el-button>
+            <el-button @click="cancelAdd()">取 消</el-button>
             <el-button type="primary" @click="addLbt()">确 定</el-button>
           </div>
         </el-dialog>
@@ -129,7 +129,7 @@
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
           <div slot="footer" class="dialog-footer">
-            <el-button @click="cancel">取 消</el-button>
+            <el-button @click="cancelUpdate()">取 消</el-button>
             <el-button type="primary" @click="updateLbt()">确 定</el-button>
           </div>
         </el-dialog>
@@ -199,7 +199,12 @@ export default {
         }
       });
     },
-    //新增轮播图 【没有实现】
+    //打开新增弹窗
+    add() {
+      this.dialogForm.pic = "";
+      this.dialog_insertLbt = true;
+    },
+    //新增轮播图
     addLbt() {
       if (this.fileName != "") {
         const param = {
@@ -216,9 +221,11 @@ export default {
             this.query();
           }
         });
+      } else {
+        this.$message("请上传图片");
       }
     },
-    //修改之查询  【没有实现】
+    //修改之查询
     update(index, row) {
       this.dialog_updateLbt = true;
       this.dialogForm.id = row.id;
@@ -226,7 +233,7 @@ export default {
       this.dialogForm.insertdate = row.insertdate;
       this.imageUrl = row.pic;
     },
-    //修改之真正修改  【没有实现】
+    //修改之真正修改
     updateLbt() {
       const param = {
         id: this.dialogForm.id,
@@ -240,11 +247,14 @@ export default {
             message: "修改成功!",
             type: "success"
           });
+          this.query();
+        } else {
+          this.$message("没有进行任何修改");
         }
       });
     },
-    //取消按钮取消上传文件时删除服务器图片
-    cancel() {
+    //修改的取消按钮取消上传文件时删除服务器图片
+    cancelUpdate() {
       this.dialog_updateLbt = false;
       //删除文件
       if (this.fileName != "") {
@@ -253,9 +263,27 @@ export default {
           if (data.code === 200) {
             this.fileName = "";
             this.dialog_updateLbt = false;
-            this.$message("以取消上传");
+            this.$message("已取消上传");
           }
         });
+      } else {
+        this.$message("已取消编辑");
+      }
+    },
+    //新增的取消按钮
+    cancelAdd() {
+      this.dialog_insertLbt = false;
+      if (this.fileName != "") {
+        deleteServerFile(this.fileName).then(response => {
+          const data = response.data;
+          if (data.code === 200) {
+            this.fileName = "";
+            this.dialog_insertLbt = false;
+            this.$message("已取消上传");
+          }
+        });
+      } else {
+        this.$message("已取消新增");
       }
     },
     //删除轮播图
@@ -312,7 +340,7 @@ export default {
               if (data.code == 200) {
                 this.$message({
                   type: "success",
-                  message: "删除成功!"
+                  message: "批量删除成功!"
                 });
                 this.deleteIds = [];
                 this.query();
@@ -322,7 +350,7 @@ export default {
           .catch(() => {
             this.$message({
               type: "info",
-              message: "已取消删除"
+              message: "已取消批量删除"
             });
             this.deleteIds = [];
             this.query();

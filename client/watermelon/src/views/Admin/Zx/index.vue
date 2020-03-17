@@ -100,7 +100,7 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="currentPage"
-            :page-sizes="[4, 5, 6, 7]"
+            :page-sizes="[2, 3, 4]"
             :page-size="pageSize"
             layout="total, sizes, prev, pager, next, jumper"
             :total="sumNum"
@@ -275,7 +275,7 @@ export default {
       //当前页码
       currentPage: 1,
       //每页条数
-      pageSize: 5,
+      pageSize: 4,
       //选中的对象
       sels: [],
       //选中的id
@@ -302,13 +302,6 @@ export default {
           {
             required: true,
             message: "请输入资讯内容",
-            trigger: "blur"
-          }
-        ],
-        pic: [
-          {
-            required: true,
-            message: "请输入资讯图片",
             trigger: "blur"
           }
         ]
@@ -353,12 +346,14 @@ export default {
     //新增确认按钮
     addZx() {
       this.$refs.dialogForm.validate(valid => {
-        if (valid) {
+        this.dialogForm.pic = this.fileName;
+        if (valid && this.dialogForm.pic != "") {
           this.dialog_addZx = false;
           addZx(this.dialogForm).then(response => {
             const data = response.data;
             if (data.code == 200) {
               this.imageUrl = "";
+              this.fileName = "";
               this.$message({
                 type: "success",
                 message: "新增成功!"
@@ -367,8 +362,7 @@ export default {
             }
           });
         } else {
-          console.log("error submit!");
-          return false;
+          this.$message("请上传图片");
         }
       });
     },
@@ -408,7 +402,7 @@ export default {
         }
       });
     },
-    //删除音乐类别
+    //删除音乐资讯
     deleteZx(index, row) {
       this.$confirm("确认将【" + row.title + "】从列表中删除?", "提示", {
         confirmButtonText: "确定",
@@ -463,7 +457,7 @@ export default {
               if (data.code == 200) {
                 this.$message({
                   type: "success",
-                  message: "删除成功!"
+                  message: "批量删除成功!"
                 });
                 this.deleteIds = [];
                 this.deleteNames = [];
@@ -474,7 +468,7 @@ export default {
           .catch(() => {
             this.$message({
               type: "info",
-              message: "已取消删除"
+              message: "已取消批量删除"
             });
             this.deleteIds = [];
             this.deleteNames = [];
@@ -489,6 +483,7 @@ export default {
     },
     //取消按钮
     closeInfo() {
+      this.dialog_updateZx = false;
       //删除文件
       if (this.fileName != "") {
         deleteServerFile(this.fileName).then(response => {

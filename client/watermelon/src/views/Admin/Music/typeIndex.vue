@@ -365,7 +365,7 @@ export default {
               if (data.code == 200) {
                 this.$message({
                   type: "success",
-                  message: "删除成功!"
+                  message: "批量删除成功!"
                 });
               } else if (data.code == 401) {
                 const typeList = data.data;
@@ -375,7 +375,7 @@ export default {
                 }
                 this.$message({
                   type: "warning",
-                  message: "【" + typenames + "】中含有音乐，删除失败！"
+                  message: "【" + typenames + "】中含有音乐，批量删除失败！"
                 });
               }
               this.deleteIds = [];
@@ -386,7 +386,7 @@ export default {
           .catch(() => {
             this.$message({
               type: "info",
-              message: "已取消删除"
+              message: "已取消批量删除"
             });
             this.deleteIds = [];
             this.deleteNames = [];

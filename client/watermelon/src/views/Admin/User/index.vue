@@ -265,7 +265,7 @@ export default {
     },
     //删除用户
     deleteUser(index, row) {
-      this.$confirm("确认将【" + row.realname + "】从用户表中删除?", "提示", {
+      this.$confirm("确认将【" + row.realname + "】从用户列表中删除?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
@@ -304,7 +304,7 @@ export default {
           this.deleteNames.push(sel.realname);
         });
         this.$confirm(
-          "确认将【" + this.deleteNames + "】从员工列表中删除?",
+          "确认将【" + this.deleteNames + "】从用户列表中删除?",
           "提示",
           {
             confirmButtonText: "确定",
@@ -318,7 +318,7 @@ export default {
               if (data.code == 200) {
                 this.$message({
                   type: "success",
-                  message: "删除成功!"
+                  message: "批量删除成功!"
                 });
                 this.deleteIds = [];
                 this.deleteNames = [];
@@ -329,7 +329,7 @@ export default {
           .catch(() => {
             this.$message({
               type: "info",
-              message: "已取消删除"
+              message: "已取消批量删除"
             });
             this.deleteIds = [];
             this.deleteNames = [];

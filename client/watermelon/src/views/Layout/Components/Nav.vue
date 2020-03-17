@@ -12,6 +12,7 @@
       :collapse="isCollapse"
       background-color="transparent"
       text-color="#fff"
+      unique-opened="true"
       router
     >
       <!-- 一级菜单 -->

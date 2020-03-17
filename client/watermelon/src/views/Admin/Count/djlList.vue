@@ -52,7 +52,7 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="currentPage"
-            :page-sizes="[2, 3, 4, 5]"
+            :page-sizes="[2, 3, 4]"
             :page-size="pageSize"
             layout="total, sizes, prev, pager, next, jumper"
             :total="sumNum"
