@@ -3,7 +3,7 @@
     <el-card class="box-card">
       <div slot="header" class="card-info clearfix">
         <span>音乐类别</span>
-        <el-button style="padding: 3px 0;" type="text">更多</el-button>
+        <!-- <el-button style="padding: 3px 0;" type="text">更多</el-button> -->
       </div>
       <div>
         <ul v-for="item in typeList" :key="item.id" class="text item">

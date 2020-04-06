@@ -20,10 +20,10 @@
             <el-table-column label="音乐名称" width="580">
               <template slot-scope="scope">
                 <span style="margin-left: 10px">{{ scope.row.musicName }}</span>
+                <!-- style="position: relative;right: -276px;cursor: pointer;" -->
                 <i
                   :id="'playIcon' + scope.$index"
-                  class="el-icon-video-play"
-                  style="position: relative;left: 340px;cursor: pointer;"
+                  class="el-icon-video-play icon-position"
                   @click="playMusic(scope.row, 'playIcon' + scope.$index)"
                 ></i>
               </template>
@@ -55,5 +55,12 @@
 .el-input {
   width: 30%;
   margin-left: 330px;
+}
+.icon-position {
+  left: 430px;
+  cursor: pointer;
+  display: block;
+  position: absolute;
+  top: 10px;
 }
 </style>

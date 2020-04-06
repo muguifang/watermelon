@@ -3,6 +3,7 @@ import { getMusicById, collectMusic, returnBase64 } from "@/api/music.js";
 import { getComments, insertComment } from "@/api/comment.js";
 import { base64Convert } from "@/utils/base64Util.js";
 import { getCookie } from "@/utils/store.js";
+import { parseTime } from "@/utils/dateformat.js";
 // -- 名字 --
 
 const name = "index";
@@ -101,18 +102,24 @@ const methods = {
     if (this.u_info == null || this.u_info == "") {
       this.$message("登录后可评论该歌曲!");
     } else {
-      const param = {
-        u_id: this.u_info,
-        content: this.form.content,
-        m_id: parseInt(this.$route.query.id)
-      };
-      insertComment(param).then(response => {
-        const res = response.data;
-        if (res.code === 200) {
-          this.form.content = "";
-          this.getComment();
-        }
-      });
+      if (this.form.content.length > 200) {
+        this.$message("评论内容不能超过200字");
+      } else if (this.form.content.length == 0) {
+        this.$message("请输入评论内容");
+      } else {
+        const param = {
+          u_id: this.u_info,
+          content: this.form.content,
+          m_id: parseInt(this.$route.query.id)
+        };
+        insertComment(param).then(response => {
+          const res = response.data;
+          if (res.code === 200) {
+            this.form.content = "";
+            this.getComment();
+          }
+        });
+      }
     }
   },
   //通过音乐id获取音乐详情
@@ -158,12 +165,16 @@ const methods = {
             comment.id = data[i].id;
             comment.username = data[i].username;
             comment.content = data[i].tcontent;
-            comment.insertDate = data[i].insertdate;
+            comment.insertDate = parseTime(data[i].insertdate);
             this.comments.push(comment);
           }
         }
       }
     });
+  },
+  //清空评论
+  resetForm() {
+    this.form.content = "";
   },
   handleClick(tab, event) {
     console.log(tab, event);

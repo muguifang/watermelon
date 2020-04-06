@@ -1,6 +1,7 @@
 // -- 引入外部其他文件 --
 import { getMusicByConditions, returnBase64 } from "@/api/music.js";
 import { base64Convert } from "@/utils/base64Util.js";
+import { parseTime } from "@/utils/dateformat.js";
 // -- 名字 --
 
 const name = "searchMusic";
@@ -52,7 +53,7 @@ const methods = {
               mvPlay: tableList[i].mvPlay,
               playNum: tableList[i].playNum,
               typeName: tableList[i].typeName,
-              insertDate: tableList[i].insertDate
+              insertDate: parseTime(tableList[i].insertDate)
             };
             this.tableData.push(table);
           }
@@ -63,10 +64,10 @@ const methods = {
   //播放音乐
   playMusic(row, key) {
     const icon = document.getElementById(key);
-    if (icon.className == "el-icon-video-play") {
-      icon.className = "el-icon-video-pause";
+    if (icon.className == "el-icon-video-play icon-position") {
+      icon.className = "el-icon-video-pause icon-position";
     } else {
-      icon.className = "el-icon-video-play";
+      icon.className = "el-icon-video-play icon-position";
     }
     const param = {
       path: row.musicPlay
@@ -75,7 +76,7 @@ const methods = {
       this.isLoad = false;
       if (this.playBut != "") {
         const lasticon = document.getElementById(this.playBut);
-        lasticon.className = "el-icon-video-play";
+        lasticon.className = "el-icon-video-play icon-position";
       }
     }
     if (!this.isLoad) {

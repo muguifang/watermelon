@@ -159,9 +159,11 @@ const methods = {
             if (this.checked == true) {
               saveCookie("_u_i", JSON.stringify(res.data.id), 7);
               saveCookie("u_if", JSON.stringify(info), 7);
+              this.username = name;
             } else {
               saveCookie("_u_i", JSON.stringify(res.data.id));
               saveCookie("u_if", JSON.stringify(info));
+              this.username = name;
             }
             this.dialogLogin = false;
             //登录成功改为true
@@ -260,22 +262,6 @@ const methods = {
   },
   //导航信息跳转
   handleSelect() {
-    // const _u_i = getCookie("_u_i");
-    // if (_u_i != "" && _u_i != null) {
-    //   this.flag = true;
-    // }
-    // const u_if = getCookie("u_if");
-    // if (u_if != null && u_if != "") {
-    //   const info = JSON.parse(u_if);
-    //   console.log(info);
-    //   this.headpic = info.p_bl;
-    //   this.username = info.name;
-    // } else {
-    //   this.$message({
-    //     type: "info",
-    //     message: "登录失效"
-    //   });
-    // }
     this.routerPath = this.$route.path;
   },
   //跳转网站建议页面
@@ -322,32 +308,37 @@ const methods = {
       this.$message.error("上传头像图片大小不能超过 2MB!");
     }
     return isJPG && isLt2M;
+  },
+  showInfo() {
+    const _u_i = getCookie("_u_i");
+    if (_u_i != "" && _u_i != null) {
+      this.flag = true;
+      const param = {
+        userId: _u_i
+      };
+      getUserInfo(param).then(response => {
+        const res = response.data;
+        if (res.code === 200) {
+          const data = res.data;
+          this.username = data.username;
+          this.headpic = URL.createObjectURL(base64Convert(data.headpic));
+        }
+      });
+    }
+    // } else {
+    //   this.$message({
+    //     type: "info",
+    //     message: "登录失效"
+    //   });
+    // }
   }
 };
 
 // -- 页面加载完成 --
 const created = function() {
   this.handleSelect();
-  const _u_i = getCookie("_u_i");
-  if (_u_i != "" && _u_i != null) {
-    this.flag = true;
-    const param = {
-      userId: _u_i
-    };
-    getUserInfo(param).then(response => {
-      const res = response.data;
-      if (res.code === 200) {
-        const data = res.data;
-        this.username = data.username;
-        this.headpic = URL.createObjectURL(base64Convert(data.headpic));
-      }
-    });
-  } else {
-    this.$message({
-      type: "info",
-      message: "登录失效"
-    });
-  }
+  //页面头部信息展示
+  this.showInfo();
 };
 
 // -- 自动计算属性 --

@@ -132,6 +132,10 @@ const methods = {
         this.registForm.pic = this.oldHead;
       }
     });
+  },
+  //返回上一步
+  goback() {
+    window.history.go(-1);
   }
 };
 

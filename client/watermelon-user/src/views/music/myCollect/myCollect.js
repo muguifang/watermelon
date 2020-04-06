@@ -55,7 +55,16 @@ const methods = {
 
 // -- 页面加载完成 --
 const created = function() {
-  this.query();
+  const _u_i = getCookie("_u_i");
+  if (_u_i == "" || _u_i == null) {
+    this.$message({
+      type: "info",
+      message: "登录失效"
+    });
+    this.$router.push("/index");
+  } else {
+    this.query();
+  }
 };
 
 // -- 自动计算属性 --

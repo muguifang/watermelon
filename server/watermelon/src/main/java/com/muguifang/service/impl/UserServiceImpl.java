@@ -90,6 +90,7 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
     @Override
     public void register(TUser tUser) {
         tUser.setRole(1);
+        tUser.setHeadpic("D:/img/photo.png");
         tUserMapper.insert(tUser);
     }
 

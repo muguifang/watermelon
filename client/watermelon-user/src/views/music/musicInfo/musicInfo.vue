@@ -88,15 +88,17 @@
         <el-form ref="form" :model="form" style="margin:14px;">
           <p style="font-weight:bold;font-size:18px;margin:0;">评论：</p>
           <el-form-item>
-            <el-input type="textarea" v-model="form.content"></el-input>
+            <el-input
+              type="textarea"
+              v-model="form.content"
+              placeholder="请输入内容（字数不能超过200）"
+            ></el-input>
           </el-form-item>
           <el-form-item>
             <el-button style="float: right;margin:0 5px;" @click="submitForm()"
               >发表评论</el-button
             >
-            <el-button
-              style="float: right;margin:0 5px;"
-              @click="resetForm('ruleForm')"
+            <el-button style="float: right;margin:0 5px;" @click="resetForm()"
               >清空
             </el-button>
           </el-form-item>

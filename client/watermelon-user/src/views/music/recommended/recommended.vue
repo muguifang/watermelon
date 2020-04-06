@@ -3,29 +3,38 @@
     <el-card class="box-card">
       <div slot="header" class="card-info clearfix">
         <span>音乐类别</span>
-        <el-button style="padding: 3px 0;" type="text">更多</el-button>
+        <!-- <el-button style="padding: 3px 0;" type="text">更多</el-button> -->
       </div>
-      <div v-for="o in 4" :key="o" class="text item">
-        {{ "列表内容 " + o }}
+      <div>
+        <ul v-for="item in typeList" :key="item.id" class="text item">
+          <li>
+            <el-link
+              type="primary"
+              :underline="false"
+              @click="getMusicByTypeId(item.id)"
+              >{{ item.name }}</el-link
+            >
+          </li>
+        </ul>
       </div>
     </el-card>
     <div class="music-info">
       <el-row>
         <el-col
           :span="5"
-          v-for="(o, index) in 10"
-          :key="o"
+          v-for="(item, index) in allMusics"
+          :key="item.id"
           :offset="index > 0 ? 10 : 0"
         >
           <el-card :body-style="{ padding: '0px' }">
-            <img src="@/assets/login.jpg" class="image" />
+            <img :src="item.pic" class="image" />
             <div style="padding: 14px;">
-              <span>推荐的音乐</span>
+              <span>{{ item.name }}</span>
               <div class="bottom clearfix">
-                <div v-for="o in 5" :key="o" class="star">
+                <div v-for="o in item.star" :key="o" class="star">
                   <i class="el-icon-star-off"></i>
                 </div>
-                <el-button type="text" class="button" @click="toView()"
+                <el-button type="text" class="button" @click="toView(item.id)"
                   >查看音乐</el-button
                 >
               </div>

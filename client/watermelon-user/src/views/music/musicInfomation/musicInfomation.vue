@@ -11,12 +11,12 @@
         :title="item.title"
         :name="index"
       >
-        <div>
+        <div class="zx-info">
           {{ item.content }}
-          <el-button type="text" class="button" @click="toInfoView(item)"
-            >查看音乐</el-button
-          >
         </div>
+        <el-button type="text" class="button" @click="toInfoView(item)"
+          >查看详情</el-button
+        >
       </el-collapse-item>
     </el-collapse>
   </div>
@@ -51,5 +51,19 @@ label {
 }
 .el-collapse-item {
   font-size: 18px;
+}
+.el-collapse-item__content {
+  font-size: 18px;
+}
+.zx-info {
+  white-space: nowrap;
+  width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.el-button {
+  position: relative;
+  top: -32px;
+  left: 27%;
 }
 </style>

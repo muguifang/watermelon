@@ -64,7 +64,7 @@
           <el-input v-model="registForm.email" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label-width="160px">
-          <el-button @click="cancel('registForm')">取 消</el-button>
+          <el-button @click="goback()">取 消</el-button>
           <el-button type="primary" @click="updateInfoForm('registForm')"
             >确 定</el-button
           >
